@@ -1,0 +1,37 @@
+{extend name="main" /}
+{block name="header"}
+    {include file='header' title='投诉查询'}
+{/block}
+
+{block name="content"}
+<br>
+<br>
+<br>
+<div class="odsrch-wp">
+    <div class="wrapper">
+        <div action="" method="">
+         <input type="hidden" id="query-type" value="2">
+        <div class="odsrch-bd">
+            <div class="odsrch-type">
+                <h3>
+                    订单号查询                </h3>
+                <ul>
+                    <li data-type="1"><a href="javascript:;" title="浏览器缓存查询">浏览器缓存查询</a></li>
+                    <li data-type="2"><a href="javascript:;" title="订单号查询">订单号查询</a></li>
+                    <li data-type="3"><a href="javascript:;" title="联系方式查询">联系方式查询</a></li>
+                </ul>
+            </div>
+            <div class="odsrch-txt">
+                <input type="text" class="txt" name="orderid" id="orderid_input2" value="" placeholder="请输入订单号查询订单">
+            </div>
+            <div class="odsrch-btn">
+                <input type="button" value="查 询" onclick="orderid_or_contact()">
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<br>
+{/block}

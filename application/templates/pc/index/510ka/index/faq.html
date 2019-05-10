@@ -1,0 +1,45 @@
+{extend name="main" /}
+{block name="header"}
+{include file='header' title='常见问题'}
+{/block}
+{block name="content"}
+<div class="faqlist">
+    <div class="wrapper">
+        <div class="body" style="min-height:300px;margin-bottom:30px;">
+            <form>
+                <input type="hidden" name="alias" id="alias" value="faq">
+                <input type="hidden" name="page" id="page" value="2">
+                <ul id="lists">
+                    {foreach $articles as $v}
+                    <li>
+                        <h3>{$v.title}</h3>
+                        <p></p>
+                        <p>{$v.content|htmlspecialchars_decode}</p>
+                        <p></p>
+                    </li>
+                    {/foreach}
+                </ul>
+            </form>
+        </div>
+    </div>
+</div>
+{/block}
+{block name='js'}
+<script type="text/javascript">
+$(function() {
+    //问答
+    $(".faqlist li h3").on("click", function() {
+        if ($(this).parent().find("p").is(":hidden")) {
+            $(this).parent().addClass("open").siblings().removeClass("open");
+            $(this).parent().children("p").slideDown();
+            $(this).parent().siblings().children("p").slideUp();
+        } else {
+            $(this).parent().removeClass("open");
+            $(this).parent().children("p").slideUp();
+        }
+        return false
+    });
+})
+<!---->
+</script>
+{/block}

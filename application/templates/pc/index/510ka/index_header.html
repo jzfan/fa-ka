@@ -1,0 +1,67 @@
+<div class="h-header-wp">
+    {include file='nav'}
+    <div class="hbanner">
+        <div class="wrapper">
+            <div class="logo wow bounceInUp animated" data-wow-delay=".6s" style="visibility: visible; animation-delay: 0.6s; animation-name: bounceInUp;">
+                <img src="/static/app/510ka/imgs/b2e4ecb35f552080.png">
+            </div>
+            <div class="txt wow fadeInUp animated" style="visibility: visible; animation-name: fadeInUp;">
+                <h2>全新的发卡体验尽在510发卡</h2>
+                <p>
+                    致力于解决虚拟商品的快捷寄售服务商品管理、订单记录、收益统计、渠道分析... <br>
+                    全响应式界面，简易操作，一站式寄售卡，为您稳定服务
+                </p>
+            </div>
+            <div class="hsrch  wow fadeInUp animated" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInUp;">
+                <form action="/orderquery" method="get" target="_blank">
+                    <input type="hidden" name="querytype" id="query-type" value="2">
+                    <div class="hsrch-type">
+                        <h3>订单号查询</h3>
+                        <ul>
+                            <li data-type="1">浏览器缓存查询</li>
+                            <li data-type="2">订单号查询</li>
+                            <li data-type="3">手机号查询</li>
+                        </ul>
+                    </div>
+                    <div class="hsrch-txt">
+                        <input type="text" class="txt" id="orderid_input" value="">
+                    </div>
+                    <div class="hsrch-btn">
+                        <input type="button" value="查询订单" id="queryBtn" onclick="orderid_or_contact()">
+                    </div>
+                </form>
+            </div>
+            <div class="hreg wow fadeInRight animated" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInRight;">
+                <form method="post" action="/login/userlogin">
+                    <input type="hidden" name="__token__" value="a266a14c0c358e7fbd6eb80562aa5c75">
+                    <div class="hreg-hd">
+                        <h3>用户登录</h3>
+                        <p>登录您的商户后台</p>
+                    </div>
+                    <div class="hreg-bd">
+                        <ul>
+                            <li>
+                                <i class="iconfont icon"></i>
+                                <input type="text" class="hreg-bd-txt" name="username" id="username" value="" placeholder="输入用户名">
+                            </li>
+                            <li>
+                                <i class="iconfont icon"></i>
+                                <input type="password" class="hreg-bd-txt" name="password" id="password" value="" placeholder="输入登录密码">
+                            </li>
+                        </ul>
+                        <div class="txt-right">
+                            <a href="/login/retpwd">忘记密码？</a>
+                        </div>
+                    </div>
+                    <div class="hreg-ft">
+                        <input type="button" class="btn g-btn" id="login_btn" value="商户登录">
+                        <p>没账户，<a href="/register">去注册</a></p>
+                    </div>
+                </form>
+            </div>
+            <div class="fico">
+                <img src="/static/app/510ka/imgs/img_02.png">
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,62 @@
+{extend name="main" /}
+{block name="header"}
+    {include file='header' title='用户注册'}
+{/block}
+
+{block name="content"}
+<div class="loginpage loginpage-bg">
+    <div class="reg-wrap" style="height:auto">
+        <form action="/register/regsave" id="reg" name="reg" autocomplete="off">
+            <input type="hidden" name="spread_userid" value="">
+            <div class="head">
+                <h2><img src="/static/app/510fk/imgs/logo_3.png"></h2>
+                <p>买家无需注册账号</p>
+            </div>
+            <div class="body">
+                <ul>
+                    <li>
+                        <i class="iconfont icon-yonghu"></i>
+                        <input class="res-user" type="text" id="newusername" name="reginfo[username]" value="" placeholder="注册用户名">
+                    </li>
+                                        <li class="ver-btn">
+                        <i class="iconfont icon-icon--"></i>
+                        <input type="text" class="txt txt-code" name="reginfo[mobile]" id="newmobile" value="" placeholder="11位手机号码">
+                        <a class="btn-code" href="javascript:;" id="click_checkcode">发送验证码</a>
+                    </li>
+                    <li>
+                        <i class="iconfont icon-anquanbaozhang1"></i>
+                        <input class="res-user" type="text" name="reginfo[chkcode]" id="code" value="" placeholder="手机验证码">
+                    </li>
+                                        <li>
+                        <i class="iconfont icon-mima"></i>
+                        <input class="res-password" type="password" id="password1" name="reginfo[password]" value="" placeholder="密码">
+                    </li>
+                    <li>
+                        <i class="iconfont icon-queren"></i>
+                        <input class="res-password" type="password" id="password2" name="reginfo[confirmpassword]" placeholder="确认密码">
+                    </li>
+                    <li>
+                        <i class="iconfont icon-qq"></i>
+                        <input class="res-password" type="text" id="newqq" name="reginfo[qq]" placeholder="QQ号码">
+                    </li>
+                    <li>
+                        <i class="iconfont icon-youjian"></i>
+                        <input class="res-user" type="text" id="newemail" name="reginfo[email]" value="" placeholder="电子邮箱">
+                    </li>
+                                    </ul>
+                <div class="rule">
+                    <label>
+                        <input type="checkbox" name="" id="rule" value="">
+                        <label for="rule"><i class="iconfont icon-queren"></i></label>
+                        我已阅读并接受<a id="agreement" href="javascript:;" target="_blank" style="color: #00b8b3;">《服务协议》</a>
+                    </label>
+                </div>
+            </div>
+            <div class="foot">
+                <input type="button" class="btn" name="" id="regBtn" value="注 册">
+                <p>有账号，<a href="/login">去登录</a></p>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
