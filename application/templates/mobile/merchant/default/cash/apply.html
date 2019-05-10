@@ -1,0 +1,61 @@
+{extend name="base/detail"}
+
+{block name="content"}
+<div class="main">
+    <div class="content">
+        <ul class="nav nav-tabs">
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li role="presentation" class="active"><a href="javascript:;">申请提现</a></li>
+        </ul><br>
+
+        <form class="form-horizontal" role="form" action="" method="post">
+        	<div class="form-group">
+				<label class="col-md-2 control-label">今日可提现次数</label>
+				<div class="col-md-4">
+					<input name="num" type="text" class="form-control" placeholder="今日可提现次数" readonly value="{$todayCanCashNum}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-2 control-label">可提现金额</label>
+				<div class="col-md-4">
+					<input name="availmoney" type="text" class="form-control"  readonly value="{$_user.money}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-2 control-label">不可提现金额</label>
+				<div class="col-md-4">
+					<input name="freeze_money" type="text" class="form-control"  readonly value="{$_user.freeze_money}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-2 control-label">手续费</label>
+				<div class="col-md-4">
+					<input name="fee" type="text" class="form-control" readonly value="{if sysconf('cash_fee_type')==100}{:sysconf('cash_fee')}%{else/}{:sysconf('cash_fee')}元{/if}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-2 control-label">提现金额</label>
+				<div class="col-md-4">
+					<input name="money" type="text" class="form-control" placeholder="提现金额" value="">
+				</div>
+				<div class="col-md-6">
+					<p class="form-control-static">注：最低提现金额{:sysconf('cash_min_money')}元</p>
+				</div>
+			</div>
+			<div class="form-group">
+                <label class="col-md-2 control-label"></label>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary btn-block"><span class="glyphicon glyphicon-send"></span>&nbsp;提交申请</button>
+                </div>
+                <div class="col-md-6">
+                    <p class="form-control-static"></p>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
+
+{block name="appendJS"}
+
+{/block}

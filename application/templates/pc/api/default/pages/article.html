@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>内容</title>
+    <link rel="stylesheet" href="__RES__/plugs/layui/css/layui.mobile.css">
+    <style>
+        pre *{
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body style="width: 100%;box-sizing: border-box;padding: 1rem;">
+
+<?php if (isset($article) && !empty($article)) { ?>
+
+<h3 style="margin-bottom: .5rem;">{$article.title}</h3>
+
+<div>{$article.create_at|date='Y-m-d H:i',###}</div>
+
+<hr>
+
+<pre >{$article.content}</pre>
+
+<?php } else { ?>
+文章已删除！
+<?php } ?>
+
+</body>
+</html>

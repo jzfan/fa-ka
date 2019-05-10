@@ -1,0 +1,28 @@
+{extend name="./main"}
+
+{block name="content"}
+<div class="order_form">
+    <form class="form-inline" role="form" name="pw" action="/orderquery?orderid={$trade_no}&chkcode={$chkcode}"
+          method="post" onsubmit="return checkForm()">
+        <input type="hidden" name="token" value="{$token}">
+        <div class="search_box" style="margin-top: 0px"><i class="iconfont icon-sousuo"></i>
+            <input type="text" placeholder="请输入取卡密码" name="pwd" class="order_input">
+            <button type="submit"> 继续查询</button>
+        </div>
+    </form>
+</div>
+{/block}
+
+{block name="appendJS"}
+<script>
+    function checkForm() {
+        var pwd = $.trim($('[name=pwd]').val());
+        var reg = /^([0-9a-zA-Z]+){6,20}$/;
+        if (pwd == '' || !reg.test(pwd)) {
+            $('[name=pwd]').focus();
+            alert('请填写查询密码！长度为6-20个数字、字母或组合！');
+            return false;
+        }
+    };
+</script>
+{/block}

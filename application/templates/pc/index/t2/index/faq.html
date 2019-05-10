@@ -1,0 +1,36 @@
+{extend name="./main"}
+
+{block name="CSS"}
+{/block}
+
+{block name="content"}
+<div style="padding-top: 190px;"></div>
+<section class="section">
+	<div class="container">
+		<div class="row faq">
+			<div class="col-12 col-t-12">
+				<div class="faq__content">
+					<div id="chapter1" class="faq__chapter chapter">
+						<h3 class="faq__chapter-title">常见问题</h3>
+			            {foreach $articles as $v}
+						<div class="faq__card card">
+							<h4 class="faq__card-title">{$v.title}
+								<span class="faq__card-icon"><i class="mdi mdi-chevron-down"></i></span>
+							</h4>
+							<div class="faq__card-description">
+								{$v.content|htmlspecialchars_decode}
+							</div>
+						</div>
+			            {/foreach}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+{/block}
+{block name="appendJS"}
+<script src="__RES__/app/t2/js/faq.js"></script>
+<script src="__RES__/app/t2/js/sidebar.js"></script>
+<script src="__RES__/app/t2/js/style-switcher.js"></script>
+{/block}

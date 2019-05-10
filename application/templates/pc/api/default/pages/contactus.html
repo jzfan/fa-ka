@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>联系我们</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-size: 14px;
+            background: #F9F9F9;
+        }
+
+        ul {
+            list-style: none;
+            width: 100%;
+        }
+
+        ul li {
+            background: white;
+            width: 100%;
+            margin-top: .7rem;
+            display: flex;
+            padding: 2.2rem 0;
+        }
+
+        ul li:first-child {
+            margin-top: 0;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .left {
+            flex: 3;
+            margin: auto;
+        }
+
+        .icon {
+            display: block;
+            width: 4rem;
+            height: 3.5rem;
+            margin: auto;
+        }
+
+        .icon img {
+            height: 100%;
+        }
+
+        .icon_desc {
+            color: #898989;
+            margin-top: .7rem;
+        }
+
+        .right {
+            flex: 7;
+        }
+
+        .pl1 {
+            padding-left: 1rem;
+        }
+
+        .title {
+            font-size: 2rem;
+            color: #606A89;
+        }
+
+        .desc {
+            margin-top: 1rem;
+            font-size: 1.2rem;
+            color: #898989;
+        }
+
+        #address {
+            font-size: 1.8rem;
+        }
+
+        #qrcode {
+            width: 12rem;
+            height: 12rem;
+        }
+    </style>
+</head>
+<body>
+
+<ul>
+    <li>
+        <div class="left text-center">
+            <div class="icon">
+                <img src="__RES__/app/images/api_qq.png" alt="">
+            </div>
+            <p class="icon_desc">客服QQ</p>
+        </div>
+        <div class="right pl1">
+            <p class="title">{$qq}</p>
+            <pre class="desc">{$qq_desc}</pre>
+        </div>
+    </li>
+
+    <li>
+        <div class="left text-center">
+            <div class="icon">
+                <img src="__RES__/app/images/api_mobile.png" alt="">
+            </div>
+            <p class="icon_desc">客服电话</p>
+        </div>
+        <div class="right pl1">
+            <p class="title">{$mobile}</p>
+            <pre class="desc">{$mobile_desc}</pre>
+        </div>
+    </li>
+
+    <li>
+        <div class="left text-center">
+            <div class="icon">
+                <img src="__RES__/app/images/api_location.png" alt="">
+            </div>
+            <p class="icon_desc">公司地址</p>
+        </div>
+        <div class="right pl1">
+            <p class="title" id="address">{$address}</p>
+        </div>
+    </li>
+
+    <li>
+        <div class="left text-center">
+            <div class="icon">
+                <img src="__RES__/app/images/api_wechat.png" alt="">
+            </div>
+            <p class="icon_desc">平台公众号</p>
+        </div>
+        <div class="right text-center">
+            <img id="qrcode" src="{$qrcode}" alt="二维码">
+        </div>
+    </li>
+</ul>
+
+</body>
+</html>

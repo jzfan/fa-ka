@@ -1,0 +1,147 @@
+{extend name='./content'}
+
+{block name="content"}
+
+<!-- 表单搜索 开始 -->
+<form class="layui-form layui-form-pane form-search" action="__SELF__" onsubmit="return false" method="get">
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">商户ID</label>
+        <div class="layui-input-inline">
+            <input name="user_id" value="{$Think.get.user_id|default=''}" placeholder="请输入商户ID" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">商户账号</label>
+        <div class="layui-input-inline">
+            <input name="username" value="{$Think.get.username|default=''}" placeholder="请输入商户账号" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">商品名</label>
+        <div class="layui-input-inline">
+            <input name="name" value="{$Think.get.name|default=''}" placeholder="请输入商品名" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">状态</label>
+        <div class="layui-input-inline">
+            <select name="status">
+                <option value="">全部状态</option>
+                <option value="1" {if $Think.get.status === '1'}selected{/if}>已上架</option>
+                <option value="0" {if $Think.get.status === '0'}selected{/if}>已下架</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">时间范围</label>
+        <div class="layui-input-inline">
+            <input name="date_range" id="date_range" value="{:urldecode($Think.get.date_range)}" placeholder="请选择时间范围" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-inline">
+        <button type="submit" class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+    </div>
+</form>
+<!-- 表单搜索 结束 -->
+<div class="layui-form-item layui-inline">
+    <label class="layui-form-label">统计金额</label>
+    <div class="layui-input-inline">
+        <input type="text" class="layui-input" value="{$sum_money|default="0"} 元" readonly>
+    </div>
+</div>
+<div class="layui-form-item layui-inline">
+    <label class="layui-form-label">商品数</label>
+    <div class="layui-input-inline">
+        <input type="text" class="layui-input" value="{$sum_order|default="0"} 个" readonly>
+    </div>
+</div>
+
+<form onsubmit="return false;" data-auto="true" method="post">
+    <input type="hidden" value="resort" name="action"/>
+    <table class="layui-table" lay-skin="line" lay-size="sm">
+        <thead>
+        <tr>
+            <th>商户ID</th>
+            <th>商户账号</th>
+            <th>商品名称</th>
+            <th>商品价格</th>
+            <th>状态</th>
+            <th>冻结状态</th>
+            <th>添加时间</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $goodsList as $v}
+        <tr>
+            <td>{$v.user_id}</td>
+            <td>{$v.user.username}</td>
+            <td style="width: 13%;" ><a href="{$v.link}" target="_blank">{$v.name}</a></td>
+            <td>{$v.price}</td>
+            <td>
+                {if $v.status==1}
+                <span style="color:green"><i class="glyphicon glyphicon-ok"></i> 已上架</span>
+                <a class="btn btn-danger btn-xs text-white" data-tips="确定取消冻结吗？ " data-update="{$v.id}" data-field='status' data-value='0' data-action='{:url("change_status")}'
+                   href="javascript:void(0)">下架</a>
+                {else/}
+                <span style="color:red"><i class="glyphicon glyphicon-remove"></i> 已下架</span>
+                <a class="btn btn-warning btn-xs" data-tips="确定冻结吗？" data-update="{$v.id}" data-field='status' data-value='1' data-action='{:url("change_status")}'
+                   href="javascript:void(0)">上架</a>
+                {/if}
+            </td>
+            <td>
+                {if $v.is_freeze===0}
+                <span style="color:green"><i class="glyphicon glyphicon-ok"></i> 未冻结</span>
+                <a class="btn btn-xs btn-danger" data-tips="确定取消冻结吗？ " data-update="{$v.id}" data-field='is_freeze' data-value='1' data-action='{:url("change_freeze")}'
+                   href="javascript:void(0)">冻结</a>
+                {else/}
+                <span style="color:red"><i class="glyphicon glyphicon-remove"></i> 已冻结</span>
+                <a class="btn btn-warning btn-xs" data-tips="确定冻结吗？" data-update="{$v.id}" data-field='is_freeze' data-value='0' data-action='{:url("change_freeze")}'
+                   href="javascript:void(0)">解冻</a>
+                {/if}
+            </td>
+            <td>{$v.create_at|date="Y-m-d H:i:s",###}</td>
+            <td>
+                <a onclick="del(this,'{$v.id}')">删除</a>
+                <a href="{:url("manage/user/login")}?user_id={$v.user_id}" target="_blank">登录</a>
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+</form>
+{$page}
+<script>
+    layui.use('form', function(){
+        var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+        form.render();
+    });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        //日期范围
+        laydate.render({
+            elem: '#date_range',
+            range: true
+        });
+    });
+
+    function del(obj,id) {
+        layer.confirm('确定删除？删除后，商品将进入回收站！',function(val){
+            if(val){
+                $.post('/manage/goods/del',{
+                    id:id
+                },function(res){
+                    if(res.code!=200){
+                        layer.msg('删除失败');
+                    }else{
+                        layer.msg('删除成功！',function(){
+                            location.reload();
+                        });
+                    }
+                });
+            }
+        })
+    }
+</script>
+{/block}

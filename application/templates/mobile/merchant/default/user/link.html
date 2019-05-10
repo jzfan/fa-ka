@@ -1,0 +1,105 @@
+{extend name="base/detail"}
+
+{block name="content"}
+<div class="main">
+    <div class="content">
+        <ul class="nav nav-tabs">
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li role="presentation" class="active"><a href="javascript:;">店铺链接</a></li>
+        </ul><br>
+
+        <font color="#ccc" style="font-size:12px;">店铺总链接包含您店铺下所有的商品分类和商品信息</font>
+        <div class="link_box"><strong>1、短链接<font color="#ee2d0c" style="font-size:12px;">(推荐)</font>：</strong><a href="{$shop_link}" target="_blank" id="a1" onclick="{$shop_link}" style="width: 160px;" readonly="">{$shop_link}</a>
+            <div class="btna" data-clipboard-action="copy" data-clipboard-target="#a1">复制链接</div><div class="btna" style="background-color: #f97c73;border: 1px solid #f97c73;color: #fff;" id="relink">重置链接</div><br>
+            <font color="#ccc" style="font-size:12px;">如果朋友圈等地方打广告请发这个链接</font>
+        </div>
+
+
+        <div class="link_box"><strong>2、店铺总链接二维码：</strong><br>
+            <img src="{:generate_qrcode_link($_user.link)}" width="180" height="180">
+            <br>
+            <font color="#ccc" style="font-size:12px;">二维码可以很方便的放在网店或者分享到手机客户端，鼠标右击即刻保存图片</font>
+        </div>
+        <script>
+            $(function() {
+                $('[name=link_state]').click(function() {
+                    $.get('/account/paylinksop', {
+                        t: new Date().getTime()
+                    }, function(data) {
+                        if (data == '0') {
+                            $('img#link_state').attr('src', '__RES__/merchant/mobile/images/ico_remove.png');
+                            $('[name=link_state]').val('开启');
+                        } else {
+                            $('img#link_state').attr('src', '__RES__/merchant/mobile/images/ico_ok.png');
+                            $('[name=link_state]').val('关闭');
+                        }
+                    });
+                });
+            })
+        </script>
+    </div>
+</div>
+{/block}
+
+{block name="appendJS"}
+<script>
+    var clipboard = new Clipboard('.btna');
+
+    clipboard.on('success', function(e) {
+        layer.msg('链接复制成功！', {
+            icon: 1
+        });
+        console.log(e);
+    });
+
+    clipboard.on('error', function(e) {
+        layer.msg('链接复制失败，请手动复制！', {
+            icon: 2
+        });
+        console.log(e);
+    });
+</script>
+<script>
+    var op = function(t) {
+        $.get('/account/paylinksop', {
+            t: new Date().getTime()
+        }, function(data) {
+            if (data == 0) {
+                layer.msg('店铺总链接关闭成功！', {
+                    icon: 1
+                });
+                location.reload();
+            } else {
+                layer.msg('店铺总链接开启成功！', {
+                    icon: 1
+                });
+                location.reload();
+            }
+        });
+    };
+    $('#relink').click(function(){
+        $.ajax({
+            type: 'post',
+            url: "{:url('user/relink')}?type=links",
+            dataType: "json",
+            beforeSend: function(xhr) {
+                loading = layer.load()
+            },
+            success: function(res) {
+                layer.close(loading);
+                if (res.code == 1) {
+                    layer.alert(res.msg, function() {
+                        window.location.reload();
+                    });
+                } else {
+                    layer.msg(res.msg);
+                }
+            },
+            error:function(XMLHttpRequest, textStatus, errorThrown){
+                layer.close(loading);
+                layer.msg('连接错误');
+            }
+        });
+    });
+</script>
+{/block}

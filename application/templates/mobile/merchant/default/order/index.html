@@ -1,0 +1,160 @@
+{extend name="base/detail"}
+
+{block name="content"}
+<div class="main">
+	<div class="content">
+
+		<ul class="nav nav-tabs">
+			<li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+			<li role="presentation" class="active"><a href="javascript:;">交易订单</a></li>
+		</ul><br>
+
+		<form method="get" action="">
+			<div class="form-group">
+				支付渠道：
+				<select name="paytype" class="form-control">
+					<option value="" {if $Think.get.paytype==''}selected{/if}>全部方式</option>
+					{foreach :get_paytype_list() as $k => $v}
+					<option value="{$k}" {if $Think.get.paytype==$k}selected{/if}>{$v.name}</option>
+					{/foreach}
+				</select>
+			</div>
+
+			<div class="form-group">
+				支付状态：
+				<select name="status" class="form-control">
+					<option value="" {if $Think.get.status==''}selected{/if}>全部状态</option>
+					<option value="1" {if $Think.get.status=='1'}selected{/if}>已付款</option>
+					<option value="0" {if $Think.get.status=='0'}selected{/if}>未付款</option>
+				</select>
+			</div>
+			<div class="form-group">
+				订单号：
+				<input class="form-control"  style="width:200px;" type="text" name="trade_no" value="{$Think.get.trade_no}" placeholder="请输入订单编号">
+			</div>
+			<div class="form-group">
+				查询日期：
+				<input class="form-control input-daterange-datepicker"  style="width:200px;" type="text" name="date_range" value="{:urldecode($Think.get.date_range)}" placeholder="点击选择查询日期">
+			</div>
+
+			<div class="form-group">
+				<button type="submit" class="btn btn-primary btn-block"><span class="glyphicon glyphicon-search"></span>&nbsp;立即查询</button>
+			</div>
+		</form>
+
+		{foreach $orders as $v}
+		<div class="mt20">
+			<div class="selltable">
+				<table class="table table-hover ">
+					<tbody>
+						<tr class="lightbox" id="s{$v.trade_no}">
+							<td>订单编号：<a href="/orderquery?orderid={$v.trade_no}" target="_blank">{$v.trade_no}</a></td>
+						</tr>
+						<tr>
+							<td>订单时间：{$v.create_at|date="Y-m-d H:i:s",###}</td>
+						</tr>
+						<tr>
+							<td>产品名称：{$v.goods_name}(<span class="red">{$v.quantity}</span>张)<span class="red">   </span></td>
+						</tr>
+						<tr>
+							<td>支付方式：{:get_paytype_name($v.paytype)}</td>
+						</tr>
+						<tr>
+							<td>销售价格：{$v.total_price}元</td>
+						</tr>
+						<tr>
+							<td>联系方式：{$v.contact}</td>
+						</tr>
+						<tr>
+							<td>取卡密码：{$v.take_card_password}</td>
+						</tr>
+						<tr>
+							{if $v.status==1}
+							<td>订单状态：<span class="label label-success">已付款</span></td>
+							{else/}
+							<td>订单状态：<span class="label label-danger">未付款</span></td>
+							{/if}
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		{/foreach}
+		<div>
+			<style>
+				#wypage .form-control {
+					display: inline;
+					width: 50px
+				}
+			</style>
+
+
+			<style>
+				#wypage {
+					font-size: 12px;
+					padding: 10px auto;
+					margin-left: 0px;
+				}
+
+				#wypage p {
+					float: left;
+					color: #333;
+				}
+
+				#wypage a {
+					float: left;
+					display: inline-block;
+					border: 1px solid #ddd;
+					padding: 6px 9px;
+					margin-left: 4px;
+					text-decoration: none;
+					color: #333;
+					background-color: #fff;
+					border-radius: 0px;
+				}
+
+				#wypage a:hover {
+					background-color: #248eff;
+					color: #fff
+				}
+
+				#wypage a.no-hover:hover {
+					color: #333
+				}
+
+				#wypage a.wy_page_current {
+					background-color: #06a7ff;
+					color: #fff
+				}
+			</style>
+			<form class="form-inline">
+				{$page}
+			</form>
+		</div>
+
+		<br><br>
+	</div>
+</div>
+{/block}
+
+{block name="appendJS"}
+<script>
+	var op = function(orderid, t) {
+		$.get('/orders/op', {
+			orderid: orderid,
+			t: t
+		}, function(data) {
+			if (data == 'ok') {
+				t1 = t == 0 ? 1 : 0;
+				t2 = t == 0 ? '关' : '开';
+				$('tr#s' + orderid).css({
+					'background': '#f1f1f1'
+				});
+				$('#c' + orderid).html('<a href="javascript:void(0)"  class="btn btn-primary btn-xs" onclick="op(\'' + orderid + '\',' + t1 + ')">' + t2 + '</a>');
+			} else {
+				$('#c' + orderid).html('<img src="/static/usr/default/images/load.gif" />');
+			}
+		});
+	};
+</script>
+{/block}

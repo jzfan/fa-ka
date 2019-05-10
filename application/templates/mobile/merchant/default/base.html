@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" class="ui-mobile">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no">
+    <title>商户面板 - {:sysconf('site_name')}</title>
+    <meta name="keywords" content="{:sysconf('site_keywords')}" />
+    <meta name="description" content="{:sysconf('site_desc')}" />
+    <link rel="shortcut icon" href="{:sysconf('browser_icon')}" />
+    <link rel="stylesheet" href="__RES__/merchant/mobile/css/index.css">
+    <link rel="stylesheet" href="__RES__/merchant/mobile/css/layer.css" id="layuicss-skinlayercss">
+    {block name="CSS"}{/block}
+    {block name="JS"}{/block}
+</head>
+
+<body class="ui-mobile-viewport ui-overlay-c">
+    {block name="content"}{/block}
+    {block name="appendJS"}{/block}
+    {notempty name="common_announce"}
+    <div id="common_announce" style="display: none"><div style="padding:15px;font-size: 14px;">{$common_announce.content|htmlspecialchars_decode}</div></div>
+    <script>
+        layer.open({
+            type: 1,
+            skin: 'layui-layer-rim',
+            title: '公告',
+            area: ['320px', '200px'],
+            content: $('#common_announce').html()
+        });
+    </script>
+    {/notempty}
+</body>
+
+</html>

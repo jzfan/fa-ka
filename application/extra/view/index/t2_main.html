@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="__RES__/app/t2/css/global.css"/>
+	<link rel="stylesheet" href="__RES__/app/t2/css/main.css" id="main_style">
+	<link href="https://fonts.googleapis.com/css?family=Nunito:300,400,800" rel="stylesheet">
+	<link href="https://cdn.materialdesignicons.com/2.0.46/css/materialdesignicons.min.css" rel="stylesheet">
+	<link href="https://cdn.bootcss.com/material-design-icons/2.1.2/iconfont/material-icons.min.css" rel="stylesheet">
+    <title>{:sysconf('site_name')}{:sysconf('site_subtitle')}</title>
+    <meta name="keywords" content="{:sysconf('site_keywords')}" />
+    <meta name="description" content="{:sysconf('site_desc')}" />
+	<link rel="shortcut icon" href="{:sysconf('browser_icon')}" />
+	<script src="__RES__/app/t2/js/jquery-2.2.4.min.js"></script>
+	<script src="__RES__/app/t2/js/jquery.waypoints.js"></script>
+	<script src="__RES__/app/t2/js/menu.js"></script>
+	<script src="__RES__/app/t2/js/mobile-menu.js"></script>
+	<script src="__RES__/app/t2/js/jquery-ui.min.js"></script>
+	<script src="__RES__/app/t2/js/pricing.js"></script>
+	<script src="__RES__/app/t2/js/slick.min.js"></script>
+	<script src="__RES__/app/t2/js/dragscrollable.min.js"></script>
+	<script src="__RES__/app/t2/js/device.js"></script>
+	<script src="__RES__/app/t2/js/carousel.js"></script>
+
+    {block name="CSS"}{/block}
+</head>
+<body>
+<!--Main menu-->
+<div class="menu">
+	<div class="container menu__wrapper">
+		<div class="row">
+			<div class="menu__logo col-2">
+				<a href="index.html">
+					<img src="{:sysconf('site_logo')}" alt="" height="44">
+				</a>
+			</div>
+			<div class="col-6 d-t-none">
+				<nav class="menu__center-nav">
+					<ul>
+						<li><a href="/" class="link link--gray menu__dropdown-btn">网站首页</a>
+						</li>
+                        <li><a href="/company/faq" class="link link--gray">常见问题</a></li>
+						<li><a href="/company/contact" class="link link--gray">联系我们</a></li>
+						<li><a href="/orderquery" class="link link--gray">订单查询</a></li>
+					</ul>
+				</nav>
+			</div>
+			<div class="col-4 col-t-8">
+				<nav class="menu__left-nav d-l-none">
+					<ul>
+                        {if session('?merchant.user')}
+						<li><a href="/merchant" class="site-btn site-btn--accent">商户中心</a></li>
+						<li><a href="/logout" class="site-btn site-btn--accent">退出登录</a></li>
+						<!-- <li>
+							<div class="menu__dropdown d-t-none">
+								<a class="link link--gray menu__dropdown-btn">欢迎您，{:session('merchant.username')}
+									<span><i class="mdi mdi-chevron-down"></i></span>
+								</a>
+								<div class="menu__dropdown-content">
+									<a class="link link--gray" href="/merchant">个人中心</a>
+									<a class="link link--gray" href="/logout">退出登录</a>
+								</div>
+							</div>
+						</li> -->
+                        {else}
+                        <li><a href="/login" class="site-btn site-btn--accent">登录</a></li>
+                        <li><a href="/register" class="site-btn site-btn--accent">注册</a></li>
+                        {/if}
+					</ul>
+				</nav>
+				<div class="d-none d-t-block">
+					<button type="button" class="menu__mobile-button">
+						<span><i class="mdi mdi-menu" aria-hidden="true"></i></span>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--Main menu-->
+
+{block name="content"}{/block}
+
+<div class="backtage_foot clearfix"><!--友情链接-->
+    <div class="footer_fourtese clearfix">
+        <ul>
+            <li><i class="ico1"></i>多用户商业实战使用</li>
+            <li><i class="ico2"></i>7*24小时客服支持</li>
+            <li><i class="ico3"></i>一对一专属售后群组</li>
+            <li><i class="ico4"></i>10000+用户诚意推荐</li>
+        </ul>
+    </div>
+    <div class="wrapper">
+        <div class="flt tel">
+            <dl>
+                <dt><img alt="电话" src="__RES__/app/t2/img/call.png"></dt>
+                <dd><h3>{:sysconf('site_info_tel')}</h3>
+                    <p>周一到周五 9：00-18：00</p></dd>
+            </dl>
+        </div>
+        </div>
+        <div class="flt nav_copy">
+            <div class="copy">
+                <p>{:sysconf('site_info_copyright')}{:sysconf('site_statistics')}</p>
+            </div>
+        </div>
+        <div class="frt ewm"><img src="__RES__/app/t2/img/code.png" alt="知宇软件"></div>
+        <p class="frt">微信扫一扫<br> 关注官方信息</p></div>
+</div>
+{block name="appendJS"}{/block}
+</body>
+</html>

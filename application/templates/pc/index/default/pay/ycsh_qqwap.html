@@ -1,0 +1,55 @@
+{extend name="./main"}
+
+{block name="CSS"}
+<style>
+	.buy_info>p {
+		color: #666;
+		margin-bottom: 20px;
+	}
+
+	.buy_info>p>span {
+		color: orangered;
+	}
+</style>
+{/block}
+
+{block name="content"}
+<div class="user_form buy_info">
+	<div class="user_tab">
+		<ul>
+			<li class="actived" style="width: 100%;margin-bottom: 30px"><a style="cursor: none">{$channel['title']}</a></li>
+		</ul>
+	</div>
+	<p>订单号码：{$order.trade_no}</p>
+	<p>付款金额：<span>{$order.total_price}</span>元</p>
+</div>
+{/block}
+
+{block name="appendJS"}
+<script>
+	function oderquery(t) {
+		var orderid = '{$order.trade_no}';
+		$.post('/pay/getOrderStatus', {
+			orderid: orderid,
+			token: "{$token}"
+		}, function (ret) {
+			if (ret == 1) {
+				window.location.href = '/orderquery?orderid=' + orderid;
+			}
+		});
+		t = t + 1;
+		setTimeout('oderquery(' + t + ')', 3000);
+	}
+	setTimeout('oderquery(1)', 3000);
+
+	$(function () {
+		var jump = localStorage.getItem("{$order.trade_no}");
+		if (!jump) {
+			localStorage.setItem("{$order.trade_no}", true);
+			setTimeout(function () {
+				window.location.href = "{$jump}";
+			}, 500)
+		}
+	})
+</script>
+{/block}

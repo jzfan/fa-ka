@@ -1,0 +1,20 @@
+
+<footer class="row footer-area">
+
+    <div class="row m0 footer_bottom">
+        <div class="container">
+            <div class="row" style="padding:0 20px">
+                <div class="col-sm-6 col-md-6">
+                    {:sysconf('site_info_copyright')}
+                </div>
+                <div class="right col-sm-6 col-md-6">
+                    <ul class="footer-menu">
+                        {volist name="nav" id="vo"}
+                        <li><a href="{$vo.url}" {eq name="vo.target" value="1"}target="_blank"{/eq}>{$vo.title}</a></li>
+                        {/volist}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>

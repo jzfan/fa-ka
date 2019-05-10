@@ -1,0 +1,125 @@
+<style>
+#channel_id,#weight{
+    display: none;
+}
+</style>
+<form class="layui-form layui-box" style='padding:25px 30px 20px 0' action="__SELF__" data-auto="true" method="post">
+    <div class="layui-form-item">
+        <label class="layui-form-label">通道名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="title" placeholder="通道名称" autocomplete="off" class="layui-input" value="{$product.title|default=''}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">通道代码（英文名称）</label>
+        <div class="layui-input-block">
+            <input type="text" name="code" placeholder="通道代码（英文名称）" autocomplete="off" class="layui-input" value="{$product.code|default=''}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">分类</label>
+        <div class="layui-input-block">
+            <select class="layui-input" name="paytype" style="display:block">
+                <option value="">请选择</option>
+                {foreach $paytype as $key => $value}
+                    <option value="{$key}" {if isset($product) && $key==$product['paytype']}selected{/if}>{$value.name}</option>
+                {/foreach}
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">接口模式</label>
+        <div class="layui-input-block">
+            <select class="layui-input" name="polling" style="display:block">
+                <option value="0" {if isset($product) && 0==$product['polling']}selected{/if}>单独</option>
+                <!-- <option value="1" {if isset($product) && 1==$product['polling']}selected{/if}>轮询</option> -->
+            </select>
+            <div class="" style="margin-bottom:20px;"></div>
+            <select class="layui-input" name="channel_id" id="channel_id" {if !isset($product) || 0==$product['polling']}style="display:block;"{/if}>
+                <option value="">请选择</option>
+                {foreach $channelList as $v}
+                    <option value="{$v.id}" {if isset($product) && $v.id==$product['channel_id']}selected{/if}>{$v.title}</option>
+                {/foreach}
+            </select>
+            <table class="layui-table" lay-skin="line" id="weight" {if isset($product) && 1==$product['polling']}style="display:table;"{/if}>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>通道编号</th>
+                        <th>通道名称</th>
+                        <th>权重(1-9)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {foreach $channelList as $v}
+                    <tr>
+                        <td>
+                            <input name="weight[{$v.id}][pid]" type="checkbox" value="1" style="display:block" {if isset($product['weight'][$v['id']])}checked{/if}>
+                        </td>
+                        <td>{$v.id}</td>
+                        <td>{$v.title}</td>
+                        <td><input type="number" min="0" max="9" name="weight[{$v.id}][weight]" class="layui-input" value="{if isset($product['weight'][$v['id']])}{$product['weight'][$v['id']]}{/if}"></td>
+                    </tr>
+                    {/foreach}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">状态</label>
+        <div class="layui-input-block">
+            <select class="layui-input" name="status" style="display:block">
+                <option value="1" {if isset($product) && 1==$product['status']}selected{/if}>开启</option>
+                <option value="0" {if isset($product) && 0==$product['status']}selected{/if}>关闭</option>
+            </select>
+        </div>
+    </div>
+    <div class="hr-line-dashed"></div>
+    <div class="layui-form-item text-center">
+        <input type="hidden" name="product_id" value="{$product_id|default=''}">
+        <button class="layui-btn" type="submit">保存</button>
+        <button class="layui-btn layui-btn-danger" type="button" data-confirm="确定要取消吗？" data-close="">取消</button>
+    </div>
+</form>
+<script>
+    $('[name="paytype"]').change(function(){
+        var paytype = $(this).val();
+        $('#channel_id').empty();
+        $('#weight tbody').empty();
+        if(paytype!=''){
+            $.ajax({
+                url:'/manage/channel/getListByPaytype',
+                type:'post',
+                data:{
+                    paytype:paytype
+                },
+                dataType:'json',
+                success:function(res){
+                    console.log(res);
+                    if(res.errorCode==0){
+                        $('#channel_id').append('<option value="">请选择</option>');
+                        for(var i in res.channelList)
+                        {
+                            var obj=$('<option value="'+res.channelList[i].id+'">'+res.channelList[i].title+'</option>');
+                            $('#channel_id').append(obj);
+
+                            var obj2=$('<tr><td><input name="weight['+res.channelList[i].id+'][pid]" type="checkbox" value="1" style="display:block"></td><td>'+res.channelList[i].id+'</td><td>'+res.channelList[i].title+'</td><td><input type="number" min="0" max="9" name="weight['+res.channelList[i].id+'][weight]" class="layui-input" value=""></td></tr>');
+                            $('#weight tbody').append(obj2);
+                        }
+                    }
+                }
+            })
+        }
+    });
+    $('[name="polling"]').change(function(){
+        var v=$(this).val();
+        $('[name="paytype"]').trigger('change');
+        if(v==0){
+            $('#channel_id').show();
+            $('#weight').hide();
+        }else{
+            $('#channel_id').hide();
+            $('#weight').show();
+        }
+    });
+</script>

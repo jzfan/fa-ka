@@ -1,0 +1,132 @@
+{extend name="./main"}
+
+{block name="CSS"}
+<style>
+    .ts_title{
+        height:60px;
+        text-align:center;
+        line-height:60px;
+        font-size:18px;
+        background:#409ccf;
+        border-top-left-radius:3px;
+        border-top-right-radius:3px;
+        color:#fff;
+    }
+    .ts_con {
+        padding:30px 0;
+        position:relative;
+    }
+    .ts_con p{
+        height:40px;
+        width: 100%;
+        background:#fff;
+        border:1px solid #eee;
+        border-radius:2px;
+        line-height:40px;
+        margin-bottom:20px;
+    }
+    .ts_con p span{
+        width:120px;
+        font-size:16px;
+        background:#409ccf;
+        display:block;
+        float:left;
+        border-top-left-radius:2px;
+        border-bottom-left-radius:2px;
+        color:#fff;
+        text-align:center;
+        margin-right:10px;
+    }
+    .ts_con p input,.ts_con p select{
+        width: calc(100% - 140px);
+        width: -moz-calc(100% - 140px);
+        width: -webkit-calc(100% - 140px);
+        border:none;
+        font-size:14px;
+        outline:none;
+        letter-spacing:1px;
+    }
+    @media (max-width: 780px){
+        .ts_con p input,.ts_con p select{
+            width: 160px;
+            border:none;
+            font-size:14px;
+            outline:none;
+            letter-spacing:1px;
+        }
+        .footer_bottom .footer-menu{
+            text-align:center;
+        }
+    }
+    .ts_con p textarea{
+        width: calc(100% - 140px);
+        width: -moz-calc(100% - 140px);
+        width: -webkit-calc(100% - 140px);
+        max-width:780px;
+        height:195px;
+        border:none;
+        font-size:14px;
+        line-height:35px;
+        outline:none;
+        letter-spacing:1px;
+        resize: none;
+    }
+    .btn_ts{
+        display:block;
+        border:none;
+        height:48px;
+        width:200px;
+        line-height:48px;
+        background:#409ccf;
+        color:#fff;
+        margin:0 auto;
+        border-radius:2px;
+        font-weight:bold;
+    }
+    .file input {
+        position: absolute;
+        font-size: 100px;
+        right: 0;
+        top: 0;
+        opacity: 0;
+    }
+    .shili img{
+        position:absolute;
+        top:38px;
+        left:0;
+    }
+</style>
+
+{/block}
+
+{block name="content"}
+<div class="order_form">
+    <div class="ts_title">
+        投 诉 查 询
+    </div>
+    <div class="ts_con">
+
+        <form name='report' action="{:url('Index/order/complaintPass')}" method='get' style="padding: 0 20px;" onsubmit="return checker()">
+            <input type="hidden" name="token" value="{$token}">
+            <p><span>订单编号</span><input name="trade_no" type="text" value="{$Request.get.id}"></p>
+            <button type="submit" class="btn_ts">查询</button>
+        </form>
+
+    </div>
+</div>
+{/block}
+
+{block name="appendJS"}
+
+<script>
+    function checker(){
+        var trade_no = $('[name=trade_no]').val();
+        if(trade_no.length === 0) {
+            layer.msg('请填写订单号');
+            return false;
+        }
+
+        return true;
+    }
+</script>
+{/block}

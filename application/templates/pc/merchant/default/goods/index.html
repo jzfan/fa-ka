@@ -1,0 +1,331 @@
+{extend name="base"}
+
+{block name="content"}
+<div class="row">
+	<div class="col-sm-12">
+		<div class="card-box">
+			<div class="row">
+				<div class="col-sm-6">
+					<form class="form-inline" role="form" action="" method="get">
+						<div class="form-group">
+							<select name="cate_id" class="form-control">
+								<option value="" {if $Think.get.cate_id=='' }selected{/if}>全部分类 </option> {foreach $categorys as $v} <option
+								 value="{$v.id}" {if $Think.get.cate_id==$v.id}selected{/if}>{$v.name} </option> {/foreach} </select> </div>
+								 <div class="form-group">
+									<input name="name" type="text" class="form-control" placeholder="商品名" value="{$Think.get.name|default=''}">
+						</div>
+						<button type="submit" class="btn btn-purple waves-effect waves-light"><i class="fa fa-search"></i> 搜索</button>
+					</form>
+				</div>
+				<div class="col-sm-6">
+					<a href="{:url('add')}" class="pull-right btn btn-purple waves-effect waves-light">添加商品</a>
+					<a href="javascript:batch_del();" class="pull-right btn btn-danger" style="margin-right: 10px;">批量删除</a>
+				</div>
+			</div>
+			<!-- end row -->
+			<div class="row">
+				<table class="table table-striped m-0">
+					<thead>
+						<tr>
+							<th><input type="checkbox" id="select_all"></th>
+							<th>商品分类</th>
+							<th>排序</th>
+							<th>商品名称</th>
+							<th>价格</th>
+							<th>库存</th>
+							<th>卖出</th>
+							<th>上下架</th>
+							<th>创建时间</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						{foreach $goodsList as $v}
+						<tr>
+							<td><input type="checkbox" name="good_id" value="{$v.id}"></td>
+							<td>{$v.category.name|default="未分类"}</td>
+							<td>{$v.sort}</td>
+							<th scope="row">{$v.name}
+								{if $v.wholesale_discount==1}
+								<span class="label label-success">批</span>
+								{/if}
+								{if $v.coupon_type==1}
+								<span class="label label-pink">券</span>
+								{/if}
+								{if $v.take_card_type!=0}
+								<span class="label label-primary">取</span>
+								{/if}
+								{if $v.visit_type==1}
+								<span class="label label-danger">密</span>
+								{/if}
+							</th>
+							<td>{$v.price}</td>
+							<td>
+								<?php echo $v->cards_stock_count; ?>张
+								<a href="/merchant/goods_card/index?goods_id={$v.id}&status=1">查看</a>
+								<a class="dumpCard" href="javascript:;" data-id="{$v.id}" data-goodsname="{$v.name}">导出</a>
+								<a href="javascript:void(0);" onclick="emptied(this,{$v.id})">清空</a>
+							<td>
+								<?php echo $v->cards_sold_count; ?>张
+								<a href="/merchant/goods_card/index?goods_id={$v.id}&status=2">查看</a>
+								<a href="/merchant/goods/dumpCards?goods_id={$v.id}&status=2" target="_blank">导出</a></td>
+							<td>
+								<input onchange="change_status(this,{$v.id})" type="checkbox" data-plugin="switchery" data-color="#2bb309"
+								 data-size="small" data-switchery="true" style="display: none;" {if $v.status==1}checked{/if}> </td> <td>{$v.create_at|date="Y-m-d
+								H:i:s",###}</td>
+							<td>
+								<a href="{:url('link')}?id={$v.id}">链接</a>
+								<span>|</span>
+								<a href="{:url('goods_card/add')}?goods_id={$v.id}">加卡</a>
+								<span>|</span>
+								<a href="{:url('edit')}?id={$v.id}">编辑</a>
+								<span>|</span>
+								<a href="javascript:void(0);" onclick="del(this,{$v.id})">删除</a>
+							</td>
+						</tr>
+						{/foreach}
+					</tbody>
+				</table>
+			</div>
+			<!-- end row -->
+		</div>
+		{$page}
+	</div>
+</div>
+<div class="modal fade" id="exportCard" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">导出卡密</h4>
+			</div>
+			<div class="modal-body">
+				<form id="export_form" class="form-horizontal" method="POST" action="/merchant/goods/dumpCards" target="_blank">
+					<input type="hidden" id="goods_id" name="goods_id" value="">
+					<div class="form-group">
+						<div class="col-sm-2">
+							<label class="control-label">商品名称</label>
+						</div>
+						<div class="col-sm-6">
+							<p id="goodsname" style="padding-top: 5px;"></p>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2">
+							<label class="control-label">导出范围</label>
+						</div>
+						<div class="col-sm-6">
+							<label class="radio-inline">
+								<input type="radio" name="range" value="0" checked> 全部库存的卡密
+							</label>
+							<label class="radio-inline">
+								<input type="radio" name="range" value="1"> 导出指定的数量
+							</label>
+						</div>
+					</div>
+					<div class="form-group" id="exportNUm" style="display:none">
+						<div class="col-sm-2">
+							<label class="control-label">导出数量</label>
+						</div>
+						<div class="col-sm-6">
+							<input name="number" type="number" class="form-control" placeholder="请输入正整数">
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2">
+							<label class="control-label">是否删除</label>
+						</div>
+						<div class="col-sm-6">
+							<label class="radio-inline">
+								<input type="radio" name="del" value="0" checked> 仅导出不做删除
+							</label>
+							<label class="radio-inline">
+								<input type="radio" name="del" value="1"> 导出并删除卡密
+							</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2">
+							<label class="control-label">商品名称</label>
+						</div>
+						<div class="col-sm-6">
+							<label class="radio-inline">
+								<input type="radio" name="need_goods_name" value="1" checked> 导出商品名
+							</label>
+							<label class="radio-inline">
+								<input type="radio" name="need_goods_name" value="0"> 不需要商品名
+							</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2">
+							<label class="control-label">导出格式</label>
+						</div>
+						<div class="col-sm-6">
+							<label class="radio-inline">
+								<input type="radio" name="file_type" value="0" checked> EXCEL
+							</label>
+							<label class="radio-inline">
+								<input type="radio" name="file_type" value="1"> TXT
+							</label>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-primary" id="export">确定</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+{/block}
+
+{block name="appendJS"}
+
+<script>
+	$('#select_all').click(function () {
+		if ($(this).is(':checked')) {
+			$('tbody').find('input[type="checkbox"]').each(function () {
+				$(this).prop("checked", true)
+			})
+		} else {
+			$('tbody').find('input[type="checkbox"]').each(function () {
+				$(this).prop("checked", false)
+			})
+		}
+	})
+
+	function change_status(obj, id) {
+		var status = $(obj).prop('checked');
+		if (status) {
+			status = 1;
+		} else {
+			status = 0;
+		}
+		$.post('/merchant/goods/changeStatus', {
+			id: id,
+			status: status
+		}, function (res) {
+			if (res.code != 0) {
+				alert(res.msg);
+				$(obj).prop('checked', false)
+				return false;
+			}
+			if (status == 1) {
+				$(obj).prop('checked', true)
+			} else {
+				$(obj).prop('checked', false)
+			}
+		});
+	}
+
+	function del(obj, id) {
+		swal({
+				title: "确定删除吗？",
+				text: "删除的商品将进入回收站！",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#DD6B55",
+				confirmButtonText: "确定删除！",
+				closeOnConfirm: false
+			},
+			function () {
+				$.post('/merchant/goods/del', {
+					id: id
+				}, function (res) {
+					if (res.code != 0) {
+						swal('删除失败', res.msg, "error");
+					} else {
+						swal('删除成功', '', "success");
+						setTimeout(function () {
+							location.reload();
+						}, 200);
+					}
+				});
+			});
+	}
+
+	function emptied(obj, id) {
+		swal({
+				title: "确定清空该商品所有未售虚拟卡吗？",
+				text: "删除的虚拟卡将进入回收站",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#DD6B55",
+				confirmButtonText: "确定清空！",
+				closeOnConfirm: false
+			},
+			function () {
+				$.post('/merchant/goods/emptiedCards', {
+					id: id
+				}, function (res) {
+					if (res.code != 0) {
+						swal('清空失败', res.msg, "error");
+					} else {
+						swal('清空成功', '', "success");
+						setTimeout(function () {
+							location.reload();
+						}, 200);
+					}
+				});
+			});
+	}
+
+	function batch_del() {
+		var ids = new Array();
+		$('tbody').find('input[name="good_id"]').each(function () {
+			if ($(this).is(':checked')) {
+				ids.push($(this).val());
+			}
+		})
+		if (ids.length == 0) {
+			swal('选择要删除的数据', '', "error");
+			return false;
+		}
+		$.post('/merchant/goods/batch_del', {
+			ids: ids
+		}, function (res) {
+			if (res.code != 0) {
+				swal('删除失败', res.msg, "error");
+			} else {
+				swal('删除成功', '', "success");
+				setTimeout(function () {
+					location.reload();
+				}, 200);
+			}
+		});
+		console.log(ids);
+	}
+	$(document).ready(function () {
+		$("input[name='range']").change(function () {
+			var selectedvalue = $("input[name='range']:checked").val();
+			if (selectedvalue == 1) {
+				$('#exportNUm').show();
+			} else {
+				$('#exportNUm').hide();
+			}
+		});
+
+		$('.dumpCard').click(function () {
+			var id = $(this).data('id');
+			$('#goods_id').val(id);
+			var goodsname = $(this).data('goodsname');
+			$('#goodsname').html(goodsname);
+			$('#exportCard').modal('show')
+		});
+
+		$('#export').click(function () {
+			var range = $("input[name='range']");
+			var number = $("input[name='number']");
+			if (range == 1 && !number) {
+				swal('请输入导出数量', '', "error");
+				return false;
+			}
+			$('#export_form').submit();
+		});
+	});
+</script>
+
+{/block}

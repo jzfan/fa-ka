@@ -1,0 +1,47 @@
+{extend name="base"}
+
+{block name="content"}
+<div class="row">
+	<div class="col-sm-12">
+		<div class="card-box">
+			<div class="row">
+				<div class="col-sm-12">
+					分成比例：{:get_spread_rebate_rate()*100}% | 已返利总额：{$_user->rebate}元
+				</div>
+			</div>
+			<!-- end row -->
+			<div class="row">
+				<table class="table table-striped m-0">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>返佣时间</th>
+							<th>分成金额</th>
+							<th>备注说明</th>
+						</tr>
+					</thead>
+					<tbody>
+						{foreach $logs as $v}
+						<tr>
+							<td>{$v.id}</td>
+							<td>{$v.create_at|date="Y-m-d H:i:s",###}</td>
+							<td>{$v.money}</td>
+							<td>{$v.reason}</td>
+						</tr>
+						{/foreach}
+					</tbody>
+				</table>
+			</div>
+			<!-- end row -->
+		</div>
+		{$page}
+	</div>
+</div>
+{/block}
+
+{block name="appendJS"}
+
+<script>
+</script>
+
+{/block}

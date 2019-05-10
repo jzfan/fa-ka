@@ -1,0 +1,457 @@
+{extend name="base"}
+
+{block name="content"}
+<div class="row">
+	<div class="col-sm-12">
+		<div class="card-box">
+			<div class="row">
+				<div class="col-lg-6">
+					<h4 class="header-title m-t-0 m-b-30">商户基本信息</h4>
+					<form class="form-horizontal" role="form" action="" method="post">
+						<div class="form-group">
+							<label class="col-md-3 control-label">商户编号</label>
+							<div class="col-md-9">
+								<p class="form-control-static">{$_user.id}</p>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-3 control-label">用户名</label>
+							<div class="col-md-9">
+								<p class="form-control-static">{$_user.username}</p>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-3 control-label">电子邮箱</label>
+							<div class="col-md-9">
+								<p class="form-control-static">{$_user.email}</p>
+							</div>
+						</div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">手机号码</label>
+                            <div class="col-md-9">
+                                <input name="mobile" type="text" class="form-control" value="{$_user.mobile}">
+                                <br>
+                                <button type="button" id="get_code" onclick="getCode()"> 获取验证码</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">短信验证码</label>
+                            <div class="col-md-9">
+                                <input name="mobileCode" type="text" class="form-control" value="">
+                            </div>
+                        </div>
+                        <div class="form-group" style="color:red;">
+                            <label class="col-md-3 control-label">* 说明 *</label>
+                            <div class="col-md-9">
+                                修改手机号需验证旧手机号码，新增或不修改，此项留空，验证码错误时，手机号码不会修改
+                            </div>
+                        </div>
+						<?php if(sysconf('login_auth') == 1) {?>
+						<div class="form-group">
+							<label class="col-md-3 control-label">安全登录</label>
+							<div class="col-md-9">
+								<select name="login_auth" class="form-control" required>
+									<option value="1" {if $_user.login_auth==1}selected{/if}>是</option>
+									<option value="0" {if $_user.login_auth==0}selected{/if}>否</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-3 control-label">安全登录方式</label>
+							<div class="col-md-9">
+								<select name="login_auth_type" class="form-control" required>
+									<?php if(sysconf('login_auth_type') == 0) { ?>
+									<option value="1" {if $_user.login_auth_type==1}selected{/if}>短信验证</option>
+									<option value="2" {if $_user.login_auth_type==2}selected{/if}>邮件验证</option>
+									<option value="3" {if $_user.login_auth_type==3}selected{/if}>谷歌密码验证</option>
+									<?php } ?>
+									<?php if(sysconf('login_auth_type') == 1) { ?>
+									<option value="2" {if $_user.login_auth_type==2}selected{/if}>邮件验证</option>
+									<option value="3" {if $_user.login_auth_type==3}selected{/if}>谷歌密码验证</option>
+									<?php } ?>
+									<?php if(sysconf('login_auth_type') == 2) { ?>
+									<option value="1" {if $_user.login_auth_type==1}selected{/if}>短信验证</option>
+									<option value="3" {if $_user.login_auth_type==3}selected{/if}>谷歌密码验证</option>
+									<?php } ?>
+								</select>
+							</div>
+						</div>
+						<?php } ?>
+						<div class="form-group">
+							<label class="col-md-3 control-label">商户QQ</label>
+							<div class="col-md-9">
+								<input name="qq" type="text" class="form-control" value="{$_user.qq}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-3 control-label">商户网站</label>
+							<div class="col-md-9">
+								<input name="website" type="text" class="form-control" value="{$_user.website}">
+								<p class="stock_display_2_tips">网址前面加http://或https://</p>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-3 control-label">子域名</label>
+							<div class="col-md-9">
+								<input name="subdomain" type="text" class="form-control" value="{$_user.subdomain}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-3 control-label">店铺名称</label>
+							<div class="col-md-9">
+								<input name="shop_name" type="text" class="form-control" value="{$_user.shop_name}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-3 control-label">店铺公告</label>
+							<div class="col-md-9">
+								<textarea name="shop_notice" placeholder="" class="form-control" rows="5" maxlength="200">{$_user.shop_notice}</textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-3 control-label">系统公告自动弹出</label>
+							<div class="col-md-9">
+								<select name="shop_notice_auto_pop" class="form-control" required>
+									<option value="1" {if $_user.shop_notice_auto_pop==1}selected{/if}>是</option>
+									<option value="0" {if $_user.shop_notice_auto_pop==0}selected{/if}>否</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-3 control-label">商家公告自动弹出</label>
+							<div class="col-md-9">
+								<select name="user_notice_auto_pop" class="form-control" required>
+									<option value="1" {if $_user.user_notice_auto_pop==1}selected{/if}>是 </option>
+									<option value="0" {if $_user.user_notice_auto_pop==0}selected{/if}>否 </option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-3 control-label">购卡协议自动弹出</label>
+							<div class="col-md-9">
+								<select name="shop_gouka_protocol_pop" class="form-control" required>
+									<option value="1" {if $_user.shop_gouka_protocol_pop==1}selected{/if}>是 </option>
+									<option value="0" {if $_user.shop_gouka_protocol_pop==0}selected{/if}>否 </option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-3 control-label">支付页面风格</label>
+							<div class="col-md-9">
+								<select name="pay_theme" class="form-control" required>
+									<!-- {foreach :config('pay_themes') as $theme} -->
+									<option value="{$theme.alias}" {if $_user.pay_theme==$theme.alias}selected{/if}>{$theme.name}</option>
+									<!-- {/foreach} -->
+								</select>
+							</div>
+						</div>
+						<!-- <div class="form-group">
+							<label class="col-md-3 control-label">取卡页售后菜单</label>
+							<div class="col-md-9">
+								<select name="pay_theme" class="form-control" required>
+									{foreach :config('pay_themes') as $theme}
+									<option value="{$theme.alias}" {if $_user.pay_theme==$theme.alias}selected{/if}>{$theme.name}</option>
+									{/foreach}
+								</select>
+							</div>
+						</div> -->
+						<div class="form-group">
+							<label class="col-md-3 control-label">库存展示方式</label>
+							<div class="col-md-9">
+								<select name="stock_display" class="form-control" required>
+									<option value="1" {if $_user.stock_display==1}selected{/if}>实际库存</option>
+									<option value="2" {if $_user.stock_display==2}selected{/if}>范围库存</option>
+								</select>
+								<p class="stock_display_2_tips" {if $_user.stock_display==1}style="display:none"{/if}>
+									1. 库存大于100，显示 库存非常多<br>
+									2. 库存小于100、大于30，显示 库存很多<br>
+									3. 库存小于30、大于10，显示 库存一般<br>
+									4. 库存小于10，显示 库存少量<br>
+								</p>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-3 control-label">提现方式</label>
+							<div class="col-md-9">
+								<select name="cash_type" class="form-control">
+									<option value="1" {if $_user.cash_type==1}selected{/if}>系统默认</option>
+									<option value="2" {if $_user.cash_type==2}selected{/if}>手工提现</option>
+									<option value="3" {if $_user.cash_type==3}selected{/if}>自动提现</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group" style="color:red;">
+							<label class="col-md-3 control-label">* 说明 *</label>
+							<div class="col-md-9">
+								手工提现：手动申请提现。自动提现：金额满 {:sysconf('auto_cash_money')} 元系统自动生成提款记录无需手工操作。
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-3 control-label">费率承担方</label>
+							<div class="col-md-9">
+								<select name="fee_payer" class="form-control">
+									<option value="0" {if $_user.fee_payer==0}selected{/if}>跟随系统</option>
+									<option value="1" {if $_user.fee_payer==1}selected{/if}>商家承担</option>
+									<option value="2" {if $_user.fee_payer==2}selected{/if}>买家承担</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-3 control-label"></label>
+							<div class="col-md-9">
+								<button type="submit" class="btn btn-purple waves-effect waves-light">保存设置</button>
+							</div>
+						</div>
+					</form>
+				</div>
+				<!-- end col -->
+				<div class="col-lg-6">
+					<h4 class="header-title m-t-0 m-b-30">商户收款信息</h4>
+					<form class="form-horizontal" role="form" action="{:url('collect')}" method="post" id="gathering_info" enctype="multipart/form-data">
+						<div class="form-group">
+							<label class="col-md-3 control-label">收款方式</label>
+							<div class="col-md-9">
+								<select name="type" class="form-control"  {if isset($_user.collect.info) && $_user.collect.allow_update == 0} disabled="disabled" {/if} >
+								{if in_array(1, (array)json_decode((string)sysconf('cash_type'), true))}
+								<option value="1" {if $_user.collect.type==1}selected{/if}>支付宝收款</option>
+								{/if}
+								{if in_array(2, (array)json_decode((string)sysconf('cash_type'), true))}
+								<option value="2" {if $_user.collect.type==2}selected{/if}>微信收款</option>
+								{/if}
+								{if in_array(3, (array)json_decode((string)sysconf('cash_type'), true))}
+								<option value="3" {if $_user.collect.type==3}selected{/if}>银行卡收款</option>
+								{/if}
+								</select>
+							</div>
+						</div>
+						{if $type = json_decode(sysconf('cash_type'), true)}
+						<div class="collect_type type_alipay" {if (!$_user.collect && $_user.collect.type!='1' && $type[0] != 1) || ($_user.collect && $_user.collect.type!='1')}style="display:none;"{/if}>
+						<div class="form-group">
+							<label class="col-md-3 control-label">支付宝账号</label>
+							<div class="col-md-9">
+								<input name="alipay[account]" type="text" class="form-control"  {if isset($_user.collect.info.account) && $_user.collect.allow_update == 0} readonly="readonly" {/if}  value="{$_user.collect.info.account|default=''}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-3 control-label">收款人姓名</label>
+							<div class="col-md-9">
+								<input name="alipay[realname]" type="text" class="form-control" {if isset($_user.collect.info.realname) && $_user.collect.allow_update == 0} readonly="readonly" {/if}  value="{$_user.collect.info.realname|default=''}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-3 control-label">身份证号</label>
+							<div class="col-md-9">
+								<input name="alipay[idcard_number]" type="text" class="form-control idcard_number" {if isset($_user.collect.info.idcard_number) && $_user.collect.allow_update == 0} readonly="readonly" {/if}  onblur="if(this.value==''){this.value='{$_user.collect.info.idcard_number|idcardnoMask}'}" onfocus="if(this.value=='{$_user.collect.info.idcard_number|idcardnoMask}'){this.value=''}" value="{$_user.collect.info.idcard_number|idcardnoMask}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-3 control-label">收款二维码</label>
+							<div class="col-md-9">
+								{if $_user.collect.collect_img && $_user.collect.allow_update == 0}
+								<img src="{$_user.collect.collect_img|default=''}" style="width: 80%;margin:0 auto;" alt="">
+								{else}
+								<input type="file" name="ali_collect_img" class="dropify"/>
+								{/if}
+							</div>
+						</div>
+				</div>
+				<div class="collect_type type_wxpay" {if (!$_user.collect && $_user.collect.type!='2' && $type[0] != 2) || ($_user.collect && $_user.collect.type!='2')}style="display:none;"{/if}>
+				<div class="form-group">
+					<label class="col-md-3 control-label">微信账号</label>
+					<div class="col-md-9">
+						<input name="wxpay[account]" type="text" class="form-control"  {if isset($_user.collect.info.account) && $_user.collect.allow_update == 0} readonly="readonly" {/if}  value="{$_user.collect.info.account|default=''}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label">收款人姓名</label>
+					<div class="col-md-9">
+						<input name="wxpay[realname]" type="text" class="form-control"  {if isset($_user.collect.info.realname) && $_user.collect.allow_update == 0} readonly="readonly" {/if}  value="{$_user.collect.info.realname|default=''}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label">身份证号</label>
+					<div class="col-md-9">
+						<input name="wxpay[idcard_number]" type="text" class="form-control idcard_number"  {if isset($_user.collect.info.idcard_number) && $_user.collect.allow_update == 0} readonly="readonly" {/if}  value="{$_user.collect.info.idcard_number|default=''}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label">收款二维码</label>
+					<div class="col-md-9">
+						{if $_user.collect.collect_img && $_user.collect.allow_update == 0}
+						<img src="{$_user.collect.collect_img|default=''}" style="width: 80%;margin:0 auto;" alt="">
+						{else}
+						<input type="file" name="collect_img" class="dropify"/>
+						{/if}
+					</div>
+				</div>
+			</div>
+			<div class="collect_type type_bank" {if (!$_user.collect && $_user.collect.type!='3' && $type[0] != 3) || ($_user.collect && $_user.collect.type!='3')}style="display:none;"{/if}>
+			<div class="form-group">
+				<label class="col-md-3 control-label">开户银行</label>
+				<div class="col-md-9">
+					<select name="bank[bank_name]" class="form-control"  {if isset($_user.collect.info.bank_name) && $_user.collect.allow_update == 0} readonly="readonly" {/if} >
+					<option value="中国工商银行" {if $_user.collect.type==3 && $_user.collect.info.bank_name=='中国工商银行'}selected{/if}>中国工商银行</option>
+					<option value="中国建设银行" {if $_user.collect.type==3 && $_user.collect.info.bank_name=='中国建设银行'}selected{/if}>中国建设银行</option>
+					<option value="中国农业银行" {if $_user.collect.type==3 && $_user.collect.info.bank_name=='中国农业银行'}selected{/if}>中国农业银行</option>
+					<option value="中国邮政储蓄银行" {if $_user.collect.type==3 && $_user.collect.info.bank_name=='中国邮政储蓄银行'}selected{/if}>中国邮政储蓄银行</option>
+					<option value="招商银行" {if $_user.collect.type==3 && $_user.collect.info.bank_name=='招商银行'}selected{/if}>招商银行</option>
+					<option value="农村信用合作社" {if $_user.collect.type==3 && $_user.collect.info.bank_name=='农村信用合作社'}selected{/if}>农村信用合作社</option>
+					<option value="兴业银行" {if $_user.collect.type==3 && $_user.collect.info.bank_name=='兴业银行'}selected{/if}>兴业银行</option>
+					<option value="广东发展银行" {if $_user.collect.type==3 && $_user.collect.info.bank_name=='广东发展银行'}selected{/if}>广东发展银行</option>
+					<option value="深圳发展银行" {if $_user.collect.type==3 && $_user.collect.info.bank_name=='深圳发展银行'}selected{/if}>深圳发展银行</option>
+					<option value="民生银行" {if $_user.collect.type==3 && $_user.collect.info.bank_name=='民生银行'}selected{/if}>民生银行</option>
+					<option value="交通银行" {if $_user.collect.type==3 && $_user.collect.info.bank_name=='交通银行'}selected{/if}>交通银行</option>
+					<option value="中信银行" {if $_user.collect.type==3 && $_user.collect.info.bank_name=='中信银行'}selected{/if}>中信银行</option>
+					<option value="光大银行" {if $_user.collect.type==3 && $_user.collect.info.bank_name=='光大银行'}selected{/if}>光大银行</option>
+					<option value="中国银行" {if $_user.collect.type==3 && $_user.collect.info.bank_name=='中国银行'}selected{/if}>中国银行</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-3 control-label">开户地址</label>
+				<div class="col-md-9">
+					<input name="bank[bank_branch]" type="text" class="form-control" value="{$_user.collect.info.bank_branch|default=''}" {if isset($_user.collect.info.bank_branch)&& $_user.collect.allow_update == 0} readonly="readonly" {/if}  placeholder="开户行请精确到市">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-3 control-label">银行卡号</label>
+				<div class="col-md-9">
+					<input name="bank[bank_card]" type="text" class="form-control" {if isset($_user.collect.info.bank_card) && $_user.collect.allow_update == 0} readonly="readonly" {/if}  value="{$_user.collect.info.bank_card|default=''}" placeholder="请认真核对银行卡号">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-3 control-label">收款人姓名</label>
+				<div class="col-md-9">
+					<input name="bank[realname]" type="text" class="form-control" {if isset($_user.collect.info.realname) && $_user.collect.allow_update == 0} readonly="readonly" {/if} value="{$_user.collect.info.realname|default=''}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-3 control-label">身份证号</label>
+				<div class="col-md-9">
+					<input name="bank[idcard_number]" type="text" class="form-control idcard_number" {if isset($_user.collect.info.idcard_number)&& $_user.collect.allow_update == 0} readonly="readonly" {/if} value="{$_user.collect.info.idcard_number|default=''}">
+				</div>
+			</div>
+		</div>
+		{/if}
+		{if !$_user.collect.info || $_user.collect.allow_update == 1}
+		<div class="form-group" style="display: flex; align-items: center; color: red;">
+			<label class="col-md-3 control-label">*</label>
+			<div class="col-md-9">
+				慎重填写，再三确认，填写后不可修改
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-3 control-label"></label>
+			<div class="col-md-9">
+				<button type="submit" class="btn btn-purple waves-effect waves-light">保存设置</button>
+			</div>
+		</div>
+		{else}
+		<div class="form-group" style="display: flex; align-items: center; color: red;">
+			<label class="col-md-3 control-label">*</label>
+			<div class="col-md-9">
+				修改收款方式请联系客服
+			</div>
+		</div>
+		{/if}
+		</form>
+	</div>
+	<!-- end col -->
+</div>
+<!-- end row -->
+</div>
+</div>
+<!-- end col -->
+</div>
+{/block}
+
+{block name="appendJS"}
+<script>
+    $('[name="type"]').change(function(){
+        var selected=$(this).val()*1;
+        $('.collect_type').slideUp();
+        switch(selected){
+            case 1:  // 支付宝
+                $('.type_alipay').slideDown();
+                break;
+            case 2:  // 微信
+                $('.type_wxpay').slideDown();
+                break;
+            case 3:  // 银行
+                $('.type_bank').slideDown();
+                break;
+        }
+    });
+    $('[name="stock_display"]').change(function(){
+        var selected=$(this).val()*1;
+        console.log(selected);
+        if(selected==2){
+            $('.stock_display_2_tips').show();
+        }else{
+            $('.stock_display_2_tips').hide();
+        }
+    });
+    $('#gathering_info').submit(function(){
+        var status = true;
+        $('.collect_type').each(function(){
+            if($(this).is(':visible')){
+                //验证二维码
+                var collect_img_value = $(this).find('.dropify').val();
+                if($(this).find('.dropify').length > 0 && !collect_img_value){
+                    layer.alert('请选择收款二维码！');
+                    status = false;
+                }
+                var idcard_number = $(this).find('input.idcard_number').last().val()
+                var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+                console.log(idcard_number);
+                if(!reg.test(idcard_number)){
+                    layer.alert('请输入正确的身份证号码');
+                    status = false;
+                }
+
+            }
+        })
+        return status;
+    })
+    $('.dropify').dropify({
+        messages: {
+            'default': '点击上传二维码',
+            'replace': '点击替换二维码',
+            'remove': '删除',
+            'error': '上传错误'
+        },
+        error: {
+            'fileSize': '文件太大超过（1M）'
+        }
+    });
+
+    function getCode() {
+        layer.prompt({
+            title: '请输入验证码',
+            formType: 3
+        }, function (chkcode) {
+            $('#get_code').off('click');
+            $.post('/merchant/user/sendSmsCode', {
+                chkcode: chkcode,
+                token: "{$sms_token}",
+                phone: "{$_user.mobile}",
+                t: new Date().getTime()
+            }, function (ret) {
+                //                        console.log(ret);
+                if (ret.code === 1) {
+                    layer.closeAll();
+                    layer.msg(ret.msg);
+                    token = ret.data.token;
+                    $('#get_code').html('<i class="times">80</i> 秒后重发');
+                    timeC(80, '#get_code');
+                } else {
+                    alert(ret.msg);
+                    $('#get_code').on('click', getCode);
+                }
+            }, 'json');
+        })
+        $('.layui-layer-prompt .layui-layer-content').prepend($(
+            '<img style="cursor:pointer;height: 60px;" id="chkcode_img" src="/chkcode" onclick="javascript:this.src=\'/chkcode\'+\'?time=\'+Math.random()">'
+        ))
+    }</script>
+{/block}

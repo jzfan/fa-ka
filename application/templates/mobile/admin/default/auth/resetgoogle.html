@@ -1,0 +1,139 @@
+{extend name="./main"}
+
+{block name="style"}
+<link rel="stylesheet" href="__STATIC__/theme/default/css/login.css">
+<style type="text/css">
+    .login-container .content ul li input.ver_btn {
+        text-align: right;
+        border: none;
+        color: #f4f4f4;
+        height: 38px;
+        line-height: 38px;
+        margin: 0;
+        z-index: 1;
+        position: relative;
+        float: right;
+        background: #48bca5;
+        padding:0 20px;
+    }
+</style>
+{/block}
+
+{block name="body"}
+<div class="login-container full-height">
+
+    <!-- 动态云层动画 开始 -->
+    <div class="clouds-container">
+        <div class="clouds clouds-footer"></div>
+        <div class="clouds"></div>
+        <div class="clouds clouds-fast"></div>
+    </div>
+    <!-- 动态云层动画 结束 -->
+
+    <!-- 顶部导航条 开始 -->
+    <div class="header">
+        <span class="title notselect">
+            欢迎登录 {:sysconf('app_name')} 后台管理 <sup>{:sysconf('app_version')}</sup>
+        </span>
+        <ul>
+            <!--<li class="notselect"><a href="javascript:void(0)" target="_blank">帮助</a></li>-->
+            <li class="notselect">
+                <a href="http://sw.bos.baidu.com/sw-search-sp/software/4bcf5e4f1835b/ChromeStandalone_54.0.2840.99_Setup.exe">
+                    <b>推荐使用谷歌浏览器</b>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- 顶部导航条 结束 -->
+
+    <!-- 页面表单主体 开始 -->
+    <div class="container" style="top:50%;margin-top:-300px">
+        <form onsubmit="return false;" data-time="0.001" data-auto="true" method="post"
+              class="content layui-form animated fadeInDown" style="background: #fff;top: 100px;width: 400px;{neq name="mobile" value=""}height: 300px;{else}height: 200px;{/neq}">
+            <ul style="width: 300px;padding-top: 35px;margin:0 auto;">
+                <li style="text-align:center;margin-bottom: 15px;">
+                    <span style="font-size:16px">重置谷歌身份验证</span>
+                </li>
+                <li style="text-align:center;margin-bottom: 15px;">
+                    <img src="__STATIC__/admin/Authenticator.png" width="50">
+                </li>
+                {neq name="mobile" value=""}
+                <li>
+                    <input required="required" pattern="^\S{4,}$" value="" name="sms_code"
+                           type="text" autocomplete="off" class="login-input password"
+                           title="请输入短信验证码" placeholder="请输入短信验证码" style="width: 180px;float:left"/>
+                    <input type="button" value="获取验证码" class="ver_btn" id="send" style="float:left">
+                    <div style="clear:both"></div>
+                </li>
+                <li style="text-align:center;margin-bottom: 15px;">
+                    点击获取验证码，手机号{$mobile}将收到短信验证码
+                </li>
+                <li class="text-center">
+                    <button type="submit" class="layui-btn layui-disabled" data-form-loaded="下 一 步">正 在 载 入</button>
+                </li>
+                {else}
+                <li style="text-align:center;margin-bottom: 15px;">
+                    您未绑定手机号码，请联系管理员
+                </li>
+                {/neq}
+            </ul>
+        </form>
+    </div>
+    <!-- 页面表单主体 结束 -->
+
+    <!-- 底部版权信息 开始 -->
+    {if sysconf('site_copy')}
+    <div class="footer notselect">{:sysconf('site_copy')}</div>
+    {/if}
+    <!-- 底部版本信息 结束 -->
+
+</div>
+{/block}
+
+{block name="script"}
+<script>
+    if (window.location.href.indexOf('#') > -1) {
+        window.location.href = window.location.href.split('#')[0];
+    }
+    require(['jquery'], function ($) {
+        var validCode = true;
+        $(function () {
+            //获取短信验证码
+            $("#send").click(function () {
+                if (validCode) {
+                    send_sms();
+                }
+            })
+        })
+
+        function send_sms() {
+            $.ajax({
+                type: "POST",
+                url: "/admin/auth/sendSmsCode",
+                dataType: 'json',
+                error: function (request) {
+                    layer.msg("连接错误！");
+                },
+                success: function (data) {
+                    if (data.code == 1) {
+                        var time = 60;
+                        validCode = false;
+                        $("#send").val("已发送(60)");
+                        var t = setInterval(function () {
+                            time--;
+                            $("#send").val('已发送(' + time + ')');
+                            if (time == 0) {
+                                clearInterval(t);
+                                $("#send").val("重新获取");
+                                validCode = true;
+                            }
+                        }, 1000)
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                }
+            });
+        }
+    });
+</script>
+{/block}

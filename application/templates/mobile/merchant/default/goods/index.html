@@ -1,0 +1,181 @@
+{extend name="base/detail"}
+
+{block name="content"}
+<div class="main">
+    <div class="content">
+
+        <ul class="nav nav-tabs">
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li role="presentation" class="active"><a href="javascript:;">商品列表</a></li>
+        </ul><br>
+
+        <form name="search" class="form-inline" method="get" action="">
+
+            <div class="form-group">
+                <select name="cate_id" class="form-control">
+                    <option value="" {if $Think.get.cate_id==''}selected{/if}>全部分类</option>
+                    {foreach $categorys as $v}
+                    <option value="{$v.id}" {if $Think.get.cate_id==$v.id}selected{/if}>{$v.name}</option>
+                    {/foreach}
+				</select>
+            </div>
+
+            <div class="form-group">
+                <input type="text" class="form-control" name="name" value="" maxlength="30" placeholder="商品名称">
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block"><span class="glyphicon glyphicon-search"></span>&nbsp;查询商品</button>
+                <a href="/merchant/goods/add" class="btn btn-success btn-block"><span class="glyphicon glyphicon-plus"></span>&nbsp;添加商品</a>
+            </div>
+        </form>
+        {foreach $goodsList as $v}
+        <div class="mt20">
+            <div class="selltable">
+                <table class="table table-hover">
+                    <tbody>
+                        <tr id="record_{$v.id}">
+                            <td colspan="6">
+                                <span>商品名：<a href="javascript:;" onclick="showContent('{$v.id}')">{$v.name}</a></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">单价：{$v.price}</td>
+                            <td colspan="3">状态：
+                                {if $v.status==1}
+                                上架中
+                                <a href="javascript:;" onclick="change_status({$v.id},0)" title="点击下架" class="btn btn-danger btn-xs">下架</a>&nbsp;
+                                {else/}
+                                下架中
+                                <a href="javascript:;" onclick="change_status({$v.id},1)" title="点击上架" class="btn btn-success btn-xs">上架</a>&nbsp;
+                                {/if}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">库存：<span class="red">{$v.cards_stock_count}张</span> <a href="/merchant/goods_card/index?goods_id={$v.id}&status=1">查看</a>&nbsp;&nbsp;</td>
+                            <td colspan="3">售出：<span class="red">{$v.cards_sold_count}张</span> <a href="/merchant/goods_card/index?goods_id={$v.id}&status=2">查看</a>&nbsp;&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a href="javascript:void(0)" onclick="showContent({$v.id})" class="red">链接</a>&nbsp;
+                            </td>
+
+                            <td>
+                                <a href="/merchant/goods_card/add?goods_id={$v.id}">加卡</a>&nbsp;
+                            </td>
+                            <td>
+                                <a href="/merchant/goods/edit?id={$v.id}">编辑</a>&nbsp;
+                            </td>
+
+                            <td>
+                                <a href="javascript:;" onclick="delData({$v.id})" data-toggle="tooltip" title="删除商品"><span class="glyphicon glyphicon-trash"></span></a>&nbsp;
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {/foreach}
+        <div>
+            <style>
+                #wypage {
+                    font-size: 12px;
+                    padding: 10px auto;
+                    margin-left: 0px;
+                }
+
+                #wypage p {
+                    float: left;
+                    color: #333;
+                }
+
+                #wypage a {
+                    float: left;
+                    display: inline-block;
+                    border: 1px solid #ddd;
+                    padding: 6px 9px;
+                    margin-left: 4px;
+                    text-decoration: none;
+                    color: #333;
+                    background-color: #fff;
+                    border-radius: 0px;
+                }
+
+                #wypage a:hover {
+                    background-color: #248eff;
+                    color: #fff
+                }
+
+                #wypage a.no-hover:hover {
+                    color: #333
+                }
+
+                #wypage a.wy_page_current {
+                    background-color: #06a7ff;
+                    color: #fff
+                }
+            </style>
+            <form class="form-inline">
+                {$page}
+            </form>
+        </div><br><br>
+
+    </div>
+</div>
+{/block}
+
+{block name="appendJS"}
+<script>
+    var delData = function(id) {
+        layer.confirm('确定要删除此商品吗？', {
+            btn: ['确定', '取消'] //按钮
+        }, function() {
+            $.get('/merchant/goods/del', {
+                id: id
+            }, function(res) {
+				if(res.code==0){
+                    layer.msg('删除成功', {
+                        icon: 1
+                    });
+					setTimeout(function(){
+						location.reload();
+					},200);
+				}else{
+                    layer.msg(res.msg, {
+                        icon: 2
+                    });
+					setTimeout(function(){
+						location.reload();
+					},2000);
+				}
+            });
+        });
+    };
+
+    function selectcateid() {
+        var cateid = $('#cateid').val();
+        location.href = "/merchant/goods?cateid=" + cateid;
+    }
+
+    var showContent = function(id) {
+        layer.open({
+            type: 2,
+            title: '商品链接',
+            shadeClose: true,
+            shade: 0.3,
+            area: ['90%', '90%'],
+            content: '/merchant/goods/link?id=' + id + '' //获取商品链接
+        });
+    };
+
+	function change_status(id,status)
+	{
+		$.post('/merchant/goods/changeStatus',{
+			id:id,
+			status:status
+		},function(res){
+		    location.reload();
+		});
+	}
+</script>
+{/block}

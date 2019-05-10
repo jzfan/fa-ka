@@ -1,0 +1,96 @@
+{extend name="base"}
+
+{block name="content"}
+<div class="row">
+	<div class="col-sm-12">
+		<div class="card-box">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="alert alert-info alert-dismissable">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        只保留显示最近30天的登录日志
+                    </div>
+				</div>
+			</div>
+			<!-- end row -->
+			<div class="row">
+				<table class="table table-striped m-0">
+					<thead>
+						<tr>
+							<th>商户ID</th>
+							<th>商户账号</th>
+							<th>登录时间</th>
+							<th>登录IP</th>
+						</tr>
+					</thead>
+					<tbody>
+						{foreach $logs as $v}
+						<tr>
+							<td>{$v.user_id}</td>
+							<td>{$v.user.username}</td>
+							<td>{$v.create_at|date="Y-m-d H:i:s",###}</td>
+							<td>
+								<a href="//www.baidu.com/s?wd={$v.ip}&amp;rsv_spt=1&amp;issp=1&amp;rsv_bp=0&amp;ie=utf-8&amp;tn=baiduhome_pg" title="点击查看IP来源" target="_blank">{$v.ip}</a>
+							</td>
+						</tr>
+						{/foreach}
+					</tbody>
+				</table>
+			</div>
+			<!-- end row -->
+		</div>
+		{$page}
+	</div>
+</div>
+{/block}
+
+{block name="appendJS"}
+
+<script>
+	function change_status(obj,id)
+	{
+		var status=$(obj).prop('checked');
+		if(status){
+			status=1;
+		}else{
+			status=0;
+		}
+		$.post('/merchant/message/changeStatus',{
+			id:id,
+			status:status
+		},function(res){
+			if(res.code!=0){
+				alert(res.msg);
+			}
+		});
+	}
+
+	function del(obj,id)
+	{
+		swal({
+			title: "确定删除吗？",
+			text: "你将无法恢复该操作！",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "确定删除！",
+			closeOnConfirm: false
+		},
+		function(){
+			$.post('/merchant/message/del',{
+				id:id
+			},function(res){
+				if(res.code!=0){
+					swal('删除失败', res.msg, "error");
+				}else{
+					swal('删除成功', '', "success");
+					setTimeout(function(){
+						location.reload();
+					},200);
+				}
+			});
+		});
+	}
+</script>
+
+{/block}

@@ -1,0 +1,95 @@
+{extend name='./content'}
+
+{block name="content"}
+<div class="form-group">
+    <button type="button" class="btn btn-white" data-modal="{:url('product/add')}" data-title="添加支付产品" ><i class="fa fa-plus"></i> 添加支付产品</button>
+</div>
+<form onsubmit="return false;" data-auto="" method="POST">
+    <input type="hidden" value="resort" name="action"/>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th class='text-center'>编号</th>
+            <th class='text-center'>通道名称</th>
+            <th class='text-center'>通道代码</th>
+            <th class='text-center'>类型</th>
+            <th class='text-center'>接口模式</th>
+            <th class='text-center'>状态</th>
+            <th class='text-center'>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+            {foreach $productList as $v}
+            <tr>
+                <td class='text-center'>{$v.id}</td>
+                <td class='text-center'>{$v.title}</td>
+                <td class='text-center'>{$v.code}</td>
+                <td class='text-center'>{:get_paytype_name($v.paytype)}</td>
+                <td class='text-center'>
+                    {if $v.polling==0}
+                        单独
+                    {else/}
+                        轮询
+                    {/if}
+                </td>
+                <td class='text-center'>
+                    <div class="layui-btn-group">
+                        <button type="button" class='layui-btn {if $v.status==1}layui-btn-normal{else/}layui-btn-primary{/if} layui-btn-small btn-status-open' onclick="changeStatus({$v.id},1)">开启</button>
+                        <button type="button" class='layui-btn {if $v.status==0}layui-btn-normal{else/}layui-btn-primary{/if} layui-btn-small btn-status-close' onclick="changeStatus({$v.id},0)">关闭</button>
+                    </div>
+                </td>
+                <td class='text-center'>
+                    <div class="layui-btn-group">
+                        <button type="button" class='layui-btn layui-btn-small' data-modal="{:url('product/edit',['product_id'=>$v.id])}" data-title="编辑支付产品">编辑</button>
+                        <button type="button" class='layui-btn layui-btn-small' onclick="delProduct({$v.id})">删除</button>
+                    </div>
+                </td>
+            </tr>
+            {/foreach}
+        </tbody>
+    </table>
+</form>
+<script>
+    function changeStatus(id,status){
+        $.ajax({
+            url:'/manage/product/change_status',
+            data:{
+                product_id:id,
+                status:status
+            },
+            dataType:'json',
+            success:function(res){
+                if(res.code==1){
+                    location.reload();
+                }else{
+                    alert(res.msg);
+                }
+                console.log(res);
+            }
+        });
+    }
+    function delProduct(product_id)
+    {
+        if(!confirm('确认删除？')){
+            return;
+        }
+        $.ajax({
+            url:'/manage/product/del',
+            data:{
+                product_id:product_id,
+            },
+            type:'post',
+            dataType:'json',
+            success:function(res){
+                console.log(res);
+                if(res.code==1){
+                    // alert(res.msg);
+                    location.reload();
+                }else{
+                    alert(res.msg);
+                }
+            }
+        });
+    }
+</script>
+{/block}

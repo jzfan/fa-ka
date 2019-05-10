@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>菜单配置</title>
+
+    <link rel="stylesheet" href="__RES__/plugs/layui/css/layui.css">
+    <script src="__RES__/plugs/layui/layui.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.18.0/axios.js"></script>
+    <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+
+    <style>
+        .layui-input-block {
+            margin-left: 170px;
+        }
+
+        .layui-form-label {
+            width: 120px;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app" class="layui-container" v-cloak>
+    <h1 style="font-size:2rem;">菜单配置</h1>
+
+    <hr>
+
+    <form class="layui-form" action="" method="post" enctype="multipart/form-data">
+        <div class="layui-form-item">
+            <label class="layui-form-label">title</label>
+            <div class="layui-input-block">
+                <input type="text" name="title" required lay-verify="required" placeholder="请输入title" autocomplete="off"
+                       class="layui-input" :value="menu.title">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">img</label>
+            <div class="layui-input-block">
+                <input type="file" name="img" required lay-verify="required" autocomplete="off"
+                       class="layui-input">
+
+                <img v-if="menu.img_url" :src="menu.img_url" alt="img">
+                <input type="hidden" name="img_url" v-if="menu.img" :value="menu.img">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">function_id</label>
+            <div class="layui-input-block">
+                <input type="text" name="function_id" required lay-verify="required" placeholder="请输入function_id"
+                       autocomplete="off"
+                       class="layui-input" :value="menu.function_id">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">sort</label>
+            <div class="layui-input-block">
+                <input type="text" name="sort" required lay-verify="required" placeholder="请输入sort" autocomplete="off"
+                       class="layui-input" :value="menu.sort || '0'">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">is_show</label>
+            <div class="layui-input-block">
+                <select name="is_show" lay-verify="required" :value="menu.is_show || true">
+                    <option value="true">true</option>
+                    <option value="false">false</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">function_links</label>
+            <div class="layui-input-block">
+                <input type="text" name="function_links" required lay-verify="required" placeholder="请输入function_links"
+                       autocomplete="off"
+                       class="layui-input" :value="menu.function_links">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">iOS_ViewType</label>
+            <div class="layui-input-block">
+                <input type="text" name="iOS_ViewType" required lay-verify="required" placeholder="请输入iOS_ViewType"
+                       autocomplete="off"
+                       class="layui-input" :value="menu.iOS_ViewType">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">iOS_sotryBoard</label>
+            <div class="layui-input-block">
+                <input type="text" name="iOS_sotryBoard" required lay-verify="required" placeholder="请输入iOS_sotryBoard"
+                       autocomplete="off"
+                       class="layui-input" :value="menu.iOS_sotryBoard">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">iOS_ViewController</label>
+            <div class="layui-input-block">
+                <input type="text" name="iOS_ViewController" required lay-verify="required"
+                       placeholder="请输入iOS_ViewController" autocomplete="off"
+                       class="layui-input" :value="menu.iOS_ViewController">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">android_Ver</label>
+            <div class="layui-input-block">
+                <input type="text" name="android_Ver" required lay-verify="required" placeholder="请输入android_Ver"
+                       autocomplete="off"
+                       class="layui-input" :value="menu.android_Ver || '1.0'">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">iOS_Ver</label>
+            <div class="layui-input-block">
+                <input type="text" name="iOS_Ver" required lay-verify="required" placeholder="请输入iOS_Ver"
+                       autocomplete="off"
+                       class="layui-input" :value="menu.iOS_Ver || '1.0'">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+
+    <h1 style="font-size:2rem;">已有菜单</h1>
+
+    <hr>
+
+    <table class="layui-table">
+        <colgroup>
+            <col width="150">
+            <col width="200">
+            <col>
+        </colgroup>
+        <thead>
+        <tr>
+            <th>title</th>
+            <th>img_url</th>
+            <th>function_id</th>
+            <th>sort</th>
+            <th>is_show</th>
+            <th>function_links</th>
+            <th>iOS_ViewType</th>
+            <th>iOS_sotryBoard</th>
+            <th>iOS_ViewController</th>
+            <th>android_Ver</th>
+            <th>iOS_Ver</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(item, index) in menus">
+            <td>{{ item.title }}</td>
+            <td>{{ item.img_url }}</td>
+            <td>{{ item.function_id }}</td>
+            <td>{{ item.sort }}</td>
+            <td>{{ item.is_show }}</td>
+            <td>{{ item.function_links }}</td>
+            <td>{{ item.iOS_ViewType }}</td>
+            <td>{{ item.iOS_sotryBoard }}</td>
+            <td>{{ item.iOS_ViewController }}</td>
+            <td>{{ item.android_Ver }}</td>
+            <td>{{ item.iOS_Ver }}</td>
+            <td>
+                <button @click="edit(item.id,index)">编辑</button>
+                <button @click="del(item.id,index)">删除</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    window.onload = function () {
+        layui.use('form', function () {
+            var form = layui.form;
+        });
+
+        new Vue({
+            'el': '#app',
+            data: {
+                menus: [],
+                menu: {
+                    "title": "",
+                    "img_url": "",
+                    "function_id": "",
+                    "sort": 0,
+                    "is_show": true,
+                    "function_links": "",
+                    "iOS_ViewType": 0,
+                    "iOS_sotryBoard": "",
+                    "iOS_ViewController": "",
+                    "android_Ver": "1.0",
+                    "iOS_Ver": "1.0"
+                },
+            },
+            created: function () {
+                this.getMenus();
+            },
+            methods: {
+                getMenus: function () {
+                    var that = this;
+                    axios.get("/api/config/getMenus").then(function (res) {
+                        var data = res.data;
+                        if (data.data.length) {
+                            var menus = data.data;
+                            for (item in menus) {
+                                that.menus.push(menus[item]['menu']);
+                            }
+                        }
+                    })
+                },
+                edit: function (id, index) {
+                    this.menu = this.menus[index];
+                },
+                del: function (id, index) {
+                    var r = confirm('确认删除？');
+                    if (r) {
+                        var that = this;
+                        axios.post("/api/config/delMenu", {id: id}).then(function (res) {
+                            if (res.data.code == 200) {
+                                that.menus.splice(index, 1);
+                            }
+                        })
+                    }
+                }
+            }
+        })
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1 @@
+ALTER TABLE `user` ADD `is_close` TINYINT(3)  UNSIGNED  NOT NULL  DEFAULT '0'  COMMENT '是否关闭店铺 0否 1是';

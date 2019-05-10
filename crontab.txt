@@ -1,0 +1,17 @@
+命令如下:
+
+00 03 05 * * cd /home/wwwroot/faka && rm -rf runtime/log/$(date -d 'last-day' +%Y%m)/*
+
+添加方式:
+
+crontab -e
+
+命令说明:
+
+00 03 05 * * 
+
+表示每个月的5号，凌晨3点执行
+
+cd /home/wwwroot/faka && rm -rf runtime/log/$(date -d 'last-day' +%Y%m)/*
+
+进入 /home/wwwroot/faka 目录下删除上个月的日志文件，其中目录  /home/wwwroot/faka 需要根据实际项目位置进行修改

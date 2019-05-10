@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{:sysconf('site_name')}{:sysconf('site_subtitle')}</title>
+    <meta name="keywords" content="{:sysconf('site_keywords')}" />
+    <meta name="description" content="{:sysconf('site_desc')}" />
+    <link rel="shortcut icon" href="{:sysconf('browser_icon')}" />
+    <!-- Bootstrap -->
+    <link href="__RES__/app/default/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="__RES__/app/default/css/font-awesome.min.css">
+    <link rel="stylesheet" href="__RES__/app/default/vendors/owl-carousel/owl.carousel.min.css">
+    <link rel="stylesheet" href="__RES__/app/default/vendors/themify-icon/themify-icons.css">
+    <!--custom css-->
+    <link rel="stylesheet" href="__RES__/app/default/css/style.css">
+    <link rel="stylesheet" href="__RES__/app/default/css/responsive.css">
+    <script src="__RES__/app/js/jquery-2.2.1.min.js"></script>
+    <script src="__RES__/app/js/formvalidator_min.js"></script>
+    <script src="__RES__/app/js/formvalidatorregex.js"></script>
+    <script src="__RES__/app/js/layer.js"></script>
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="__RES__/app/js/clipboard.js"></script>
+    <style type="text/css">
+        .main_box p {
+            white-space: inherit !important;
+            word-wrap: break-word;
+        }
+
+        .nb {
+            border: 0px;
+        }
+
+        .w10 {
+            width: 10%;
+        }
+
+        .search_box {
+            margin-top: 10px;
+        }
+
+        li[role="presentation"] {
+            width: 33%;
+        }
+
+        li[role="presentation"] a,
+        li[role="presentation"] a:hover {
+            color: #ffffff;
+            background-color: #29acf5;
+        }
+
+        li.active a {
+            color: #0C0C0C;
+        }
+    </style>
+</head>
+
+<body data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="100">
+    {include file="./default_header"}
+    <section class="shop_banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-7 hero_text">
+                    <h2 class="hero_title">全新体验</h2>
+                    <p> 加入我们，打开你的成功之门! </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="box-zone">
+        <div class="order_form">
+
+            <input type="hidden" id="query-type" value="{$querytype}">
+
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" <?php if ($querytype==1){?>class="active"
+                    <?php }?>><a href="#cache" aria-controls="cache" role="tab" data-toggle="tab" data-index="1">浏览器缓存查卡密</a></li>
+                <li role="presentation" <?php if ($querytype==2){?>class="active"
+                    <?php }?>><a href="#trade" aria-controls="trade" role="tab" data-toggle="tab" data-index="2">通过订单编号查询</a></li>
+                <li role="presentation" <?php if ($querytype==3){?>class="active"
+                    <?php }?>><a href="#contract" aria-controls="contract" role="tab" data-toggle="tab" data-index="3">通过联系方式查询</a></li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" id="cache" <?php if ($querytype==1){?>class="tab-pane active"
+                    <?php }?> class="tab-pane">
+                    <div class="search_box nb w10">
+                        <button onclick="orderid_or_contact()">查 询</button>
+                    </div>
+                </div>
+                <div role="tabpanel" id="trade" <?php if ($querytype==2){?>class="tab-pane active"
+                    <?php }?> class="tab-pane">
+                    <div class="search_box">
+                        <!-- <form action=""> -->
+                        <i class="iconfont icon-sousuo"></i>
+                        <input name="orderid" type="text" value="{$trade_no}" placeholder="请输入订单号" class="order_input"
+                            id="orderid_input2" autocomplete="off">
+                        <span style="position: absolute;right: 140px;top: 10px;"><img id="chkcode_img" src="__PUBLIC__/orderquery"
+                                style="height: 43px;display:none"></span>
+                        <button onclick="orderid_or_contact()">查 询</button>
+                        <!-- <button type="submit">查 询</button> -->
+                        <!-- </form> -->
+                    </div>
+                </div>
+                <div role="tabpanel" id="contract" <?php if ($querytype==3){?>class="tab-pane active"
+                    <?php }?> class="tab-pane">
+                    <div class="search_box">
+                        <!-- <form action=""> -->
+                        <i class="iconfont icon-sousuo"></i>
+                        <input name="orderid" type="text" value="{$trade_no}" placeholder="请输入联系方式" class="order_input"
+                            id="orderid_input3" autocomplete="off">
+                        <span style="position: absolute;right: 140px;top: 10px;"><img id="chkcode_img" src="__PUBLIC__/orderquery"
+                                style="height: 43px;display:none"></span>
+                        <button onclick="orderid_or_contact()">查 询</button>
+                        <!-- <button type="submit">查 询</button> -->
+                        <!-- </form> -->
+                    </div>
+                </div>
+
+            </div>
+            {if $trade_no!==null}
+            {if empty($order)}
+            <div style="display:block;width:216px;margin:100px auto;font-size:24px;">{if $is_verify}不存在该订单{/if}</div>
+            {else/}
+            <div class="main_box">
+                <h3><i class="iconfont icon-dingdan"></i> 订单日期：{$order.create_at|date="Y-m-d H:i:s",###}</h3>
+                <p>订单编号：<b>{$order.trade_no}</b></p>
+                <p>付款方式：<b>{:get_paytype_name($order.paytype)}</b></p>
+                <p>付款信息：<b>
+                        <lable style="color: orangered" id="paystatus">{if $order.status==1}付款成功{else/}未付款{/if}</lable>
+                    </b></p>
+                <!-- <p>订单状态：<b>正常</b></p> -->
+                <p>订单金额：<b>{$order.total_price}</b></p>
+                <p>实付款：<b>{$order.total_price}</b></p>
+                <p>卖家QQ：<b><a target="_blank" href="//wpa.qq.com/msgrd?v=3&amp;uin={$order.user.qq}&amp;site=qq&amp;menu=yes">{$order.user.qq}</a></b></p>
+                {if condition="isset($canComplaint) && $canComplaint" }
+                <p><a style="padding:5px 8px;background-color:#678cf7;color:white" href="/complaint?trade_no={$order.trade_no}"
+                        target="_blank">订单投诉</a></p>
+                {/if}
+                <p style="float:none;clear:both">卡密信息：
+                    <b id="tips0" style="color: rgb(251,55,55)">
+                    </b>
+                    <b id="cardinfo0" style="color: rgb(251,55,55)">
+                    </b>
+                </p>
+                <div class="notice">
+                    <p>
+                        <font color="red">平台提示：</font>有疑问请及时联系客服QQ：{:sysconf('site_info_qq')}
+                        ，如遇到虚假交易请在当天22点前联系客服协助处理或者点击上方投诉按钮。
+                         
+                    </p>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <script>
+                var flag = true;
+                var loading = '';
+                var stop = false;
+                $(function () {
+                    getgoods('{$order.trade_no}', '0');
+                    /*{eq name = "order.status" value = "0"}*/
+                    layer.msg('正在获取支付状态 ...', function () {
+                        loading = layer.load(1, {
+                            shade: [0.1, '#fff'] //0.1透明度的白色背景
+                        });
+                    });
+                    setTimeout('oderquery(1)', 3000);
+                    window.setTimeout("request_stop()", 30000);
+                    /*{/eq}*/
+                });
+            </script>
+            {/if}
+            {/if}
+            <div class="clear"></div>
+        </div>
+
+
+
+        <script>
+            function getgoods(orderid, id) {
+                setTimeout(function () {
+                    $.getJSON('/checkgoods', {
+                        orderid: orderid,
+                        t: new Date().getTime(),
+                        token: "{$token}"
+                    }, function (data) {
+                        if (data) {
+                            $('#cardinfo' + id).html('<br>' + data.msg);
+                            if (data.status == 1) {
+                                $('#tips' + id).html('(已发货/购买数：<font color="green">' + data.quantity +
+                                    '</font>/' + data.quantity + ')');
+                            }
+                        }
+                    });
+                }, 1000);
+            };
+        </script>
+        <script>
+            function orderid_or_contact() {
+                var queryType = $('#query-type').val();
+                var input_val = $('#orderid_input' + queryType).val() || '';
+
+                if (queryType != 1 && input_val == '') {
+                    if (queryType == 2) {
+                        layer.msg('订单号为空！', {
+                            icon: 2,
+                            time: 2000
+                        });
+                    } else {
+                        layer.msg('联系方式为空！', {
+                            icon: 2,
+                            time: 2000
+                        });
+                    }
+                } else {
+                    var needChkcode = "{:sysconf('order_query_chkcode')}";
+                    if (needChkcode == 1) {
+                        // $('#chkcode_img').show().attr('src', '/chkcode');
+                        chkcode(input_val, queryType);
+                    } else {
+                        window.location.href = '/orderquery?orderid=' + input_val + '&querytype=' + queryType;
+                    }
+                }
+            }
+
+            function oderquery(t) {
+                if (flag == false) return false;
+                var orderid = '{$trade_no}';
+                $.post('/pay/getOrderStatus', {
+                    orderid: orderid,
+                    token: "{$token}"
+                }, function (ret) {
+                    if (ret == 1) {
+                        layer.close(loading);
+                        flag = false;
+                        stop = true;
+                        $('#paystatus').html('付款成功');
+                        getgoods('{$trade_no}', '0');
+                    }
+                });
+                t = t + 1;
+                setTimeout('oderquery(' + t + ')', 3000);
+            }
+
+            function request_stop() {
+                if (stop == true) return false;
+                flag = false;
+                layer.close(loading);
+                layer.alert('系统未接收到付款信息，如您已付款请联系客服处理！');
+            }
+
+            function chkcode(input_val, queryType) {
+                layer.prompt({
+                    title: '请输入验证码',
+                    formType: 3
+                }, function (chkcode) {
+                    $.post('/orderquery/checkverifycode', {
+                        chkcode: chkcode,
+                        token:'{$token}'
+                    }, function (data) {
+                        if (data == 'ok') {
+                            layer.msg('验证码输入正确', {
+                                icon: 1
+                            }, function () {
+                                window.location.href = '/orderquery?orderid=' + input_val +
+                                    '&chkcode=' + chkcode + '&querytype=' + queryType;
+                                //                        window.parent.location.reload(); //刷新父页面
+                            });
+                        } else {
+                            layer.msg('验证码输入错误', {
+                                icon: 2,
+                                time: 3000
+                            }, function () {
+                                //                        window.parent.location.reload(); //刷新父页面
+                            });
+                        }
+
+                    });
+                });
+                $('.layui-layer-prompt .layui-layer-content').prepend($(
+                    '<img style="cursor:pointer;height: 60px;" id="chkcode_img" src="/chkcode" onclick="javascript:this.src=\'/chkcode\'+\'?time=\'+Math.random()">'
+                ))
+            }
+
+            $(function () {
+                $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                    var index = $(e.target).data('index');
+                    $('#query-type').val(index);
+                })
+            })
+            var clipboard = new ClipboardJS('.btn');
+            clipboard.on('success', function(e) {
+                layer.msg('复制成功！', {
+                    icon: 1
+                });
+            });
+            clipboard.on('error', function(e) {
+                layer.msg('复制失败，请手动复制！', {
+                    icon: 2
+                });
+            });
+        </script>
+    </section>
+    {include file="./default_footer"}
+
+    <script src="__RES__/app/default/js/jquery-2.2.1.min.js"></script>
+
+    <script src="__RES__/plugs/bootstrap/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

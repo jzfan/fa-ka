@@ -1,0 +1,13 @@
+{extend name="./main"}
+
+{block name="content"}
+<header class="header-home header-home--color">
+    <div class="container">
+        <div class="contact_left" style="float:left;margin:20px;margin-left:20%;text-align:center"><img src="__STATIC__/app/images/ewm.png"><br>QQ交流群</div>
+        <div class="contact_right" style="float:left;margin:20px;">
+            {$data.content|htmlspecialchars_decode}
+        </div>
+        <div class="clear"></div>
+    </div>
+</header>
+{/block}

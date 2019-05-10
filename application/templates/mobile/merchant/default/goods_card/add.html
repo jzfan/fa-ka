@@ -1,0 +1,137 @@
+{extend name="base/detail"}
+
+{block name="CSS"}
+<!-- form Uploads -->
+<link href="__RES__/assets/plugins/fileuploads/css/dropify.min.css" rel="stylesheet" type="text/css" />
+{/block}
+
+{block name="content"}
+<div class="main">
+    <div class="content">
+        <ul class="nav nav-tabs">
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li role="presentation" class="active"><a href="javascript:;">添加卡密</a></li>
+        </ul><br>
+
+        <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label class="col-md-2 control-label">选择商品</label>
+                <div class="col-md-4">
+                    <select name="goods_id" class="form-control">
+                        <!-- {foreach $goodsList as $v} -->
+                        <!-- {if $Think.get.goods_id==$v.id} -->
+                        <option value="{$v.id}" selected>{$v.name}</option>
+                        <!-- {else/} -->
+                        <option value="{$v.id}">{$v.name}</option>
+                        <!-- {/if} -->
+                        <!-- {/foreach} -->
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">导入方式</label>
+                <div class="col-md-4">
+                    <div class="radio-inline">
+                        <input type="radio" name="import_type" id="import_type1" value="1" checked>
+                        <label for="import_type1">
+                            手动输入
+                        </label>
+                    </div>
+                    <div class="radio-inline">
+                        <input type="radio" name="import_type" id="import_type2" value="2">
+                        <label for="import_type2">
+                            TXT文件导入
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">导入格式</label>
+                <div class="col-md-4">
+                    <select name="split_type" class="form-control">
+                        <option value="0">自动识别</option>
+                        <option value=" ">用“ ”分隔</option>
+                        <option value=",">用“,”分隔</option>
+                        <option value="|">用“|”分隔</option>
+                        <option value="----">用“----”分隔</option>
+                        <option value="">不分隔</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">格式演示</label>
+                <div class="col-md-4">
+                    <p class="form-control-static">AAAAAAAAAAA<span class="card_split" style="color:red"> </span>BBBBBBBBBBBB</p>
+                </div>
+            </div>
+            <div class="form-group import_type_1">
+                <label class="col-md-2 control-label">虚拟卡内容</label>
+                <div class="col-md-4">
+                    <textarea name="content" placeholder="" class="form-control" rows="5"></textarea>
+                </div>
+            </div>
+            <div class="form-group import_type_2" style="display:none">
+                <label class="col-md-2 control-label">虚拟卡内容</label>
+                <div class="col-md-4">
+                    <input type="file" accept="text/plain" name="file" class="dropify" data-max-file-size="100K">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">检查重复卡</label>
+                <div class="col-md-4">
+                    <div class="radio-inline">
+                        <input type="radio" name="check_card" id="check_card1" value="1">
+                        <label for="check_card1">
+                            是
+                        </label>
+                    </div>
+                    <div class="radio-inline">
+                        <input type="radio" name="check_card" id="check_card2" value="0" checked>
+                        <label for="check_card2">
+                            否
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <p class="form-control-static">格式：卡号+空格+密码，一行一张卡<br>如：A1B2C3D4F5E8 9876543210<br>最多一次添加500张(500行)</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label"></label>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary btn-block"><span class="glyphicon glyphicon-floppy-disk">&nbsp;执行导入</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
+
+
+{block name="appendJS"}
+<!-- file uploads js -->
+<script src="__RES__/assets/plugins/fileuploads/js/dropify.min.js"></script>
+<script>
+    $('[name="import_type"]').change(function () {
+        var type = $(this).val();
+        $('.import_type_1').hide();
+        $('.import_type_2').hide();
+        $('.import_type_' + type).fadeIn();
+    });
+    $('[name="split_type"]').change(function () {
+        var type = $(this).val();
+        $('.card_split').text(type);
+    });
+    $('.dropify').dropify({
+        messages: {
+            'default': '拖拽文件至此或点击上传文件',
+            'replace': '拖拽文件至此或点击上传文件',
+            'remove': '取消',
+            'error': '文件大小不能超出100KB'
+        },
+        error: {
+            'fileSize': '文件大小不能超出100KB'
+        }
+    });
+</script>
+{/block}

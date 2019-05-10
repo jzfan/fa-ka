@@ -1,0 +1,67 @@
+{extend name="base/detail"}
+
+{block name="content"}
+<div class="main">
+    <div class="content">
+
+        <ul class="nav nav-tabs">
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li role="presentation" class="active"><a href="javascript:;">通道费率</a></li>
+        </ul><br>
+
+        <table class="table table-hover">
+            <thead>
+                <tr class="active">
+                    <th>支付方式</th>
+                    <th>平台收取</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {foreach $userChannels as $v}
+                <tr class="lightbox" id="record_{$v.channel_id}">
+                    <td>{$v.title}</td>
+                    <td>{$v.rate*100}%</td>
+                    <td id="i{$v.channel_id}">
+                        {if $v.status==1}
+                        <span class="green glyphicon glyphicon-ok-circle" data-toggle="tooltip" title="" data-original-title="正常开通"></span>
+                        {else/}
+                        <span class="red glyphicon glyphicon-remove-circle" data-toggle="tooltip" title="" data-original-title="已关闭"></span>
+                        {/if}
+                    </td>
+                    <td id="t{$v.channel_id}">
+                        {if $v.status==1}
+    				    <button type="button" onclick="op({$v.channel_id},0)" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-cog"></span>&nbsp;关闭</button>
+                        {else/}
+    				    <button type="button" onclick="op({$v.channel_id},1)" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-cog"></span>&nbsp;开启</button>
+                        {/if}
+                    </td>
+                </tr>
+                {/foreach}
+            </tbody>
+        </table>
+
+
+    </div>
+</div>
+{/block}
+
+{block name="appendJS"}
+<script>
+    var op = function(id, t) {
+        $.post('/merchant/user/changeChannelStatus', {
+            id: id,
+            status: t
+        }, function(data) {
+            if (t == 1) {
+                $('td#i' + id).html('<img src="__RES__/merchant/mobile/images/ico_ok.png" title="正常开通">');
+                $('td#t' + id).html('<button type="button" onclick="op(' + id + ',0)" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-cog"></span>&nbsp;关闭</button>');
+            } else {
+                $('td#i' + id).html('<img src="__RES__/merchant/mobile/images/ico_remove.png" title="已关闭">');
+                $('td#t' + id).html('<button type="button" onclick="op(' + id + ',1)" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-cog"></span>&nbsp;开启</button>');
+            }
+        });
+    };
+</script>
+{/block}

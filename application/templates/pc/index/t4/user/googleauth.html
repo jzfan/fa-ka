@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit"/>
+    <title>{block name="title"}{$title|default=''}{if !empty($title)} · {/if}{:sysconf('site_name')}{/block}</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="shortcut icon" href="{:sysconf('browser_icon')}" />
+    <link rel="stylesheet" href="__STATIC__/plugs/awesome/css/font-awesome.min.css?ver={:date('YmdH')}">
+    <link rel="stylesheet" href="__STATIC__/plugs/bootstrap/css/bootstrap.min.css?ver={:date('YmdH')}"/>
+    <link rel="stylesheet" href="__STATIC__/plugs/layui/css/layui.css?ver={:date('YmdH')}"/>
+    <link rel="stylesheet" href="__STATIC__/theme/default/css/console.css?ver={:date('YmdH')}">
+    <link rel="stylesheet" href="__STATIC__/theme/default/css/animate.css?ver={:date('YmdH')}">
+    <link rel="stylesheet" href="__STATIC__/theme/default/css/login.css">
+    <style type="text/css">
+        .login-container .content ul li input.ver_btn {
+            text-align: right;
+            border: none;
+            color: #f4f4f4;
+            height: 38px;
+            line-height: 38px;
+            margin: 0;
+            z-index: 1;
+            position: relative;
+            float: right;
+            background: #48bca5;
+            padding:0 20px;
+        }
+    </style>
+
+    <script src="__STATIC__/plugs/echarts/echarts.min.js?ver={:date('YmdH')}"></script>
+    <script src="__STATIC__/plugs/require/require.js?ver={:date('YmdH')}"></script>
+    <script src="__STATIC__/admin/app.js?ver={:date('YmdH')}"></script>
+    <script>window.ROOT_URL='__PUBLIC__';</script>
+</head>
+<body>
+<div class="login-container full-height">
+
+    <!-- 动态云层动画 开始 -->
+    <div class="clouds-container">
+        <div class="clouds clouds-footer"></div>
+        <div class="clouds"></div>
+        <div class="clouds clouds-fast"></div>
+    </div>
+    <!-- 动态云层动画 结束 -->
+
+    <!-- 顶部导航条 开始 -->
+    <div class="header">
+        <span class="title notselect">
+            欢迎登录 {:sysconf('app_name')} <sup>{:sysconf('app_version')}</sup>
+        </span>
+        <ul>
+            <!--<li class="notselect"><a href="javascript:void(0)" target="_blank">帮助</a></li>-->
+            <li class="notselect">
+                <a href="http://sw.bos.baidu.com/sw-search-sp/software/4bcf5e4f1835b/ChromeStandalone_54.0.2840.99_Setup.exe">
+                    <b>推荐使用谷歌浏览器</b>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- 顶部导航条 结束 -->
+
+    <!-- 页面表单主体 开始 -->
+    <div class="container" style="top:50%;margin-top:-300px">
+        <form onsubmit="return false;" data-time="0.001" data-auto="true" method="post"
+              class="content layui-form animated fadeInDown" style="background: #fff;top: 30px;width: 400px;{eq name="google_token" value=""}height: 520px;{else}height: 320px;{/eq}">
+        <input name="action_type" type="hidden" value="{$action_type}">
+        <ul style="width: 320px;padding-top: 30px;margin:0 auto;">
+            <li style="text-align:center;">
+                <img src="__STATIC__/admin/Authenticator.png" width="50">
+            </li>
+            {eq name="google_token" value=""}
+            <li style="text-align:center;margin-bottom: 15px;">
+                <span style="color:red">手机打开Google Authenticator(谷歌身份验证器)，扫码二维码开启登录两步验证</span>
+            </li>
+            <li style="text-align:center;">
+                <img src="{$qrCodeUrl}" width="150px">
+            </li>
+            <li style="text-align:center;margin-bottom: 15px;margin-top:15px;">
+                不能扫码？点击<a href="javascript:;" id="showkey">查看密钥</a>手动输入
+            </li>
+            <li style="margin-bottom: 0;">
+                <input required="required" pattern="^\S{6,}$" value="" name="code"
+                       type="text" autocomplete="off" class="login-input captcha"
+                       title="请输入验证码" placeholder="请输入验证码" style="width:100%"/>
+                <div style="clear:both"></div>
+            </li>
+            <li class="text-center">
+                <button type="submit" class="layui-btn layui-disabled" data-form-loaded="立 即 绑 定">正 在 载 入</button>
+            </li>
+            {else}
+            <li style="text-align:center;margin-bottom: 15px;">
+                <span style="color:red">手机打开Google Authenticator(谷歌身份验证器)，查看验证码</span>
+            </li>
+            <li style="margin-bottom: 0;">
+                <input required="required" pattern="^\S{6,}$" value="" name="code"
+                       type="text" autocomplete="off" class="login-input captcha"
+                       title="请输入身份验证码" placeholder="请输入身份验证码" style="width:100%"/>
+                <div style="clear:both"></div>
+            </li>
+            <li>
+                <input name='captcha_code' class="hide"/>
+                <input  pattern="^\S{4,}$" value="" name="captcha_code"
+                        type="text" autocomplete="off" class="login-input captcha"
+                        title="请输入图形验证码" placeholder="请输入图形验证码"/>
+                <img src="{:url("admin/login/verifycode",['t'=>time()])}" title="点击更换" alt="captcha" class="captcha_img" id="captcha_img" onclick="changeCode()"/>
+                <div style="clear:both"></div>
+            </li>
+            <li class="text-center">
+                <button type="submit" class="layui-btn layui-disabled" data-form-loaded="立 即 验 证">正 在 载 入</button>
+                &nbsp;&nbsp;&nbsp;<a href="{:url("admin/auth/resetGoogle")}">找不回验证码？重新绑定</a>
+            </li>
+            {/eq}
+        </ul>
+        </form>
+    </div>
+    <!-- 页面表单主体 结束 -->
+
+    <!-- 底部版权信息 开始 -->
+    {if sysconf('site_copy')}
+    <div class="footer notselect">{:sysconf('site_copy')}</div>
+    {/if}
+    <!-- 底部版本信息 结束 -->
+
+</div>
+<script>
+    if (window.location.href.indexOf('#') > -1) {
+        window.location.href = window.location.href.split('#')[0];
+    }
+    require(['jquery'], function ($) {
+
+    });
+    function changeCode() {
+        $("#captcha_img").attr("src",'{:url("admin/login/verifycode")}?t='+parseInt(40*Math.random()));
+    };
+</script>
+<script>
+    {eq name="google_token" value=""}
+    require(['jquery'], function ($) {
+        $('#showkey').click(function(){
+            alert("{$secret}");
+        })
+    });
+    {/eq}
+</script>
+</body>
+</html>

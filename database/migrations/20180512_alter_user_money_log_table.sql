@@ -1,0 +1,2 @@
+/* business_type 增加 freeze、unfreeze 类型 */
+alter table `user_money_log` change column `business_type` `business_type` enum('sub_sold_rebate','sub_fee_rebate','cash_notpass','cash_success','apply_cash','admin_dec','admin_inc','goods_sold','fee','sub_register', 'freeze', 'unfreeze') NOT NULL;

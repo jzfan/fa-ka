@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{:sysconf('site_name')}{:sysconf('site_subtitle')}</title>
+    <meta name="keywords" content="{:sysconf('site_keywords')}" />
+    <meta name="description" content="{:sysconf('site_desc')}" />
+    <link rel="shortcut icon" href="{:sysconf('browser_icon')}" />
+    <!-- Bootstrap -->
+    <link href="__RES__/app/default/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="__RES__/app/default/css/font-awesome.min.css">
+    <link rel="stylesheet" href="__RES__/app/default/vendors/themify-icon/themify-icons.css">
+    <link rel="stylesheet" href="__RES__/app/default/vendors/owl-carousel/owl.carousel.min.css">
+    <link rel="stylesheet" href="__RES__/app/default/vendors/owl-carousel/animate.css">
+    <!--custom css-->
+    <link rel="stylesheet" href="__RES__/app/default/css/style.css">
+    <link rel="stylesheet" href="__RES__/app/default/css/responsive.css">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        input, button, select, textarea{
+            line-height: normal;
+        }
+    </style>
+</head>
+<body data-spy="scroll" data-target="#bs-example-navbar-collapse-1" data-offset="100">
+{include file="./default_header"}
+<section class="shop_banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-7 hero_text">
+                <h2 class="hero_title">全新发卡体验</h2>
+                <p> 加入我们，打开你的成功之门! </p>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="user-login">
+<div class="user_form">
+    <form role="form" method="post" action="/login/userlogin">
+    <input type="hidden" name="__token__" value="{$Request.token}" />
+    <div class="user_tab"><ul><li class="actived"><a href="/login">登录</a></li><li><a href="/register">注册</a></li></ul></div>
+    <div class="clear"></div>
+        <div class="user_input"><i class="iconfont icon-gerenzhongxin"></i><input type="text" name="username" placeholder="输入用户名"></div>
+        <div class="user_input"><i class="iconfont icon-mima"></i><input type="password" name="password" placeholder="输入您的密码"></div>
+    <button type="submit">登 录</button>
+    <a href="/login/retpwd" class="right_link">忘记密码？</a>
+</div>
+
+</section>
+{include file="./default_footer"}
+
+
+<script src="__RES__/app/default/js/jquery-2.2.1.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="__RES__/plugs/bootstrap/js/bootstrap.min.js"></script>
+<script src="__RES__/app/default/vendors/owl-carousel/owl.carousel.min.js"></script>
+<script src="__RES__/app/default/vendors/owl-carousel/owl.carousel.min.js"></script>
+<script src="__RES__/app/default/js/wow.js"></script>
+<script src="__RES__/app/default/js/custom.js"></script>
+</body>
+</html>

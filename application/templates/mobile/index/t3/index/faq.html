@@ -1,0 +1,364 @@
+{extend name="./main"}
+
+{block name="CSS"}
+{/block}
+
+{block name="content"}
+<!--中间内容start-->
+<div class="newmianboady" style="">
+
+	<style>
+		.ymm-helpbg {
+			width: 100%;
+			background-color: #070a30;
+		}
+
+		.ymm-help-bg {
+			width: 100%;
+			background-repeat: no-repeat;
+			background-size: cover;
+			overflow: hidden;
+			color: #fff;
+			max-width: 1400px;
+			margin: 0 auto;
+			min-height: 150px;
+			background-position: center center;
+			height: 230px;
+			line-height: 230px;
+			font-size: 30px;
+			background-image: url("style/helpcenter.jpg");
+		}
+
+		.ymm-down-con > p:nth-child(1) {
+			color: #222222;
+		}
+
+		.ymm-down-con > p:nth-child(2) {
+			color: #666666;
+		}
+
+		a:hover {
+			color: #098fe6;
+		}
+		@media only screen and (min-width: 768px) {
+			.zz-content-800 {
+				width: 800px;
+				margin: 0 auto;
+				padding: 0 30px
+			}
+
+			.ymm-help-r {
+				width: 970px;
+				margin-left: 10px;
+				min-height: 312px;
+				background: #fff;
+			}
+
+			.ymm-help-con {
+				width: 100%;
+				margin: 20px auto 0;
+			}
+			.ymm-down-con {
+				padding-top: 70px;
+				padding-bottom: 70px;
+			}
+
+			.zz-banner-name {
+				/*width: 30%;*/
+				float: left;
+				height: 230px;
+				line-height: 230px;
+				font-size: 30px;
+				text-align: right;
+			}
+			.ymm-help-bot {
+				margin-left: 30px;
+				margin-top: 20px;
+				min-height: 211px;
+				padding-bottom: 20px;
+				padding-right: 25px;
+			}
+		}
+
+		@media only screen and (max-width: 768px) {
+			.zz-content-800{
+				width:100%;
+				padding: 0 30px;
+			}
+
+			.ymm-help-r {
+				width: 100%;
+				margin-left: 10px;
+				min-height: 312px;
+				background: #fff;
+				padding-right:25px;
+			}
+			.ymm-help-con {
+				width: 100%;
+				margin: 20px auto 0;
+			}
+			.ymm-down-con {
+				padding-top: 70px;
+				padding-bottom: 70px;
+			}
+
+			.zz-banner-name {
+				/*width: 30%;*/
+				float: left;
+				height: 90px;
+				line-height: 90px;
+				font-size: 20px;
+				text-align: right;
+			}
+			.zz-banner-img {
+				display: none;
+			}
+			.ymm-help-bot {
+				margin-left: 18px;
+				margin-top: 20px;
+				min-height: 211px;
+				padding-bottom: 20px;
+			}
+		}
+		.ymm-down-con > p:nth-child(1) {
+			margin-bottom: 25px;
+			font-size: 18px;
+		}
+
+		.ymm-down-con > p:nth-child(2) {
+			font-size: 14px;
+		}
+
+		.ymm-down-con > a {
+			margin-top: 25px;
+		}
+
+
+
+		.ymm-help-l {
+			width: 220px;
+			text-align: center;
+			background: #fff;
+			box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.08);
+		}
+
+		.ymm-help-list > li:hover {
+			cursor: pointer;
+		}
+
+		.ymm-help-list > li > span {
+			width: 200px;
+			height: 35px;
+			margin: 12px auto 3px;
+			line-height: 35px;
+			display: inline-block;
+			border-radius: 4px;
+		}
+
+		.ymm-help-list > li:hover span {
+			background: #edf0f0;
+		}
+
+		.ymm-list-active > span {
+			background: #edf0f0;
+		}
+
+		.ymm-help-top {
+			height: 60px;
+			line-height: 60px;
+			border-bottom: 1px solid #E8E8E8;
+			padding-left: 30px;
+		}
+
+		.ymm-help-top > a {
+			font-size: 14px;
+			color: #666;
+		}
+
+		.ymm-help-top > a:hover {
+			color: #098fe6;
+		}
+
+		.ymm-help-top > a:last-child:hover {
+			color: #666;
+			text-decoration: none;
+			cursor: default;
+		}
+
+
+		.ymm-answer li {
+			margin-bottom: 20px;
+		}
+
+
+		.ymm-help-question li {
+			margin-bottom: 20px;
+		}
+
+		.ymm-help-question li:hover {
+			color: #098fe6;
+			cursor: pointer;
+			text-decoration: underline;
+		}
+
+		.ymm-answer > ul > li > p:first-child {
+			font-size: 14px;
+			margin-bottom: 10px;
+			font-weight: 600;
+		}
+
+		.ymm-answer > ul > li > p:nth-child(2) {
+			font-size: 13px;
+			line-height: 23px;
+			margin-right: 30px;
+		}
+
+		table {
+			width: 910px;
+			margin-top: 20px;
+			border: solid #dcdcdc;
+			text-align: center;
+			border-width: 1px 0 0 1px;
+		}
+
+		td, th {
+			border: solid #dcdcdc;
+			border-width: 0 1px 1px 0;
+			text-align: center;
+		}
+
+		table > thead {
+			background: #ebecf0;
+		}
+
+		table > thead > tr > th:nth-child(1), table > thead > tr > th:nth-child(2), table > thead > tr > td:nth-child(1), table > thead > tr > td:nth-child(2) {
+			width: 150px;
+		}
+
+		th {
+			height: 60px;
+		}
+
+		td {
+			padding: 20px;
+		}
+
+		td:last-child {
+			text-align: left;
+		}
+
+		.ymm-a {
+			margin-top: 10px;
+			color: #098fe6;
+			cursor: pointer;
+			text-decoration: underline;
+			display: inline-block;
+		}
+
+		.ymm-help-list {
+			padding-bottom: 12px;
+		}
+
+		.ymm-help-top > .ymm-noclick:hover {
+			color: #999;
+			text-decoration: none;
+			cursor: default;
+		}
+
+		.ymm-help-top > .ymm-noclick {
+			color: #999;
+
+		}
+
+		.ymm-help-top > a:nth-child(3) {
+			color: #999;
+		}
+
+		.ymm-help-top > a:nth-child(3):hover {
+			color: #999;
+		}
+
+		.saas-body {
+			margin: 0px 0;
+
+		}
+
+		a:link {
+			text-decoration: none;
+		}
+
+		ul.nav.navbar-nav.dzz-navbar-nav li:nth-child(6) a {
+			color: #f45153;
+		}
+
+		.table-title {
+			margin-top: 30px;
+			font-weight: 600;
+			font-size: 13px;
+		}
+
+
+		.zz-banner-img {
+			/*width: 70%;*/
+			float: right;
+
+		}
+
+		.zz-banner-img img {
+			display: block;
+			vertical-align: middle;
+			width: 380.5px;
+
+			margin: 34.5px auto 0;
+		}
+
+		.zz-borderT {
+			border-top: 1px solid #f3f3f3;
+		}
+	</style>
+
+
+	<div class="zz-content-800 clearfix">
+		<div class="zz-banner-name">
+			常见问题
+		</div>
+		<div class="zz-banner-img">
+			<img src="__RES__/app/t3/image/bangzhuzhongxin.png" alt="">
+		</div>
+	</div>
+	<div class="zz-borderT"></div>
+	<div class="ymm-help-con float-clear">
+
+		<div class="ymm-help-r" style="width:auto">
+			<div class="ymm-help-bot">
+				<div class="ymm-answer">
+					<ul class="ymm-sign">
+						{foreach $articles as $v}
+						<li>
+							<p>{$v.title} </p>
+							<p>{$v.content|htmlspecialchars_decode}</p>
+						</li>
+						{/foreach}
+					</ul>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="ymm-help-down txt-c">
+		<div class="ymm-down-con">
+			<p>没有找到答案 ?</p>
+			<p>您可以联络我们获取更多信息</p>
+			<a class="common-btn-back"
+			   href="/company/contact">联系我们</a>
+		</div>
+	</div>
+
+</div>
+<!--中间内容end-->
+{/block}
+{block name="appendJS"}
+<script src="__RES__/app/t2/js/faq.js"></script>
+<script src="__RES__/app/t2/js/sidebar.js"></script>
+<script src="__RES__/app/t2/js/style-switcher.js"></script>
+{/block}

@@ -1,0 +1,154 @@
+{extend name="base"}
+
+{block name="content"}
+<div class="row">
+	<div class="col-sm-12">
+		<div class="card-box">
+			<div class="row">
+				<div class="col-sm-6">
+					<form class="form-inline" role="form" action="" method="get">
+	                    <div class="form-group">
+							<select name="cate_id" class="form-control">
+								<option value="" {if $Think.get.cate_id==''}selected{/if}>全部分类</option>
+								{foreach $categorys as $v}
+								<option value="{$v.id}" {if $Think.get.cate_id==$v.id}selected{/if}>{$v.name}</option>
+								{/foreach}
+							</select>
+	                    </div>
+	                    <div class="form-group">
+							<input name="name" type="text" class="form-control" placeholder="商品名" value="{$Think.get.name|default=''}">
+	                    </div>
+						<button type="submit" class="btn btn-purple waves-effect waves-light"><i class="fa fa-search"></i> 搜索</button>
+	                </form>
+				</div>
+				<div class="col-sm-6">
+					<a href="javascript:batch_restore();" class="pull-right btn btn-danger" style="margin-right: 10px;">批量恢复</a>
+				</div>
+			</div>
+			<!-- end row -->
+
+			<div class="row">
+				<table class="table table-striped m-0">
+					<thead>
+						<tr>
+							<th><input type="checkbox" id="select_all"></th>
+							<th>商品分类</th>
+							<th>排序</th>
+							<th>商品名称</th>
+							<th>价格</th>
+							<th>创建时间</th>
+							<th>删除时间</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						{foreach $goodsList as $v}
+						<tr>
+							<td><input type="checkbox" name="good_id" value="{$v.id}"></td>
+							<td>{$v.category.name|default="未分类"}</td>
+							<td>{$v.sort}</td>
+							<th scope="row">{$v.name}
+								{if $v.wholesale_discount==1}
+								<span class="label label-success">批</span>
+								{/if}
+								{if $v.coupon_type==1}
+								<span class="label label-pink">券</span>
+								{/if}
+								{if $v.take_card_type!=0}
+								<span class="label label-primary">取</span>
+								{/if}
+								{if $v.visit_type==1}
+								<span class="label label-danger">密</span>
+								{/if}
+							</th>
+							<td>{$v.price}</td>
+							<td>{$v.create_at|date="Y-m-d H:i:s",###}</td>
+							<td>{$v.delete_at|date="Y-m-d H:i:s",###}</td>
+							<td>
+								<a href="/merchant/goods/edit?id={$v.id}">编辑</a>
+								<span>|</span>
+								<a href="javascript:void(0);" onclick="restore(this,{$v.id})">恢复</a>
+							</td>
+						</tr>
+						{/foreach}
+					</tbody>
+				</table>
+			</div>
+
+			<!-- end row -->
+		</div>
+		{$page}
+	</div>
+</div>
+{/block}
+
+{block name="appendJS"}
+
+<script>
+	$('#select_all').click(function(){
+		if($(this).is(':checked')){
+			$('tbody').find('input[type="checkbox"]').each(function(){
+				$(this).prop("checked", true)
+			})
+		}else{
+			$('tbody').find('input[type="checkbox"]').each(function(){
+				$(this).prop("checked", false)
+			})
+		}
+	})
+
+	function restore(obj,id)
+	{
+		swal({
+			title: "确定恢复吗？",
+			text: "",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "确定恢复！",
+			closeOnConfirm: false
+		},
+		function(){
+			$.post('/merchant/goods/restore',{
+				id:id
+			},function(res){
+				if(res.code!=0){
+					swal('恢复失败', res.msg, "error");
+				}else{
+					swal('恢复成功', '', "success");
+					setTimeout(function(){
+						location.reload();
+					},200);
+				}
+			});
+		});
+	}
+
+	function batch_restore(){
+		var ids = new Array();
+		$('tbody').find('input[name="good_id"]').each(function(){
+			if($(this).is(':checked')){
+				ids.push($(this).val());
+			}
+		})
+		if(ids.length == 0){
+			swal('选择要恢复的数据', '', "error");
+			return false;
+		}
+		$.post('/merchant/goods/batch_restore',{
+			ids:ids
+		},function(res){
+			if(res.code!=0){
+				swal('恢复失败', res.msg, "error");
+			}else{
+				swal('恢复成功', '', "success");
+				setTimeout(function(){
+					location.reload();
+				},200);
+			}
+		});
+		console.log(ids);
+	}
+</script>
+
+{/block}

@@ -1,0 +1,119 @@
+{extend name="base/detail"}
+
+{block name="content"}
+<div class="main">
+    <div class="content">
+
+        <ul class="nav nav-tabs">
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li role="presentation" class="active"><a href="javascript:;">优惠券</a></li>
+        </ul><br>
+
+        <form name="search" method="get" action="">
+            <div class="form-group">
+                商品分类：
+                <select name="cate_id" class="form-control">
+                    <option value="" {if $Think.get.goods_id==''}selected{/if}>全部分类</option>
+                    {foreach $categorys as $v}
+                    <option value="{$v.id}" {if $Think.get.cate_id==$v.id}selected{/if}>{$v.name}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <div class="form-group">
+                状态：
+                <select name="status" class="form-control">
+                    <option value="" {if $Think.get.status==''}selected{/if}>全部状态</option>
+                    <option value="1" {if $Think.get.status=='1'}selected{/if}>未使用</option>
+                    <option value="2" {if $Think.get.status=='2'}selected{/if}>已使用</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block"><span class="glyphicon glyphicon-search"></span>&nbsp;立即查询</button>
+                <a class="btn btn-success btn-block" href="/merchant/goods_coupon/add"><span class="glyphicon glyphicon-file"></span>&nbsp;生成优惠券</a>
+            </div>
+                <br>
+
+                <form name="d" method="post" action="/coupon/delall">
+                    <div class="mt10">
+                        {foreach $coupons as $v}
+                        <div class="selltable">
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr id="record_{$v.id}">
+                                        <!-- <td><input type="checkbox" class="checkbox" name="listid[]" value="{$v.id}"></td> -->
+                                        <td colspan="2">{$v.code}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>适用产品：<span class="blue">{if $v.cate_id==0}全部{else/}{$v.category.name}{/if}</span></td>
+                                        <td>面值：{$v.amount}{if $v.type==1}元{else/}%{/if}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>生成时间：{$v.create_at|date="Y-m-d H:i:s",###}</td>
+                                        <td>到期时间：<span class="label label-danger">{$v.expire_day}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">备注：{$v.remark}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        {/foreach}
+
+                        <!-- <div class="col-md-1">
+                            <input type="checkbox" class="selectAllCheckbox">
+                            <button type="submit" onclick="if(!confirm('确定要删除优惠券吗？'))return false" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> 删除</button>
+                        </div> -->
+                    </div>
+                </form>
+                <div>
+
+                    <style>
+                        #wypage {
+                            font-size: 12px;
+                            padding: 10px auto;
+                            margin-left: 0px;
+                        }
+
+                        #wypage p {
+                            float: left;
+                            color: #333;
+                        }
+
+                        #wypage a {
+                            float: left;
+                            display: inline-block;
+                            border: 1px solid #ddd;
+                            padding: 6px 9px;
+                            margin-left: 4px;
+                            text-decoration: none;
+                            color: #333;
+                            background-color: #fff;
+                            border-radius: 0px;
+                        }
+
+                        #wypage a:hover {
+                            background-color: #248eff;
+                            color: #fff
+                        }
+
+                        #wypage a.no-hover:hover {
+                            color: #333
+                        }
+
+                        #wypage a.wy_page_current {
+                            background-color: #06a7ff;
+                            color: #fff
+                        }
+                    </style>
+                    <form class="form-inline">
+                        {$page}
+                    </form>
+                </div><br>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
+
+{block name="appendJS"}
+{/block}

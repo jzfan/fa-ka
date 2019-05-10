@@ -1,0 +1,147 @@
+{extend name="base/detail"}
+
+{block name="content"}
+<div class="main">
+    <div class="content">
+        <ul class="nav nav-tabs">
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li role="presentation" class="active"><a href="javascript:;">商品分类</a></li>
+        </ul><br>
+
+            <div class="mt10">
+                {foreach $categorys as $v}
+                <div class="selltable">
+                    <table class="table table-hover">
+                        <tbody>
+                            <tr id="record_{$v.id}">
+                                <td>分类名称：<input type="text" name="catename_{$v.id}" class="form-control" value="{$v.name}" maxlength="50">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>分类排序：<input type="text" name="sortid_{$v.id}" class="form-control" maxlength="4" value="{$v.sort}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">分类管理：
+                                    <a href="/merchant/goods_category/edit?id={$v.id}&amp;do=search">编辑</a>&nbsp;
+                                    <a href="javascript:void(0)" onclick="showContent({$v.id})" class="red">链接</a>&nbsp;
+                                    <a href="/merchant/goods/index?cate_id={$v.id}&amp;do=search">商品</a>&nbsp;
+                                    <a href="/merchant/goods_card/index?cate_id={$v.id}&amp;do=search">库存卡</a>&nbsp;
+                                    <a href="javascript:void(0)" onclick="delData({$v.id})" data-toggle="tooltip" title="删除分类"><span class="glyphicon glyphicon-trash"></span></a>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                {/foreach}
+                <form name="cate" method="post" action="{:url('add')}">
+                    <div class="selltable">
+                        <a name="add"></a>
+                        <table class="table table-hover">
+                            <tbody>
+                                <tr id="addNewCate">
+                                    <td>分类名称：<input type="text" name="name" class="form-control" maxlength="50"></td>
+                                </tr>
+                                <tr>
+                                    <td>分类排序：<input type="text" name="sort" class="form-control" maxlength="4" value="0"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;添加分类</button><br>
+                </form>
+
+            </div>
+
+            <div>
+
+                <style>
+                    #wypage {
+                        font-size: 12px;
+                        padding: 10px auto;
+                        margin-left: 0px;
+                    }
+
+                    #wypage p {
+                        float: left;
+                        color: #333;
+                    }
+
+                    #wypage a {
+                        float: left;
+                        display: inline-block;
+                        border: 1px solid #ddd;
+                        padding: 6px 9px;
+                        margin-left: 4px;
+                        text-decoration: none;
+                        color: #333;
+                        background-color: #fff;
+                        border-radius: 0px;
+                    }
+
+                    #wypage a:hover {
+                        background-color: #248eff;
+                        color: #fff
+                    }
+
+                    #wypage a.no-hover:hover {
+                        color: #333
+                    }
+
+                    #wypage a.wy_page_current {
+                        background-color: #06a7ff;
+                        color: #fff
+                    }
+                </style>
+            </div><br><br>
+    </div>
+</div>
+{/block}
+
+{block name="appendJS"}
+<script>
+
+    var showContent=function(id){
+        layer.open({
+            type: 2,
+            title: '商品分类链接',
+            shadeClose: true,
+            shade: 0.3,
+            area: ['90%', '90%'],
+            content: '/merchant/goods_category/link?id='+id+'' //iframe的url
+        });
+    };
+
+
+    function delData(id){
+        layer.confirm('确定要删除此商品分类？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            $.get('/merchant/goods_category/del',{id:id},function(res){
+				if(res.code==0){
+                    layer.msg('删除成功', {icon: 1});
+					setTimeout(function(){
+						location.reload();
+					},200);
+                } else {
+                    layer.msg(res.msg, {icon: 2});
+					setTimeout(function(){
+						location.reload();
+					},2000);
+                }
+            });
+        });
+    }
+
+    $('button').click(function(){
+        var catename=$.trim($('[name=name]').val());
+        if(catename==''){
+            layer.msg('分类名称不得为空',{icon:2});
+            $('[name=name]').focus();
+            return false;
+        };
+        $('#add').submit();
+    });
+</script>
+{/block}

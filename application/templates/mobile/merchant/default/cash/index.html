@@ -1,0 +1,47 @@
+{extend name="base/detail"}
+
+{block name="content"}
+<div class="main">
+    <div class="content">
+
+        <ul class="nav nav-tabs">
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li role="presentation" class="active"><a href="javascript:;">提现列表</a></li>
+        </ul><br>
+        {foreach $cashs as $v}
+        <div class="mt20">
+			<div class="selltable">
+				<table class="table table-hover ">
+					<tbody>
+						<tr>
+							<td>提现时间：{$v.create_at|date="Y-m-d H:i:s",###}</td>
+						</tr>
+						<tr>
+							<td>提现金额：{$v.money}</td>
+						</tr>
+						<tr>
+							<td>手续费：{$v.fee}</td>
+						</tr>
+						<tr>
+							<td>实际到账：{$v.actual_money}</td>
+						</tr>
+						<tr>
+							<td>结算状态：{switch name="v.status"}
+								{case value="0"}审核中{/case}
+								{case value="1"}提现成功{/case}
+								{case value="2"}审核未通过{/case}
+								{/switch}</td>
+						</tr>
+						<tr>
+							<td>结算时间：{if $v.status==1}{$v.complete_at|date="Y-m-d H:i:s",###}{/if}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+        {/foreach}
+    </div>
+</div>
+{/block}
+{block name="appendJS"}
+{/block}

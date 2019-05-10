@@ -1,0 +1,69 @@
+{extend name="base"}
+
+{block name="content"}
+<script src="__RES__/app/js/clipboard.js"></script>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="card-box">
+			<div class="row">
+				<div class="col-lg-12 m-b-30">
+                    <h4 class="header-title m-t-0">1、系统单一支付地址</h4>
+					<a href="{$_user.link}" target="_blank">{$_user.link}</a> <a href="javascript:;" class="btn btn-purple waves-effect waves-light clipboard" data-clipboard-text="{$_user.link}">复制链接</a>
+					<p class="form-control-static">商品和分类的独立链接请在商品分类和商品列表中获取</p>
+					<br>
+
+					<h4 class="header-title m-t-0">2、店铺开启或关闭</h4>
+					<p class="form-control-static">用户访问店铺购卡页面则变成店铺关闭提示页面
+						{if $_user.is_close == 1}
+                        <a href="{:url('user/closeshop')}?status=0" class="btn btn-purple waves-effect waves-light">开启店铺</a>
+						{else}
+						<a href="{:url('user/closeshop')}?status=1" class="btn btn-purple waves-effect waves-light">关闭店铺</a>
+						{/if}
+                    </p>
+					<br>
+
+					{if sysconf('site_domain_short')!==''}
+                    <h4 class="header-title m-t-0">3、短网址</h4>
+					<a href="{$_user.short_link}" target="_blank">{$_user.short_link}</a> <a href="javascript:;" class="btn btn-purple waves-effect waves-light clipboard" data-clipboard-text="{$_user.short_link}">复制链接</a>
+					{/if}
+					<br>
+					<br>
+
+					{if $_user.link_status==1}
+					<a href="{:url('user/closelink')}?type=links&status=0" class="btn btn-purple waves-effect waves-light">关闭链接</a>
+					{else/}
+					<a href="{:url('user/closelink')}?type=links&status=1" class="btn btn-purple waves-effect waves-light">开启链接</a>
+					{/if}
+					<a href="{:url('user/relink')}?type=links" class="btn btn-purple waves-effect waves-light">重置链接</a>
+				</div>
+				<!-- end col -->
+				<div class="col-lg-12">
+                    <h4 class="header-title m-t-0">4、二维码地址</h4>
+					<img src="{:generate_qrcode_link($_user.link)}" alt="">
+				</div>
+				<!-- end col -->
+			</div>
+			<!-- end row -->
+		</div>
+	</div>
+	<!-- end col -->
+</div>
+{/block}
+
+{block name="appendJS"}
+<script>
+    // button的class的值
+    var clipboard = new ClipboardJS('.btn');
+    clipboard.on('success', function(e) {
+        layer.msg('链接复制成功！', {
+            icon: 1
+        });
+    });
+
+    clipboard.on('error', function(e) {
+        layer.msg('链接复制失败，请手动复制！', {
+            icon: 2
+        });
+    });
+</script>
+{/block}

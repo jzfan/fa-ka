@@ -1,0 +1,63 @@
+{extend name="./main"}
+
+{block name="CSS"}
+<style>
+    .buy_info>p {
+        color: #666;
+        margin-bottom: 20px;
+    }
+
+    .buy_info>p>span {
+        color: orangered;
+    }
+</style>
+{/block}
+
+{block name="content"}
+<div class="user_form buy_info">
+    <div class="user_tab">
+        <ul>
+            <li class="actived" style="width: 100%;margin-bottom: 30px"><a style="cursor: none">{$channel['title']}</a></li>
+        </ul>
+    </div>
+    <p>订单号码：{$order.trade_no}</p>
+    <p>付款金额：<span>{$order.total_price}</span>元</p>
+    {eq name="is_qpay" value="1"}
+    <p align="center" style="font-size: 16px;color:orangered;margin-bottom: 0;">请支付上方所显示的金额，否则订单支付失败！</p>
+    {/eq}
+    <p align="center" style="font-size: 14px">
+        <div id="qrcode" style="margin: 0 auto;width: 210px;"></div>
+        <!--<img src="{:generate_qrcode_link($order.pay_url)}" width="210px" height="210px">-->
+    </p>
+    <p align="center" style="font-size: 14px"><span>请扫描二维码支付。</span><br></p>
+</div>
+{/block}
+
+{block name="appendJS"}
+<script src="__RES__/app/js/qrcode.min.js"></script>
+<script>
+    function oderquery(t) {
+        var orderid = '{$order.trade_no}';
+        $.post('/pay/getOrderStatus', {
+            orderid: orderid,
+            token: "{$token}"
+        }, function (ret) {
+            if (ret == 1) {
+                $('#msgContent p').html('请稍候，正在处理付款结果...');
+                window.location.href = '/orderquery?orderid=' + orderid;
+            }
+        });
+        t = t + 1;
+        setTimeout('oderquery(' + t + ')', 3000);
+    }
+    setTimeout('oderquery(1)', 3000);
+    var qrcode = new QRCode(document.getElementById("qrcode"), {
+        text: "{$order.pay_url}",
+        width: 210,
+        height: 210,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+    });
+</script>
+{/block}
