@@ -1,0 +1,58 @@
+<style>
+@media (max-width: 780px){
+	.col-lg-3{
+		float:left;
+	}
+	.main_menu_area_one.affix .menu_logo{    line-height: 61px;}
+	.main_menu_area_one .menu_logo img{max-width: 115px;}
+}
+</style>
+<header class="main_menu_area_one header" data-spy="affix" data-offset-top="100">
+    <div class="col-md-3 col-lg-3">
+        <div class="menu_logo">
+            <a href="/"><img src="{:sysconf('site_logo')}" alt="logo"></a>
+        </div>
+    </div>
+    <div class="col-md-7 col-lg-6">
+        <nav class="navbar navbar-default">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html"><img src="{:sysconf('site_logo')}" alt="logo" style="width:50%;margin:0 auto"></a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav menu">
+
+                    {volist name="nav" id="vo"}
+                    <li class="dropdown submenu">
+                        <a  class="dropdown-toggle" href="{$vo.url}" {eq name="vo.target" value="1"}target="_blank"{/eq}>{$vo.title}</a>
+                    </li>
+                    {/volist}
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="col-md-2 col-lg-3">
+        <div class="right-icon">
+            <ul class="nav navbar-nav navbar-right">
+                {if session('?merchant.user')}
+
+                <li class="nav-item dropdown submenu mobile-shop logon-btn">
+                    <a class="dropdown-toggle" href="/merchant"> <span class="btn thm-btn green_btn">商户中心</span></a>
+                </li>
+                <li  class="search_btnreg-btn"><a href="/logout"> <span>退出</span></a></li>
+                {else}
+                <li class="nav-item dropdown submenu mobile-shop logon-btn">
+                    <a class="dropdown-toggle" href="/login"> <span class="btn thm-btn green_btn">登录</span></a>
+                </li>
+                <li class="search_btn reg-btn"><a class="dropdown-toggle" href="/register"> <span>注册</span></a></li>
+                {/if}
+            </ul>
+        </div>
+    </div>
+</header>

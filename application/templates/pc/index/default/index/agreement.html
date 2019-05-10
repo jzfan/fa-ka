@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>{:sysconf('site_name')}{:sysconf('site_subtitle')}</title>
+    <meta name="keywords" content="{:sysconf('site_keywords')}" />
+    <meta name="description" content="{:sysconf('site_desc')}" />
+    <link rel="shortcut icon" href="{:sysconf('browser_icon')}" />
+    <link rel="stylesheet" href="__RES__/app/t3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="__RES__/app/t3/css/reset.css">
+    <link rel="stylesheet" href="__RES__/app/t3/css/common.css">
+    <link rel="stylesheet" href="__RES__/app/t3/css/friendlyprompt.css">
+    <script src="__RES__/app/t3/js/friendlyprompt.js"></script>
+    <script src="__RES__/app/t3/js/jquery.min.js"></script>
+    <script src='__RES__/app/t3/js/bootstrap.min.js'></script>
+    <script src='__RES__/app/t3/js/public.js'></script>
+    <link rel="stylesheet" href="__RES__/app/t3/css/head_footer.css">
+    <link rel="stylesheet" href="__RES__/app/t3/css/numscroll.css">
+    <link rel="stylesheet" href="__RES__/app/t3/css/ymmindex.css">
+    <link rel="stylesheet" href="__RES__/app/t3/css/swiper.min.css">
+    <link rel="stylesheet" href="__RES__/app/t3/css/newbanner.css">
+
+    <link rel="stylesheet" href="__RES__/app/t3/css/consulting.css">
+    <link rel="stylesheet" href="__RES__/app/t3/css/contatusFooter.css">
+    <link rel="stylesheet" href="__RES__/app/css/iconfont.css">
+    <script src='__RES__/app/t3/js/main.js'></script>
+    <script src='__RES__/app/t3/js/proconsulting.js'></script>
+
+    <script src='__RES__/app/t3/js/swiper.min.js'></script>
+    <script src="__RES__/app/js/formvalidator_min.js"></script>
+    <script src="__RES__/app/js/formvalidatorregex.js"></script>
+    <script src="__RES__/app/js/layer.js"></script>
+
+</head>
+<body>
+{block name="content"}
+<!--中间内容start-->
+<div class="newmianboady" style="margin-top:20px;">
+
+    <style>
+
+        a.trench {
+            text-decoration: none;
+        }
+
+        .newmianboady {
+            background-color: transparent;
+        }
+    </style>
+
+    <div class="dzz-main-content" style="width: 90%">
+        <dl class="contatus-main">
+            {$data.content|htmlspecialchars_decode}
+        </dl>
+    </div>
+
+</div>
+{/block}
+</body>
+</html>

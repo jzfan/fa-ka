@@ -1,0 +1,257 @@
+{extend name="base"}
+
+{block name="content"}
+<div data-role="page" data-url="/merchant" tabindex="0" class="ui-page ui-body-c ui-page-active" style="min-height: 621px;">
+
+    <section class="userInfo">
+        <div class="user-head-wrap">
+            <div class="user-head">
+                <div class="logo fl"><img src="{:sysconf('merchant_logo')}" style="" /></div>
+                <div class="user-info fr"> <img src="__RES__/merchant/mobile/images/icon-userInfo.png"> <span id="userName">{$_user.shop_name|default=$_user.username}</span>
+                </div>
+            </div>
+            <ul id="userSelect">
+                <span class="triangle"></span>
+                <li><a data-ajax="false" href="/merchant/user/settings" class="ui-link">账户修改</a></li>
+                <li><a data-ajax="false" href="/merchant/user/password" class="ui-link">修改密码</a></li>
+                <li><a data-ajax="false" href="/logout" class="ui-link">安全退出</a></li>
+            </ul>
+        </div>
+
+        <div class="user-body">
+        <table style="width: 100%">
+            <tr>
+                <td style="line-height: 0.8rem;font-size: 0.4rem;">账户余额</td>
+                <td style="line-height: 0.8rem;font-size: 0.4rem;position: relative;">未结余额<img src="__RES__/assets/images/help_ico_mobile.png" id="freeze_money_tip" style="width:15px;margin-left: 3px;position: absolute;top: 8px;"></td>
+            </tr>
+            <tr>
+                <td style="font-size: 0.7rem;">{$_user.money}</td>
+                <td style="font-size: 0.7rem;">{$_user.freeze_money}</td>
+            </tr>
+        </table>
+        </div>
+        <div class="user-account">
+            <dl>
+                <dt>今日收益(元)</dt>
+                <dd>{$today.profit}</dd>
+            </dl>
+            <dl>
+                <dt>今日卖出卡量(张)</dt>
+                <dd>{$today.count}</dd>
+            </dl>
+        </div>
+    </section>
+    <section class="block first">
+        <h1 class="block-head">商品管理</h1>
+        <div class="block-list">
+            <dl>
+                <a data-ajax="false" href="/merchant/goods_category/index" class="ui-link">
+            <dt><img src="__RES__/merchant/mobile/images/pro-img01.png">
+            </dt><dd>商品分类</dd>
+            </a>
+            </dl>
+            <dl>
+                <a data-ajax="false" href="/merchant/goods/index" class="ui-link">
+            <dt><img src="__RES__/merchant/mobile/images/pro-img02.png">
+            </dt><dd>商品列表</dd>
+            </a>
+            </dl>
+            <dl>
+                <a data-ajax="false" href="/merchant/goods/add" class="ui-link">
+            <dt><img src="__RES__/merchant/mobile/images/pro-img03.png">
+            </dt><dd>添加商品</dd>
+            </a>
+            </dl>
+            <dl>
+                <a data-ajax="false" href="/merchant/goods_card/add" class="ui-link">
+            <dt><img src="__RES__/merchant/mobile/images/pro-img04.png">
+            </dt><dd>添加虚拟卡</dd>
+            </a>
+            </dl>
+            <dl>
+                <a data-ajax="false" href="/merchant/goods_card/index" class="ui-link">
+            <dt><img src="__RES__/merchant/mobile/images/pro-img05.png">
+            </dt><dd>虚拟卡库存</dd>
+            </a>
+            </dl>
+            <dl>
+                <a data-ajax="false" href="/merchant/user/link" class="ui-link">
+            <dt><img src="__RES__/merchant/mobile/images/pro-img06.png">
+            </dt><dd>店铺链接</dd>
+            </a>
+            </dl>
+        </div>
+    </section>
+    <section class="block">
+        <h1 class="block-head">交易管理</h1>
+        <div class="block-list">
+            <dl>
+                <a data-ajax="false" href="/merchant/order/index?status=1" class="ui-link">
+            <dt><img src="__RES__/merchant/mobile/images/trade-img01.png">
+            </dt><dd>最近卖出</dd>
+            </a>
+            </dl>
+            <dl>
+                <a data-ajax="false" href="/merchant/order/index" class="ui-link">
+            <dt><img src="__RES__/merchant/mobile/images/trade-img02.png">
+            </dt><dd>订单记录</dd>
+            </a>
+            </dl>
+            <dl>
+                <a data-ajax="false" href="/merchant/user/channel" class="ui-link">
+            <dt><img src="__RES__/merchant/mobile/images/trade-img03.png">
+            </dt><dd>通道管理</dd>
+            </a>
+            </dl>
+            <dl>
+                <a data-ajax="false" href="/merchant/complaint/index" class="ui-link">
+            <dt><img src="__RES__/merchant/mobile/images/trade-img04.png">
+            </dt><dd>投诉管理</dd>
+            </a>
+            </dl>
+            <!-- <dl>
+                <a data-ajax="false" href="/orders/analyforuser" class="ui-link">
+            <dt><img src="__RES__/merchant/mobile/images/trade-img05.png">
+            </dt><dd>收益统计</dd>
+            </a>
+            </dl> -->
+            <dl>
+                <a data-ajax="false" href="/merchant/cash/apply" class="ui-link">
+            <dt><img src="__RES__/merchant/mobile/images/trade-img06.png">
+            </dt><dd>申请提现</dd>
+            </a>
+            </dl>
+            <!-- <dl>
+                <a data-ajax="false" href="/account/usermoney" class="ui-link">
+            <dt><img src="__RES__/merchant/mobile/images/trade-img07.png">
+            </dt><dd>结算记录</dd>
+            </a>
+            </dl> -->
+            <dl>
+                <a data-ajax="false" href="/merchant/goods_coupon/index" class="ui-link">
+            <dt><img src="__RES__/merchant/mobile/images/trade-img08.png">
+            </dt><dd>优惠券</dd>
+            </a>
+            </dl>
+            <dl>
+                <a data-ajax="false" href="/merchant/goods_coupon/add" class="ui-link">
+            <dt><img src="__RES__/merchant/mobile/images/pro-img03.png">
+            </dt><dd>添加优惠券</dd>
+            </a>
+            </dl>
+        </div>
+    </section>
+    <footer class="footer">
+        <dl>
+            <a data-ajax="false" href="/" class="ui-link">
+        <dt><img src="__RES__/merchant/mobile/images/tab-home.png">
+        </dt><dd>主页</dd>
+        </a>
+        </dl>
+        <dl class="active">
+            <a data-ajax="false" href="/merchant" class="ui-link">
+        <dt><img src="__RES__/merchant/mobile/images/tab-mine-press.png">
+        </dt><dd>我的</dd>
+        </a>
+        </dl>
+    </footer>
+
+</div>
+<div class="ui-loader ui-corner-all ui-body-a ui-loader-default"><span class="ui-icon ui-icon-loading"></span>
+    <h1>loading</h1></div>
+<div class="ui-loader ui-corner-all ui-body-a ui-loader-default"><span class="ui-icon ui-icon-loading"></span>
+    <h1>loading</h1></div>
+
+
+<script src="__RES__/merchant/mobile/js/jquery-1.8.3.min.js"></script>
+<script>
+    $(function () {
+        // 点击用户名，展开下拉框
+        $('#userName').on('click', function () {
+            if ($('.user-head-wrap ul').is(':hidden')) {
+                $('.user-head-wrap ul').show();
+            }
+        });
+        // 点击空白处，合上下拉框
+        $(document).on("tap", function () {
+            if ($('.user-head-wrap ul').is(':visible')) {
+                $('.user-head-wrap ul').hide();
+            }
+        });
+
+        $('#userSelect').on("tap", function (e) {
+            e.stopPropagation();
+        })
+    })
+</script>
+<script src="__RES__/merchant/mobile/js/layer.js"></script>
+<script>
+var news_title =""	;
+var news_id = 0;
+if (news_id > 0) {
+    getNotice(news_title,news_id);
+}
+    // function getNotice(title,id) {
+    //     $.getJSON("/account/view", {t: 2, id: id}, function (data) {
+    //         if (data){
+    //             //示范一个公告层
+    //             layer.open({
+    //                 type: 1
+    //                 ,title: title //不显示标题栏
+    //                 ,area: ['90%', '500px','left: 5%']
+    //                 ,shade: 0.2
+    //                 ,shadeClose: true
+    //                 ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+    //                 ,resize: false
+    //                 ,btn: ['我明白了']
+    //                 ,btnAlign: 'c'
+    //                 ,moveType: 1 //拖拽模式，0或者1
+    //                 ,content: '<div style="padding:10px;font-size: 14px">'+ data.content +'</div>'
+    //                 ,success: function(layero){
+    //                   //  $.cookie('user_set_popup_1','1',{expires:1});
+    //                 }
+    //             });
+    //         }
+    //     });
+    //
+    // }
+if(!getCookie('freeze_money_tip')){
+    setCookie('freeze_money_tip', 1, 1)
+    layer.tips('今天的交易明天才可以提现哦', '#freeze_money_tip',{
+        tips: [1, '#ff5b5b'],
+    });
+}
+$("#freeze_money_tip").click(function(){
+    layer.alert('今天的交易明天才可以提现哦', {
+        btn: ['知道了']
+    });
+});
+function setCookie(name, value, iDay)
+{
+    var oDate=new Date();
+
+    oDate.setDate(oDate.getDate()+iDay);
+
+    document.cookie=name+'='+encodeURIComponent(value)+';expires='+oDate;
+}
+
+function getCookie(name)
+{
+    var arr=document.cookie.split('; ');
+    var i=0;
+    for(i=0;i<arr.length;i++)
+    {
+        //arr2->['username', 'abc']
+        var arr2=arr[i].split('=');
+
+        if(arr2[0]==name)
+        {
+            var getC = decodeURIComponent(arr2[1]);
+            return getC;
+        }
+    }
+
+    return '';
+}
+</script>
+{/block}

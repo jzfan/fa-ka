@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title id="AgentSiteName">{{$title}}</title>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+    <link href="__RES__/lkpay/css/Recharge.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    
+<div>
+</div>
+
+<div>
+
+
+</div>
+    <div class="header">
+        <div class="alignMid">
+            <div class="pageName left" style="margin-left:0">
+                {{$title}}</div>
+            <div class="clear">
+            </div>
+        </div>
+    </div>
+    <div class="main">
+        <div class="alignMid">
+            <div class="content">
+                <div class="conMid">
+                <style>
+				.img {display: table-cell;vertical-align:middle;text-align:center;*display: block;*font-size: 262px;/*约为高度的0.873，200*0.873 约为175*/*font-family:Arial;/*防止非utf-8引起的hack失效问题，如gbk编码*/width:300px;height:300px;border: 3px solid #cccccc; background:#ffffff}
+				.img img {vertical-align:middle;}
+				.title{margin-bottom:10px; text-indent:50px;height:50px;line-height:50px}
+				.success{ background:url("__RES__/lkpay/img/success.png") no-repeat;}
+				.fail{ background:url("__RES__/lkpay/img/fail.png") no-repeat;}
+				</style>
+                    <div style="margin:0 auto;width:300px">
+                    	
+                        <div class="order">订单号：{{$outTradeNo}}<p>订单金额：{{$totalAmount}}元</p><p>充值帐号：{{$subject}}</p></div>
+                        <div class="{{$ico}} title">{{$msg}}</div>
+                    	<div class="img"><img src="{{$img_url ? $img_url : __RES__ . '/lkpay/img/error.gif'}}" alt="请打开支付宝扫描二维码付款"/></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        版权所有 &copy;<label id="Copyright">Copyright 2011 - 2016</label>
+    </div>
+</body>
+</html>

@@ -1,0 +1,139 @@
+{extend name="base"}
+
+{block name="content"}
+<div class="row">
+	<div class="col-sm-12">
+		<div class="card-box">
+			<div class="row">
+				<div class="col-sm-6">
+					<form class="form-inline" role="form" action="" method="get">
+	                    <div class="form-group">
+							<select name="cate_id" class="form-control">
+								<option value="" {if $Think.get.goods_id==''}selected{/if}>全部分类</option>
+								{foreach $categorys as $v}
+								<option value="{$v.id}" {if $Think.get.cate_id==$v.id}selected{/if}>{$v.name}</option>
+								{/foreach}
+							</select>
+	                    </div>
+	                    <div class="form-group">
+							<select name="status" class="form-control">
+								<option value="" {if $Think.get.status==''}selected{/if}>全部状态</option>
+								<option value="1" {if $Think.get.status=='1'}selected{/if}>未使用</option>
+								<option value="2" {if $Think.get.status=='2'}selected{/if}>已使用</option>
+							</select>
+	                    </div>
+						<button type="submit" class="btn btn-purple waves-effect waves-light"><i class="fa fa-search"></i> 搜索</button>
+	                </form>
+				</div>
+				<div class="col-sm-6">
+					<a href="{:url('add')}" class="pull-right btn btn-purple waves-effect waves-light">添加优惠券</a>
+					<a href="javascript:batch_del();" class="pull-right btn btn-danger" style="margin-right: 10px;">批量删除</a>
+				</div>
+			</div>
+			<!-- end row -->
+			<div class="row">
+				<table class="table table-striped m-0">
+					<thead>
+						<tr>
+							<th><input type="checkbox" id="select_all"></th>
+							<th>商品分类</th>
+							<th>优惠券号码</th>
+							<th>面额</th>
+							<th>生成时间</th>
+							<th>有效期</th>
+							<th>备注</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						{foreach $coupons as $v}
+						<tr>
+							<td><input type="checkbox" value="{$v.id}"></td>
+							<td>{if $v.cate_id==0}全部{else/}{$v.category.name}{/if}</td>
+							<td>{$v.code}</td>
+							<td>{$v.amount}{if $v.type==1}元{else/}%{/if}</td>
+							<td>{$v.create_at|date="Y-m-d H:i:s",###}</td>
+							<td>{$v.expire_day}</td>
+							<td>{$v.remark}</td>
+							<td>
+								<a href="javascript:void(0);" onclick="del(this,{$v.id})">删除</a>
+							</td>
+						{/foreach}
+					</tbody>
+				</table>
+			</div>
+			<!-- end row -->
+		</div>
+		{$page}
+	</div>
+</div>
+{/block}
+
+{block name="appendJS"}
+
+<script>
+	$('#select_all').click(function(){
+		if($(this).is(':checked')){
+			$('tbody').find('input[type="checkbox"]').each(function(){
+				$(this).prop("checked", true)
+			})
+		}else{
+			$('tbody').find('input[type="checkbox"]').each(function(){
+				$(this).prop("checked", false)
+			})
+		}
+	})
+	function del(obj,id)
+	{
+		swal({
+			title: "确定删除吗？",
+			text: "删除的优惠券将会进入回收站！",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "确定删除！",
+			closeOnConfirm: false
+		},
+		function(){
+			$.post('/merchant/goods_coupon/del',{
+				id:id
+			},function(res){
+				if(res.code!=0){
+					swal('删除失败', res.msg, "error");
+				}else{
+					swal('删除成功', '', "success");
+					setTimeout(function(){
+						location.reload();
+					},200);
+				}
+			});
+		});
+	}
+	function batch_del(){
+		var ids = new Array();
+		$('tbody').find('input[type="checkbox"]').each(function(){
+			if($(this).is(':checked')){
+				ids.push($(this).val());
+			}
+		})
+		if(ids.length == 0){
+			swal('选择要删除的数据', '', "error");
+			return false;
+		}
+		$.post('/merchant/goods_coupon/batch_del',{
+			ids:ids
+		},function(res){
+			if(res.code!=0){
+				swal('删除失败', res.msg, "error");
+			}else{
+				swal('删除成功', '', "success");
+				setTimeout(function(){
+					location.reload();
+				},200);
+			}
+		});
+		console.log(ids);
+	}
+</script>
+
+{/block}

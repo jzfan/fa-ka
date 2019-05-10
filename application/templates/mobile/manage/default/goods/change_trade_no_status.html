@@ -1,0 +1,36 @@
+{extend name='./content'}
+{block name='content'}
+<!-- 表单搜索 开始 -->
+<form class="layui-form layui-form-pane form-search" action="__SELF__" data-auto="true" method="post" style="padding: 50px;">
+    <div class="layui-form-item layui-block">
+        <label class="layui-form-label">订单生成方式</label>
+        <div class="layui-input-inline">
+            <select class="layui-form-item layui-inline change" name="order_type" style="display: block;height: 32px;">
+                <option value="0" {if sysconf('order_type') == 0}selected=""{/if}>系统默认</option>
+                <option value="1" {if sysconf('order_type') == 1}selected=""{/if}>用户id+时间+顺序号</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-block profix" {if sysconf('order_type') == 0}style="display:none;"{/if}>
+        <label class="layui-form-label">订单号前缀</label>
+        <div class="layui-input-inline">
+            <input name="user_order_profix" value="{:sysconf('user_order_profix')}" placeholder="请输入订单号前缀" class="layui-input">
+            <span style="color:red;">* 注意前缀不能超过 3 位</span>
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-inline">
+        <button class="layui-btn layui-btn-primary">确定</button>
+    </div>
+</form>
+<script>
+    $('.change').change(function(){
+        if($(this).val() == 0){
+            $('.profix').hide();
+        }else{
+            $('.profix').show();
+        }
+    });
+</script>
+{/block}

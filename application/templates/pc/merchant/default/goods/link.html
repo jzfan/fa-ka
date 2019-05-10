@@ -1,0 +1,40 @@
+{extend name="base"}
+
+{block name="content"}
+<div class="row">
+	<div class="col-sm-12">
+		<div class="card-box">
+			<div class="row">
+				<div class="col-lg-12 m-b-30"><span style="font-size: 19px;">商品名称：</span>{$goods.name}</div>
+				<div class="col-lg-12 m-b-30">
+                    <h4 class="header-title m-t-0">1、商品购买地址</h4>
+					<a href="{$goods.link}" target="_blank">{$goods.link}</a>
+					{if sysconf('site_domain_short')!==''}
+                    <h4 class="header-title m-t-0">2、短网址</h4>
+					<a href="{$short_link}" target="_blank">{$short_link}</a>
+					{/if}
+					<br>
+					<br>
+					{if $goods.link_status==1}
+					<a href="{:url('user/closelink')}?type=details&goods_id={$goods.id}&status=0" class="btn btn-purple waves-effect waves-light">关闭链接</a>
+					{else/}
+					<a href="{:url('user/closelink')}?type=details&goods_id={$goods.id}&status=1" class="btn btn-purple waves-effect waves-light">开启链接</a>
+					{/if}
+					<a href="{:url('user/relink')}?type=details&goods_id={$goods.id}" class="btn btn-purple waves-effect waves-light">重置链接</a>
+				</div>
+				<!-- end col -->
+				<div class="col-lg-12">
+                    <h4 class="header-title m-t-0">3、二维码地址</h4>
+					<img src="{:generate_qrcode_link($goods.link)}" alt="">
+				</div>
+				<!-- end col -->
+			</div>
+			<!-- end row -->
+		</div>
+	</div>
+	<!-- end col -->
+</div>
+{/block}
+
+{block name="appendJS"}
+{/block}

@@ -1,0 +1,63 @@
+<form id="version_form" class="layui-form layui-box" style="margin-top: -10px;">
+    {if (empty($versions))}
+        <div style="text-align: center; margin: 50px 0; font-size: 14px;">当前已是最新版本</div>
+    {else /}
+    <table cellspacing="0" cellpadding="0" border="0" class="layui-table">
+        <thead>
+        <tr>
+            <th style="width: 200px">
+                <div class="layui-table-cell laytable-cell-1-id"><span>版本号</span></div>
+            </th>
+            <th style="width: 400px">
+                <div class="layui-table-cell laytable-cell-1-username"><span>更新内容</span></div>
+            </th>
+            <th style="width: 115px">
+                <div class="layui-table-cell laytable-cell-1-sex"><span>操作</span></div>
+            </th>
+        </tr>
+        </thead>
+        <tbody id="version_table">
+        {foreach $versions as $version}
+        <tr>
+            <td> <div class="layui-table-cell" style="width: 200px"> {$version.version_name} </div> </td>
+            <td> <div class="layui-table-cell" style="width: 400px"> {$version.description} </div> </td>
+            <td> <div class="layui-table-cell" style="width: 115px">
+                <a class="update_btn" data-version-hash="{$version.version_hash}" target="_blank">更新</a>
+            </div>
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {/if}
+</form>
+<script>
+    $('.update_btn').click(function () {
+        layer.open({
+            type: 1,
+            skin: 'layui-layer-demo', //样式类名
+            closeBtn: 0, //不显示关闭按钮
+            anim: 2,
+            area: ['420px', '240px'], //宽高
+            shadeClose: true, //开启遮罩关闭
+            title: '代码更新中……',
+            content: ''
+        });
+        layer.load();
+        var url = '/admin/index/version_update?version_hash=' + $(this).attr('data-version-hash');
+        $.get(url, function (data) {
+            console.log(data);
+        });
+        var intervalId = setInterval(function () {
+            $.get('/index/index/is_version_updating', function (data) {
+                if (data.code == 1 && data.data != 1) {
+                    layer.closeAll();
+                    layer.alert('代码更新成功！', {}, function () {
+                        location.reload();
+                    });
+                    clearInterval(intervalId);
+                }
+            })
+        }, 1000);
+    });
+</script>

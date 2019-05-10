@@ -1,0 +1,32 @@
+dt{
+	font-weight: normal;
+}
+dd{
+	font-size: 13px;
+	line-height: 25px;
+}
+@media only screen and (min-width: 768px) {
+	.contatus-main, .aboutus-main, .law-main {
+		width: 800px;
+		margin: 0 auto;
+		padding: 20px 0 20px;
+	}
+}
+@media only screen and (max-width: 768px) {
+	.contatus-main, .aboutus-main, .law-main {
+		width: 100%;
+		margin: 0 auto;
+		padding: 20px 0 20px 50px;
+	}
+}
+.contatus-main dt,.aboutus-main dt,.law-main>p{
+	font-size: 20px;
+	padding-top: 20px;
+	padding-bottom: 10px;
+}
+.law-main dt{
+	font-size: 14px;
+	padding-bottom: 10px;
+	padding-top: 10px;
+	font-weight: 600;
+}

@@ -1,0 +1,284 @@
+{extend name="./main"}
+{block name="content"}
+<style>
+    .search_box i {
+        color: rgba(118, 126, 173, 0.3);
+        font-size: 20px;
+        margin-left: 16px;
+    }
+
+    .search_box input:focus {
+        outline: none;
+    }
+
+    .search_box button:hover {
+        background: rgba(100, 143, 247, 1);
+    }
+
+    @media only screen and (min-width: 768px) {
+        .order_form {
+            margin: 180px auto 100px auto;
+            width: 1120px;
+            min-height: 300px;
+            padding: 40px 40px 20px 40px;
+            border-radius: 3px;
+            border: 1px solid #eee;
+            box-shadow: 0 12px 24px -10px #eee;
+            background: #fff;
+        }
+
+        .search_box input {
+            border: none;
+            font-size: 16px;
+            margin: 0 12px;
+            width: calc(100% - 180px);
+            text-align: center;
+            color: #33334f;
+            height: 20px;
+        }
+
+        .search_box {
+            position: relative;
+            height: 60px;
+            line-height: 60px;
+            width: 100%;
+            margin: -60px auto 0 auto;
+            background: #fff;
+            border-radius: 31px;
+            color: #33334f;
+            border: 1px solid rgba(118, 126, 173, 0.3);
+            transition: .2s;
+        }
+
+        .search_box button {
+            display: block;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            height: 40px;
+            line-height: 40px;
+            width: 120px;
+            background: rgba(100, 143, 247, 0.9);
+            border: none;
+            border-radius: 20px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    }
+
+    @media only screen and (max-width: 768px) {
+        .order_form {
+            margin: 50px auto 0px auto;
+            min-height: 300px;
+            padding: 40px 40px 20px 40px;
+            border-radius: 3px;
+            border: 1px solid #eee;
+            box-shadow: 0 12px 24px -10px #eee;
+            background: #fff;
+        }
+
+        .search_box input {
+            border: none;
+            font-size: 14px;
+            text-align: center;
+            color: #33334f;
+            height: 20px;
+        }
+
+        .search_box {
+            position: relative;
+            height: 40px;
+            line-height: 40px;
+            width: 100%;
+            margin: -60px auto 0 auto;
+            background: #fff;
+            border-radius: 31px;
+            color: #33334f;
+            border: 1px solid rgba(118, 126, 173, 0.3);
+            transition: .2s;
+        }
+
+        .search_box button {
+            display: block;
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            height: 40px;
+            line-height: 40px;
+            width: 100px;
+            background: rgba(100, 143, 247, 0.9);
+            border: none;
+            border-radius: 20px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    }
+
+    .main_box {
+        width: calc(100% - 24px);
+        padding: 12px;
+        margin: 12px auto;
+        border-bottom: 1px dashed rgba(0, 0, 0, 0.14);
+        border-radius: 3px;
+    }
+
+    .main_box h3 {
+        font-weight: lighter;
+        font-size: 14px;
+        color: #767ead;
+        margin-bottom: 12px;
+    }
+
+    .main_box h3 i {
+        font-size: 16px;
+        /* vertical-align: text-bottom; */
+        margin-right: 8px;
+        color: rgba(100, 143, 247, 1);
+    }
+
+    .main_box p {
+        float: left;
+        font-size: 14px;
+        line-height: 32px;
+        color: #33334f;
+        /*overflow: hidden;*/
+        /*text-overflow: ellipsis;*/
+        /*white-space: nowrap;*/
+        margin-right: 24px;
+    }
+
+    .main_box:last-child {
+        border-bottom: none;
+        margin-bottom: 24px;
+    }
+
+    .main_box li img {
+        height: 30px;
+    }
+
+    .main_box p a {
+        color: rgba(100, 143, 247, 1);
+        font-weight: lighter;
+    }
+
+    .main_box p a:hover {
+        text-decoration: underline;
+    }
+</style>
+<div class="order_form">
+    <div class="search_box" style="margin-top: 0px">
+        <!-- <form action=""> -->
+        <i class="iconfont icon-sousuo"></i>
+        <input name="orderid" type="text" value="{$Think.get.orderid}" placeholder="请输入订单号或联系方式" class="order_input"
+               id="orderid_input">
+        <span style="position: absolute;right: 140px;top: 10px;"><img id="chkcode_img" src="__PUBLIC__/orderquery"
+                                                                      style="height: 43px;display:none"></span>
+        <button onclick="orderid_or_contact()">查 询</button>
+        <!-- <button type="submit">查 询</button> -->
+        <!-- </form> -->
+    </div>
+    {if $Think.get.orderid!==null}
+    {if empty($order)}
+    <div style="display:block;width:160px;margin:100px auto;font-size:24px;">不存在该订单</div>
+    {else/}
+    <div class="main_box">
+        <h3><i class="iconfont icon-dingdan"></i> 订单日期：{$order.create_at|date="Y-m-d H:i:s",###}</h3>
+        <p>订单编号：<b>{$order.trade_no}</b></p>
+        <p>付款方式：<b>{if isset($channel) &&
+            !empty($channel.title)}{$channel.title}{else}{:get_paytype_name($order.paytype)}{/if}</b></p>
+        <p>付款信息：<b>
+            <lable style="color: orangered">{if $order.status==1}付款成功{else/}未付款{/if}</lable>
+        </b></p>
+        <!-- <p>订单状态：<b>正常</b></p> -->
+        <p>订单金额：<b>{$order.total_price}</b></p>
+        <p>卖家QQ：<b><a target="_blank" href="//wpa.qq.com/msgrd?v=3&amp;uin={$order.user.qq}&amp;site=qq&amp;menu=yes">{$order.user.qq}</a></b>
+        </p>
+        {if condition="isset($canComplaint) && $canComplaint" }
+        <p><a style="padding:5px 8px;background-color:#678cf7;color:white" href="/complaint?trade_no={$order.trade_no}"
+              target="_blank">订单投诉</a></p>
+        {/if}
+        <p style="float:none;clear:both">卡密信息：
+            <b id="tips0" style="color: rgb(251,55,55)">
+            </b>
+            <b id="cardinfo0" style="color: rgb(251,55,55)">
+            </b>
+        </p>
+        <div class="clear"></div>
+    </div>
+    <script>
+        $(function () {
+            getgoods('{$order.trade_no}', '0');
+        });
+    </script>
+    {/if}
+    {/if}
+    <div class="clear"></div>
+</div>
+{/block}
+
+{block name="appendJS"}
+<script>
+    function getgoods(orderid, id) {
+        setTimeout(function () {
+            $.getJSON('/checkgoods', {
+                orderid: orderid,
+                t: new Date().getTime(),
+                token: "{$token}"
+            }, function (data) {
+                if (data) {
+                    $('#cardinfo' + id).html('<br>' + data.msg);
+                    if (data.status == 1) {
+                        $('#tips' + id).html('(已发货/购买数：<font color="green">' + data.quantity +
+                            '</font>/' + data.quantity + ')');
+                    }
+                }
+            });
+        }, 1000);
+    };
+</script>
+<script>
+    function orderid_or_contact() {
+        var input_val = $('#orderid_input').val();
+        if (input_val == '') {
+            layer.msg('订单号或联系方式为空！', {
+                icon: 2,
+                time: 2000
+            });
+        } else {
+            // $('#chkcode_img').show().attr('src', '/chkcode');
+            layer.prompt({
+                title: '请输入验证码',
+                formType: 3
+            }, function (chkcode) {
+                $.post('/orderquery/checkverifycode', {
+                    chkcode: chkcode,
+                    token: '{$token}'
+                }, function (data) {
+                    if (data == 'ok') {
+                        layer.msg('验证码输入正确', {
+                            icon: 1
+                        }, function () {
+                            window.location.href = '/orderquery?orderid=' + input_val;
+                            //                        window.parent.location.reload(); //刷新父页面
+                        });
+                    } else {
+                        layer.msg('验证码输入错误', {
+                            icon: 2,
+                            time: 3000
+                        }, function () {
+                            //                        window.parent.location.reload(); //刷新父页面
+                        });
+                    }
+
+                });
+            });
+            $('.layui-layer-prompt .layui-layer-content').prepend($(
+                '<img style="cursor:pointer;height: 60px;" id="chkcode_img" src="/chkcode" onclick="javascript:this.src=\'/chkcode\'+\'?time=\'+Math.random()">'
+            ))
+
+        }
+    }
+</script>
+{/block}

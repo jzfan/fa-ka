@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form action="/api/common/uploadImg" onsubmit="signParams()" enctype="multipart/form-data" method="post">
+    <input type="file" name="file" value="">
+    <input type="text" name="platform" value="ios">
+    <input type="text" name="request_time" value="">
+    <input type="text" name="sign" value="">
+    <input type="submit" value="submit">
+</form>
+
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+<script>
+    function signParams() {
+
+        var date = new Date();
+        var request_time = Date.parse(date) / 1000;
+        document.getElementsByName('request_time')[0].value = request_time;
+        var params = "platform=ios&request_time=" + request_time
+        var sign = md5(params)
+        document.getElementsByName('sign')[0].value = sign;
+
+        return false
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,136 @@
+{extend name="./main"}
+
+{block name="CSS"}
+<style>
+    .ts_title{
+        height:60px;
+        text-align:center;
+        line-height:60px;
+        font-size:18px;
+        background:#409ccf;
+        border-top-left-radius:3px;
+        border-top-right-radius:3px;
+        color:#fff;
+    }
+    .ts_con {
+        padding:30px 0;
+        position:relative;
+    }
+    .ts_con p{
+        height:40px;
+        width: 100%;
+        background:#fff;
+        border:1px solid #eee;
+        border-radius:2px;
+        line-height:40px;
+        margin-bottom:20px;
+    }
+    .ts_con p span{
+        width:120px;
+        font-size:16px;
+        background:#409ccf;
+        display:block;
+        float:left;
+        border-top-left-radius:2px;
+        border-bottom-left-radius:2px;
+        color:#fff;
+        text-align:center;
+        margin-right:10px;
+    }
+    .ts_con p input,.ts_con p select{
+        width: calc(100% - 140px);
+        width: -moz-calc(100% - 140px);
+        width: -webkit-calc(100% - 140px);
+        border:none;
+        font-size:14px;
+        outline:none;
+        letter-spacing:1px;
+    }
+    @media (max-width: 780px){
+        .ts_con p input,.ts_con p select{
+            width: 160px;
+            border:none;
+            font-size:14px;
+            outline:none;
+            letter-spacing:1px;
+        }
+        .footer_bottom .footer-menu{
+            text-align:center;
+        }
+    }
+    .ts_con p textarea{
+        width: calc(100% - 140px);
+        width: -moz-calc(100% - 140px);
+        width: -webkit-calc(100% - 140px);
+        max-width:780px;
+        height:195px;
+        border:none;
+        font-size:14px;
+        line-height:35px;
+        outline:none;
+        letter-spacing:1px;
+        resize: none;
+    }
+    .btn_ts{
+        display:block;
+        border:none;
+        height:48px;
+        width:200px;
+        line-height:48px;
+        background:#409ccf;
+        color:#fff;
+        margin:0 auto;
+        border-radius:2px;
+        font-weight:bold;
+    }
+    .file input {
+        position: absolute;
+        font-size: 100px;
+        right: 0;
+        top: 0;
+        opacity: 0;
+    }
+    .shili img{
+        position:absolute;
+        top:38px;
+        left:0;
+    }
+</style>
+
+{/block}
+
+{block name="content"}
+<div class="order_form">
+    <div class="ts_title">
+        订 单 投 诉
+    </div>
+    <div class="ts_con">
+        <form name='report' action='' method='post' style="padding: 0 20px;">
+            <input type="hidden" name="token" value="{$token}">
+            <p><span>订单编号</span><input name="trade_no" type="text" value="{$Think.get.trade_no}"></p>
+            <p><span>举报原因</span>
+                <select name="type">
+                    <option value="">--请选择投诉原因--</option>
+                    <option value="无效卡密">无效卡密</option>
+                    <option value="虚假商品">虚假商品</option>
+                    <option value="非法商品">非法商品</option>
+                    <option value="侵权商品">侵权商品</option>
+                    <option value="不能购买">不能购买</option>
+                    <option value="恐怖色情">恐怖色情</option>
+                    <option value="其他投诉">其他投诉</option>
+                </select>
+            </p>
+            <p><span>联系QQ</span><input name="qq" type="text" placeholder="请填写您的QQ号"></p>
+            <p><span>手机号码</span><input name="mobile" type="text" placeholder="用于接收短信，请认真填写"></p>
+            <p style="height:200px;">
+                <span style="height:200px; line-height:200px;">详情说明</span>
+                <textarea name="desc" placeholder="请具体说明问题，如：无法正常充值，卖家不处理等"></textarea>
+            </p>
+            <button type="submit" class="btn_ts">提交投诉</button>
+        </form>
+    </div>
+</div>
+{/block}
+
+{block name="appendJS"}
+{/block}

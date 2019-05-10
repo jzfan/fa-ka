@@ -1,0 +1,180 @@
+{extend name="base"}
+
+{block name="content"}
+<div class="row">
+	<div class="col-sm-12">
+		<div class="card-box">
+			<div class="row">
+				<div class="col-sm-12">
+					<form class="form-inline" role="form" action="" method="get">
+	                    <div class="form-group">
+							<select name="paytype" class="form-control">
+								<option value="" {if $Think.get.paytype==''}selected{/if}>全部方式</option>
+								{foreach $pay_product as $k => $v}
+								<option value="{$k}" {if $Think.get.paytype==$k}selected{/if}>{$v}</option>
+								{/foreach}
+							</select>
+	                    </div>
+						<div class="form-group">
+							<select name="status" class="form-control">
+								<option value="" {if $Think.get.status==''}selected{/if}>全部状态</option>
+								<option value="1" {if $Think.get.status=='1'}selected{/if}>已付款</option>
+								<option value="0" {if $Think.get.status=='0'}selected{/if}>未付款</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<select name="cid" class="form-control">
+								<option value="0" >商品类别</option>
+								{foreach $categorys as $row}
+								<option value="{$row['id']}" {if $Think.get.cid==$row['id']}selected{/if} >{$row['name']}</option>
+								{/foreach}
+							</select>
+						</div>
+						<div class="form-group">
+							<select name="type" class="form-control">
+								<option value="0" {if $Think.get.type=='0'}selected{/if}>订单编号</option>
+								<option value="1" {if $Think.get.type=='1'}selected{/if}>商品名称</option>
+								<option value="2" {if $Think.get.type=='2'}selected{/if}>联系方式</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<input class="form-control"  style="width:200px;" type="text" name="keywords" value="{$Think.get.keywords}" placeholder="请输入关键字">
+						</div>
+						<div class="form-group">
+							<input class="form-control input-daterange-datepicker"  style="width:200px;" type="text" name="date_range" value="{:urldecode($Think.get.date_range)}" placeholder="点击选择查询日期">
+						</div>
+						<button type="submit" class="btn btn-purple waves-effect waves-light"><i class="fa fa-search"></i> 搜索</button>
+	                </form>
+				</div>
+			</div>
+			<!-- end row -->
+			<div class="row">
+				<table class="table table-striped m-0">
+					<thead>
+						<tr>
+							<th>订单号</th>
+							<th>商品名称</th>
+							<th>支付方式</th>
+							<th>总价</th>
+							<th>实付款</th>
+							<th>购买者信息</th>
+							<th>状态</th>
+							<th>取卡状态</th>
+							<th>取卡密码</th>
+							<th>交易时间</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						{foreach $orders as $v}
+						<tr>
+							<td><a href="/orderquery?orderid={$v.trade_no}" target="_blank">{$v.trade_no}</a></td>
+							<td>
+								{$v.goods_name}
+								{eq name="v.status" value="1"}
+								<a class="fetch" href="/merchant/order/fetchcard?id={$v.id}">（{$v.quantity}张）</a>
+								{else}
+								（{$v.quantity}张）
+								{/eq}
+								{if $v.coupon_type==1}
+								<span class="label label-pink">券</span>
+								{/if}
+								{if $v.take_card_type==1}
+								{eq name="v.status" value="1"}
+								<a href="/merchant/order/fetchcard?id={$v.id}"><span class="label label-primary">取</span></a>
+								{else}
+								<span class="label label-primary">取</span>
+								{/eq}
+								{/if}
+							</td>
+							<td>{:get_paytype_name($v.paytype)}</td>
+							<td>{$v.total_product_price}</td>
+							<td>{$v.total_price}</td>
+							<td>{$v.contact}</td>
+							<td>
+								{switch name="v.status"}
+								{case value="1"}已付款{/case}
+								{case value="0"}未付款{/case}
+								{/switch}
+							</td>
+							<td>
+								{if $v.cards_count>0}
+									{if $v.cards_count>=$v.quantity}
+									已取
+									{else/}
+									已取部分
+									{/if}
+								{else/}
+								未取
+								{/if}
+							</td>
+							<td>{$v.take_card_password}</td>
+							<td>{$v.create_at|date="Y-m-d H:i:s",###}</td>
+							<td>
+                                <!-- <a href="javascript:void(0);" onclick="del(this,{$v.id})">删除</a> -->
+								<!-- <span> | </span> -->
+								{if $v.status==1 && $v.cards_count==0}
+								<a class="fetch" href="/merchant/order/fetchcard?id={$v.id}">提卡</a>
+                                <a href="/merchant/order/dumpCards?trade_no={$v.trade_no}" target="_blank">导出</a>
+								{/if}
+							</td>
+						</tr>
+						{/foreach}
+					</tbody>
+				</table>
+			</div>
+			<!-- end row -->
+		</div>
+		{$page}
+	</div>
+</div>
+{/block}
+
+{block name="appendJS"}
+
+<script>
+
+	function change_status(obj,id)
+	{
+		var status=$(obj).prop('checked');
+		if(status){
+			status=1;
+		}else{
+			status=0;
+		}
+		$.post('/merchant/order/changeStatus',{
+			id:id,
+			status:status
+		},function(res){
+			if(res.code!=0){
+				alert(res.msg);
+			}
+		});
+	}
+
+	function del(obj,id)
+	{
+		swal({
+			title: "确定删除吗？",
+			text: "你将无法恢复该操作！",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "确定删除！",
+			closeOnConfirm: false
+		},
+		function(){
+			$.post('/merchant/order/fetch',{
+				id:id
+			},function(res){
+				if(res.code!=0){
+					swal('删除失败', res.msg, "error");
+				}else{
+					swal(res.msg, '', "success");
+				}
+			});
+		});
+	}
+</script>
+
+{/block}

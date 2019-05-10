@@ -1,0 +1,73 @@
+{extend name="./main"}
+{block name="CSS"}
+<style>
+    .ymm-login-logo {
+        width: auto;
+    }
+</style>
+{/block}
+{block name="content"}
+<link rel="stylesheet" href="__RES__/app/t3/css/errortankuang.css">
+<link rel="stylesheet" href="__RES__/app/t3/css/login.css">
+<div class="ymm-loginheight">
+    <div class="ymm-logincon">
+        <div class="ymm-login">
+
+            <form class="ymm-form-login" role="form" method="post" action="/login/userlogin">
+                <input type="hidden" name="__token__" value="{$Request.token}" />
+                <legend class="ymm-login-title txt-c">登录</legend>
+                <ul class="ymm-login-ul">
+                    <li class="form-group">
+                        <input class="form-control" id=username name="username" type="text" placeholder="请输入用户名"/>
+                    </li>
+                    <li class="form-group">
+                        <input class="form-control" id="password" name="password" type="password" placeholder="请输入登录密码">
+                    </li>
+                </ul>
+                <div class="ymm-login-btn txt-c">
+                    <input class="ymm-login-btn-in common-btn-back" type="button" id="login_btn" value="登录">
+                </div>
+                <div class="ymm-login-a">
+                    <a class="ymm-login-a1"
+                       href="/login/retpwd">忘记密码</a>
+                    <a class="ymm-login-a2" href="/register">账户注册</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $('#login_btn').click(function () {
+        if($('#username').val() == '') {
+            layer.msg('请输入用户名');
+            return false;
+        }
+        if($('#password').val() == '') {
+            layer.msg('请输入密码');
+            return false;
+        }
+        var loading ='';
+        $.ajax({
+            type: 'post',
+            url: '/index/user/doLogin',
+            dataType: "json",
+            data: $("form").serialize(),
+            beforeSend: function(xhr) {
+                loading = layer.load()
+            },
+            success: function(res) {
+                layer.close(loading);
+                if (res.code == 1) {
+                    window.location.href='/merchant';
+                } else {
+                    layer.msg(res.msg);
+                }
+            },
+            error:function(XMLHttpRequest, textStatus, errorThrown){
+                layer.close(loading);
+                layer.msg('连接错误');
+            }
+        });
+    })
+</script>
+{/block}

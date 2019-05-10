@@ -1,0 +1,152 @@
+{extend name="base/detail"}
+
+{block name="content"}
+<div class="main">
+	<div class="content">
+		<ul class="nav nav-tabs">
+			<li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+			<li role="presentation" class="active"><a href="javascript:;">库存卡密</a></li>
+		</ul><br>
+
+		<form name="search" class="form-inline" method="get" action="">
+			<div class="form-group">
+				<label for="cateid">商品分类：</label>
+				<select name="cate_id" class="form-control">
+					<option value="" {if $Think.get.cate_id==''}selected{/if}>全部分类</option>
+					{foreach $categorys as $v}
+					<option value="{$v.id}" {if $Think.get.cate_id==$v.id}selected{/if}>{$v.name}</option>
+					{/foreach}
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="cateid">商品：</label>
+				<select name="goods_id" class="form-control">
+					<option value="" {if $Think.get.goods_id==''}selected{/if}>全部商品</option>
+					{foreach $goodsList as $v}
+					<option value="{$v.id}" {if $Think.get.goods_id==$v.id}selected{/if}>{$v.name}</option>
+					{/foreach}
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="cateid">售出状态：</label>
+				<select name="status" class="form-control">
+					<option value="" {if $Think.get.status==''}selected{/if}>全部状态</option>
+					<option value="1" {if $Think.get.status=='1'}selected{/if}>未售出</option>
+					<option value="2" {if $Think.get.status=='2'}selected{/if}>已售出</option>
+				</select>
+			</div>
+
+			<div class="form-group">
+				<input type="hidden" name="do" value="search">
+				<button type="submit" class="btn btn-primary btn-block"><span class="glyphicon glyphicon-search"></span>&nbsp;立即查询</button>
+				<a href="/merchant/goods_card/index?action=dump&cate_id={$Think.get.cate_id}&goods_id={$Think.get.goods_id}&status={$Think.get.status}" class="btn btn-success btn-block"><span class="glyphicon glyphicon-file"></span>&nbsp;导出卡密</a>
+			</div>
+		</form>
+
+
+		<form name="cate" method="post" action="/goodinvent/delall">
+			<div class="mt20">
+				{foreach $cards as $v}
+				<div class="selltable">
+					<table class="table table-hover">
+						<tbody>
+							<tr class="lightbox" id="record_{$v.id}">
+								<!-- <td><input type="checkbox" name="listid[]" class="checkbox" value="{$v.id}"></td> -->
+								<td colspan="11">{$v.goods.name} <span class="green">{$v.goods.price}元</span></td>
+							</tr>
+							<tr>
+								<td style="text-align:left" colspan="12">
+									卡号：{$v.number}<br>卡密：{$v.secret} </td>
+							</tr>
+							<tr>
+								<td colspan="4"><a href="javascript:void(0)" onclick="delData({$v.id})"><span class="glyphicon glyphicon-trash"></span></a></td>
+								<td colspan="8">添加时间：{$v.create_at|date="Y-m-d H:i:s",###}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				{/foreach}
+				<!-- <table>
+					<tbody>
+						<tr class="active">
+							<td colspan="2">
+								<input type="checkbox" class="selectAllCheckbox">&nbsp;
+								<button type="submit" class="btn btn-primary" onclick="if(!confirm('是否要执行 删除 操作？'))return false"><span class="glyphicon glyphicon-trash"></span>&nbsp;删除</button>
+							</td>
+						</tr>
+					</tbody>
+				</table> -->
+
+			</div>
+		</form>
+		<div>
+
+			<style>
+				#wypage {
+					font-size: 12px;
+					padding: 10px auto;
+					margin-left: 0px;
+				}
+
+				#wypage p {
+					float: left;
+					color: #333;
+				}
+
+				#wypage a {
+					float: left;
+					display: inline-block;
+					border: 1px solid #ddd;
+					padding: 6px 9px;
+					margin-left: 4px;
+					text-decoration: none;
+					color: #333;
+					background-color: #fff;
+					border-radius: 0px;
+				}
+
+				#wypage a:hover {
+					background-color: #248eff;
+					color: #fff
+				}
+
+				#wypage a.no-hover:hover {
+					color: #333
+				}
+
+				#wypage a.wy_page_current {
+					background-color: #06a7ff;
+					color: #fff
+				}
+			</style>
+			<form class="form-inline">
+				{$page}
+			</form>
+		</div>
+		<br><br>
+
+	</div>
+</div>
+</div>
+{/block}
+
+{block name="appendJS"}
+
+<script>
+	var delData = function(id) {
+		if (confirm('是否要删除卡密信息？')) {
+			$.get('/merchant/goods_card/del', {
+				id: id
+			}, function(res) {
+				if (res.code == 0) {
+                    alert('删除成功！');
+					$('#record_' + id).parents('.selltable').fadeOut();
+				} else {
+					alert(data);
+				}
+			});
+		};
+	};
+</script>
+
+{/block}

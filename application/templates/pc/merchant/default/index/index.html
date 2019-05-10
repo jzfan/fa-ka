@@ -1,0 +1,387 @@
+{extend name="base"}
+
+{block name="content"}
+<style>
+	.text-blue{
+		color:#679bdc;
+	}
+
+	.text-medium{
+		font-size:24px;
+	}
+
+	.text-normal{
+		font-size:12px;
+	}
+
+	.text-bold{
+		font-weight: bold;
+	}
+
+	.m20{
+		margin:35px;
+	}
+
+	.desc{
+		line-height: 1.5rem;
+		height: 1.5rem;
+	}
+
+	.icon-box{
+		height: 20px;
+		width: 20px;
+		display: inline-block;
+	}
+
+	.icon{
+		height: 100%;
+		width: 100%;
+	}
+</style>
+<style type="text/css">.cj_stat{text-anchor: middle;font-family: Arial;font-size: 20px;-webkit-tap-highlight-color: rgba(0, 0, 0, 0);color: #000;}</style>
+<div class="row">
+	<div class="col-lg-9">
+		<div class="col-lg-3">
+			<div class="card-box">
+				<div class="widget-chart text-center text-blue text-medium text-bold m20">
+					{$dealStat.money + 0|sprintf="%.2f",###}
+				</div>
+				<ul class="list-inline chart-detail-list m-b-0 text-normal">
+					<li class="desc">
+						<div class="icon-box">
+							<img class="icon m-r-5" src="__RES__/assets/images/icon_wallet.png" alt="">
+						</div>
+						当前账号金额（元）
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-lg-3">
+			<div class="card-box">
+				<div class="widget-chart text-center text-blue text-medium text-bold m20">
+					{$today['transaction_money']|sprintf="%.2f",###}
+				</div>
+				<ul class="list-inline chart-detail-list m-b-0 text-normal">
+					<li class="desc">
+						<div class="icon-box">
+							<img class="icon m-r-5" src="__RES__/assets/images/icon_yajin.png" alt="">
+						</div>
+						今日收入金额（元）
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-lg-3">
+			<div class="card-box">
+				<div class="widget-chart text-center text-blue text-medium text-bold m20">
+					{$today['count'] + 0}
+				</div>
+				<ul class="list-inline chart-detail-list m-b-0 text-normal">
+					<li class="desc">
+						<div class="icon-box">
+							<img class="icon m-r-5" src="__RES__/assets/images/icon_gongdan.png" alt="">
+						</div>
+						今日成交订单（笔）
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-lg-3">
+			<div class="card-box">
+				<div class="widget-chart text-center text-blue text-medium text-bold m20">
+					{$dealStat.yesterday_order_num}
+				</div>
+				<ul class="list-inline chart-detail-list m-b-0 text-normal">
+					<li class="desc">
+						<div class="icon-box">
+							<img class="icon m-r-5" src="__RES__/assets/images/icon_light.png" alt="">
+						</div>
+						昨日成交订单（笔）
+					</li>
+				</ul>
+			</div>
+		</div>
+
+
+		<!--第二行-->
+		<div class="col-lg-3">
+			<div class="card-box">
+				<div class="widget-chart text-center text-blue text-medium text-bold m20">
+					{$dealStat.cardnum}
+				</div>
+				<ul class="list-inline chart-detail-list m-b-0 text-normal">
+					<li class="desc">
+						<div class="icon-box">
+							<img class="icon m-r-5" src="__RES__/assets/images/icon_card.png" alt="">
+						</div>
+						今日卖出卡量（张）
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-lg-3">
+			<div class="card-box">
+				<div class="widget-chart text-center text-blue text-medium text-bold m20">
+					{$today['transaction_money'] - $today['profit']|sprintf="%.2f",###}
+				</div>
+				<ul class="list-inline chart-detail-list m-b-0 text-normal">
+					<li class="desc">
+						<div class="icon-box">
+							<img class="icon m-r-5" src="__RES__/assets/images/icon_cost.png" alt="">
+						</div>
+						今日卖出成本（元）
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-lg-3">
+			<div class="card-box">
+				<div class="widget-chart text-center text-blue text-medium text-bold m20">
+					{$today['profit']|sprintf="%.2f",###}
+				</div>
+				<ul class="list-inline chart-detail-list m-b-0 text-normal">
+					<li class="desc">
+						<div class="icon-box">
+							<img class="icon m-r-5" src="__RES__/assets/images/icon_lirun.png" alt="">
+						</div>
+						今日获得利润（元）
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-lg-3">
+			<div class="card-box">
+				<div class="widget-chart text-center text-blue text-medium text-bold m20">
+					{$dealStat.money + $dealStat.last_cash|sprintf="%.2f",###}
+				</div>
+				<ul class="list-inline chart-detail-list m-b-0 text-normal">
+					<li class="desc">
+						<div class="icon-box">
+							<img class="icon m-r-5" src="__RES__/assets/images/icon_last.png" alt="">
+						</div>
+						上次结算金额（元）
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-3">
+		<div class="card-box">
+
+			<h4 class="header-title m-t-0">今日支付通道分析</h4>
+			<div id="morris-donut-example" style="height: 280px;"></div>
+		</div>
+	</div>
+	<!-- end col -->
+	<div class="col-lg-12">
+		<div class="card-box">
+			<h4 class="header-title m-t-0">近期交易统计</h4>
+			<div id="morris-line-example" style="height: 280px;">
+			</div>
+		</div>
+	</div>
+	<!-- end col -->
+</div>
+<!-- end row -->
+<div class="row">
+	<div class="col-lg-4">
+		<div class="card-box">
+			<h4 class="header-title m-t-0  m-b-30">系统公告</h4>
+			<div class="inbox-widget nicescroll">
+				{foreach $articles as $v}
+				<a href="/merchant/index/notice?article_id={$v.id}" data-toggle="modal" data-target="#myModal" >
+					<div class="inbox-item">
+						<p class="inbox-item-author">
+							{$v.title}
+							<san style="">{$v.create_at|date="m/d H:i",###}</san>
+						</p>
+						<p class="inbox-item-text">
+							{$v.content|htmlspecialchars_decode|strip_tags|mb_substr=0,20,'utf-8'}...
+							<br>
+						</p>
+						<!-- <p class="inbox-item-date" >
+                            {$v.create_at|date="m/d H:i:s",###}
+                        </p> -->
+					</div>
+				</a>
+				{/foreach}
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-8">
+		<div class="card-box">
+			<h4 class="header-title m-t-0 m-b-30">最新订单信息</h4>
+			<div class="table-responsive">
+				<table class="table">
+				<thead>
+				<tr>
+					<th>
+						订单号
+					</th>
+					<th>
+						商品名称
+					</th>
+					<th>
+						交易金额
+					</th>
+					<th>
+						下单时间
+					</th>
+					<th>
+						状态
+					</th>
+					<th>
+						支付通道
+					</th>
+				</tr>
+				</thead>
+				<tbody>
+				{foreach $orders as $v}
+				<tr>
+					<td>
+						{$v.trade_no}
+					</td>
+					<td>
+						{$v.goods_name}（{$v.quantity}张）
+					</td>
+					<td>
+						{$v.total_price}
+					</td>
+					<td>
+						{$v.create_at|date="m/d H:i:s",###}
+					</td>
+					<td>
+						{if $v.status==1}
+						<span class="label label-success">{$v.status_text}</span>
+						{else/}
+						<span class="label label-default">{$v.status_text}</span>
+						{/if}
+					</td>
+					<td>
+						{$v.channel.title}
+					</td>
+				</tr>
+				{/foreach}
+				</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<!-- end col -->
+</div>
+<!-- end row -->
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+	    <div class="modal-content">
+	    </div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
+{/block}
+
+{block name="appendJS"}
+<script>
+$("#myModal").on("hidden", function() {
+	$(this).removeData("modal");
+});
+$("#myModal").on("hidden.bs.modal", function() {
+    $(this).removeData("bs.modal");
+});
+</script>
+<!-- KNOB JS -->
+<!--[if IE]>
+<script type="text/javascript" src="__RES__/assets/plugins/jquery-knob/excanvas.js"></script>
+<![endif]-->
+<script src="__RES__/assets/plugins/jquery-knob/jquery.knob.js"></script>
+
+<!--Morris Chart-->
+<script src="__RES__/assets/plugins/morris/morris.min.js"></script>
+<script src="__RES__/assets/plugins/raphael/raphael-min.js"></script>
+
+<script>
+
+!function($) {
+"use strict";
+
+var Dashboard1 = function() {
+	this.$realData = []
+};
+
+//creates Bar chart
+Dashboard1.prototype.createBarChart  = function(element, data, xkey, ykeys, labels, lineColors) {
+	Morris.Bar({
+		element: element,
+		data: data,
+		xkey: xkey,
+		ykeys: ykeys,
+		labels: labels,
+		hideHover: 'auto',
+		resize: true, //defaulted to true
+		gridLineColor: '#eeeeee',
+		barSizeRatio: 0.2,
+		barColors: lineColors
+	});
+},
+
+//creates line chart
+Dashboard1.prototype.createLineChart = function(element, data, xkey, ykeys, labels, opacity, Pfillcolor, Pstockcolor, lineColors) {
+	Morris.Line({
+	  element: element,
+	  data: data,
+	  xkey: xkey,
+	  ykeys: ykeys,
+	  labels: labels,
+	  fillOpacity: opacity,
+	  pointFillColors: Pfillcolor,
+	  pointStrokeColors: Pstockcolor,
+	  behaveLikeLine: true,
+	  gridLineColor: '#eef0f2',
+	  hideHover: 'auto',
+	  resize: true, //defaulted to true
+	  pointSize: 0,
+	  lineColors: lineColors
+	});
+},
+
+//creates Donut chart
+Dashboard1.prototype.createDonutChart = function(element, data, colors) {
+	Morris.Donut({
+		element: element,
+		data: data,
+		resize: true, //defaulted to true
+		colors: colors
+	});
+},
+
+
+Dashboard1.prototype.init = function() {
+
+	//creating bar chart
+
+
+	//create line chart
+	var $data  = [
+		{foreach $monthStatis as $day => $v}
+		{ y: '{$day}', a: {$v.transaction_money}, b: {$v.profit} },
+		{/foreach}
+	  ];
+	this.createLineChart('morris-line-example', $data, 'y', ['a','b'], ['交易金额','利润'],['0.9'],['#ffffff'],['#999999'], ['#10c469','#188ae2']);
+
+	//creating donut chart
+	var $donutData = [
+        {foreach $payStatis as $k => $v}
+            { label: '{$v.title}', value: {$v.total} },
+		{/foreach}
+	];
+	this.createDonutChart('morris-donut-example', $donutData, ['#5b69bc','#ff8acc', "#35b8e0", "#10c469", "188ae2"]);
+},
+//init
+$.Dashboard1 = new Dashboard1, $.Dashboard1.Constructor = Dashboard1
+}(window.jQuery),
+
+//initializing
+function($) {
+"use strict";
+$.Dashboard1.init();
+}(window.jQuery);
+</script>
+{/block}

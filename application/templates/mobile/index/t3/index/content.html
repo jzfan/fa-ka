@@ -1,0 +1,29 @@
+{extend name="./main"}
+
+{block name="content"}
+<!--中间内容start-->
+<div class="newmianboady" style="">
+
+    <style>
+        .dzz-main-content {
+            min-height: 679px;
+            margin-top: 107px;
+        }
+
+        a.trench {
+            text-decoration: none;
+        }
+
+        .newmianboady {
+            background-color: transparent;
+        }
+    </style>
+
+    <div class="dzz-main-content">
+        <dl class="contatus-main">
+            {$data.content|htmlspecialchars_decode}
+        </dl>
+    </div>
+
+</div>
+{/block}

@@ -1,0 +1,122 @@
+{extend name="./main"}
+
+{block name="CSS"}
+{/block}
+
+{block name="content"}
+
+<!--Mobile menu-->
+<div class="mobile-menu d-none d-t-block">
+    <div class="container">
+        <div class="mobile-menu__logo">
+            <svg class="menu__logo-img" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+                <path data-name="Sigma symbol" class="svg-element"
+                      d="M237.418,8583.56a12.688,12.688,0,0,0,.419-3.37c-0.036-5.24-2.691-9.68-7.024-13.2h-3.878a20.819,20.819,0,0,1,4.478,13.01c0,4.56-2.456,10.2-6.413,11.4a16.779,16.779,0,0,1-2.236.51c-10.005,1.55-14.109-17.54-9.489-23.31,2.569-3.21,6.206-4.08,11.525-4.08h17.935A24.22,24.22,0,0,1,237.418,8583.56Zm-12.145-24.45c-8.571.02-12.338,0.98-16.061,4.84-6.267,6.49-6.462,20.69,4.754,27.72a24.092,24.092,0,1,1,27.3-32.57h-16v0.01Z"
+                      transform="translate(-195 -8544)"/>
+            </svg>
+        </div>
+        <button type="button" class="mobile-menu__close">
+            <span><i class="mdi mdi-close" aria-hidden="true"></i></span>
+        </button>
+        <nav class="mobile-menu__wrapper">
+            <ul class="mobile-menu__ul">
+                <li class="mobile-menu__li mobile-menu__li-collapse"><a href="#" class="link link--dark-gray">网站首页
+                    <span><i class="mdi mdi-chevron-down"></i></span>
+                </a></li>
+                <li class="mobile-menu__li"><a href="#features" class="link link--gray">功能特点</a></li>
+                <li class="mobile-menu__li"><a href="#price" class="link link--gray">系统报价</a></li>
+
+            </ul>
+        </nav>
+    </div>
+</div>
+<!--Mobile menu-->
+
+<!--Header-->
+<header class="header-home header-home--color">
+    <div class="container">
+        <div class="row header-home__webapp-img-wrap">
+            <img alt="" class="header-home__webapp-img" src="__RES__/app/t2/img/img_bg_webapp.png">
+            <div class="col-12">
+                <h2 class="header-home__title">全新发卡系统程序</h2>
+                <p class="header-home__description">知宇软件开发全新发卡系统程序，成熟支付系统级别架构，安全稳定，大数据支持，一次购买永久更新升级。</p>
+                <div class="header-home__btns header-home__btns-webapp">
+                    <a href="javascript:openKefuLink();" class="site-btn site-btn--accent header-home__btn">点击联系客服</a>
+                    <a href="javascript:openKefuLink();" class="site-btn site-btn--invert header-home__btn">购买系统代码</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!--Header-->
+
+<!--Trusted by-->
+<div class="section section--first">
+    <div class="container">
+        <div class="row logo">
+            <div class="col-10 col-offset-1 col-t-12">
+                <p>支付合作伙伴
+                    <img alt="" class="logo__img-mini" src="__RES__/app/t2/img/img_logo_blue_1.png">
+                    <img alt="" class="logo__img-mini" src="__RES__/app/t2/img/img_logo_blue_2.png">
+                    <img alt="" class="logo__img-mini" src="__RES__/app/t2/img/img_logo_blue_3.png">
+                    <img alt="" class="logo__img-mini" src="__RES__/app/t2/img/img_logo_blue_6.png">
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Trusted by-->
+
+
+<!--What is-->
+<section class="section">
+    <div class="container" id="features">
+        <div class="row">
+            <div class="col-12">
+                <h3 class="section__title">知宇发卡系统功能特点?</h3>
+                <p class="section__description">基于TP5开发的全新发卡系统，全新代码，系统更加流畅稳定！
+                    知宇软件多年支付系统开发经验，最切合商业实战的发卡系统！永久免费更新升级，一站式运营技术支持！.</p>
+            </div>
+        </div>
+        <div class="row about-app">
+            <div class="col-6 about-app__description">
+                <div class="about-app__description-content about-app__description-content--left">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+                        <path class="svg-element"
+                              d="M496.649,3155.93a1.94,1.94,0,0,0-1.939,1.94v11.78a2.476,2.476,0,0,1-2.473,2.47H461.351a2.475,2.475,0,0,1-2.473-2.47v-30.89a2.475,2.475,0,0,1,2.473-2.47h11.781a1.94,1.94,0,0,0,0-3.88H461.351a6.359,6.359,0,0,0-6.351,6.35v30.89a6.359,6.359,0,0,0,6.351,6.35h30.886a6.359,6.359,0,0,0,6.351-6.35v-11.78A1.94,1.94,0,0,0,496.649,3155.93Zm5.783-18.54-8.824-8.82a1.935,1.935,0,0,0-2.743,0l-22.06,22.06a1.919,1.919,0,0,0-.568,1.37v8.82a1.94,1.94,0,0,0,1.939,1.94H479a1.948,1.948,0,0,0,1.371-.56l22.061-22.07A1.936,1.936,0,0,0,502.432,3137.39ZM478.2,3158.88h-6.082v-6.08l20.122-20.12,6.082,6.08Z"
+                              transform="translate(-455 -3128)"/>
+                    </svg>
+                    <h4 class="about-app__description-title">批量添加</h4>
+                    <p>批量卡密添加，库存动态监测，自定义库存展示方式！ 卡密重复检测，多种添加方式，自定义导入导出！ 支持最大量数据添加，操作方便。.</p>
+
+                </div>
+            </div>
+            <div class="col-6 about-app__img">
+                <div class="about-app__img-wrap">
+                    <img alt="" src="__RES__/app/t2/img/img_ui_1.png">
+                </div>
+            </div>
+        </div>
+        <div class="row about-app about-app--reverse">
+            <div class="col-6 about-app__description">
+                <div class="about-app__description-content">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="42" height="48" viewBox="0 0 42 48">
+                        <path class="svg-element"
+                              d="M1019.32,3629.62a4.6,4.6,0,0,0-1.57-1.56h0l-32.688-19.41h-0.01a4.7,4.7,0,0,0-6.4,1.61,4.616,4.616,0,0,0-.653,2.36h0v38.76a4.649,4.649,0,0,0,4.671,4.62h0a4.637,4.637,0,0,0,2.381-.65h0.009l32.689-19.38v-0.01A4.578,4.578,0,0,0,1019.32,3629.62Zm-3.6,3.02-32.67,19.38a0.758,0.758,0,0,1-.91-0.12,0.715,0.715,0,0,1-.219-0.52v-38.76h0a0.735,0.735,0,0,1,.1-0.38,0.75,0.75,0,0,1,.459-0.34,0.721,0.721,0,0,1,.565.08l32.67,19.4a0.667,0.667,0,0,1,.25.25A0.725,0.725,0,0,1,1015.72,3632.64Z"
+                              transform="translate(-978 -3608)"/>
+                    </svg>
+                    <h4 class="about-app__description-title">折扣优惠券</h4>
+                    <p>商户自定义添加优惠券，多种折扣方式灵活运用，增加销量，商家营销好帮手。.</p>
+
+                </div>
+            </div>
+            <div class="col-6 about-app__img about-app__img--left">
+                <div class="about-app__img-wrap">
+                    <img alt="" src="__RES__/app/t2/img/img_ui_2.png">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--What is-->
+{/block}

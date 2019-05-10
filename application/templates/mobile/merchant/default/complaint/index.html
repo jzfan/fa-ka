@@ -1,0 +1,103 @@
+{extend name="base/detail"}
+
+{block name="content"}
+<div class="main">
+    <div class="content">
+
+        <ul class="nav nav-tabs">
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li role="presentation" class="active"><a href="javascript:;">投诉管理</a></li>
+        </ul><br>
+        <div class="alert alert-warning">{:sysconf('site_name')}非常在乎您的诚信经营，如果有用户投诉您，请您积极与买家进行联系，处理问题。如拖延、拒绝解决用户投诉，我们将严肃处理！</div>
+
+        {if empty($complaints)}
+        暂无客户投诉，{:sysconf('site_name')}感谢您的诚信经营！
+        {/if}
+        {foreach $complaints as $v}
+        <div class="selltable">
+            <table class="table table-hover">
+                <tbody>
+                    <tr>
+                        <td>投诉订单：{$v.trade_no}</td>
+                    </tr>
+                    <tr>
+                        <td>投诉原因：{$v.type}</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 50%">投诉内容：{$v.desc}</td>
+                    </tr>
+                    <tr>
+                        <td>联系方式：{$v.mobile}</td>
+                    </tr>
+                    <tr>
+                        <td>投诉时间：{$v.create_at|date="Y-m-d H:i:s",###}</td>
+                    </tr>
+
+                    <tr>
+                        <td data-status="{$v['status']}" data-id="{$v['id']}">状态：
+                        {if $v.status==0}待处理{elseif $v.status==-1/}已撤诉{else/}已处理{/if}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td data-status="{$v['status']}" data-id="{$v['id']}">
+                            操作：<a href="{:url('Merchant/Complaint/detail')}?id={$v.id}"><span class="label label-primary">详情</span></a>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        {/foreach}
+
+        <div class="col-md-9 text-right">
+
+            <style>
+                #wypage {
+                    font-size: 12px;
+                    padding: 10px auto;
+                    margin-left: 0px;
+                }
+
+                #wypage p {
+                    float: left;
+                    color: #333;
+                }
+
+                #wypage a {
+                    float: left;
+                    display: inline-block;
+                    border: 1px solid #ddd;
+                    padding: 6px 9px;
+                    margin-left: 4px;
+                    text-decoration: none;
+                    color: #333;
+                    background-color: #fff;
+                    border-radius: 0px;
+                }
+
+                #wypage a:hover {
+                    background-color: #248eff;
+                    color: #fff
+                }
+
+                #wypage a.no-hover:hover {
+                    color: #333
+                }
+
+                #wypage a.wy_page_current {
+                    background-color: #06a7ff;
+                    color: #fff
+                }
+            </style>
+            {$page}
+        </div>
+    </div>
+
+</div>
+{/block}
+
+{block name="appendJS"}
+<script>
+$(function(){
+
+})
+</script>
+{/block}

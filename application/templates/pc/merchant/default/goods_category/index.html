@@ -1,0 +1,110 @@
+{extend name="base"}
+
+{block name="content"}
+<div class="row">
+	<div class="col-sm-12">
+		<div class="card-box">
+			<div class="row">
+				<form class="form-inline" role="form" action="{:url('add')}" method="post">
+                    <div class="form-group">
+						<input name="name" type="text" class="form-control" placeholder="分类名称" value="">
+                    </div>
+                    <div class="form-group">
+						<input name="sort" type="number" class="form-control" placeholder="排序" value="0" min=0>
+                    </div>
+					<button type="submit" class="btn btn-purple waves-effect waves-light">添加分类</button>
+                </form>
+			</div>
+			<!-- end row -->
+			<div class="row">
+				<table class="table table-striped m-0">
+					<thead>
+						<tr>
+							<th>分类名称</th>
+							<th>排序（值越大越排前）</th>
+							<th>状态</th>
+							<th>创建时间</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						{foreach $categorys as $v}
+						<tr>
+							<th scope="row">{$v.name}</th>
+							<td>{$v.sort}</td>
+							<td>
+								<input onchange="change_status(this,{$v.id})" type="checkbox" data-plugin="switchery" data-color="#2bb309" data-size="small" data-switchery="true" style="display: none;" {if $v.status==1}checked{/if}>
+							</td>
+							<td>{$v.create_at|date="Y-m-d H:i:s",###}</td>
+							<td>
+                                <a href="{:url('link')}?id={$v.id}">链接</a>
+								<span>|</span>
+                                <a href="{:url('goods/index')}?cate_id={$v.id}">商品</a>
+								<span>|</span>
+                                <a href="{:url('goods_card/index')}?cate_id={$v.id}">库存卡</a>
+								<span>|</span>
+                                <a href="{:url('edit')}?id={$v.id}">编辑</a>
+								<span>|</span>
+                                <a href="javascript:void(0);" onclick="del(this,{$v.id})">删除</a>
+							</td>
+						</tr>
+						{/foreach}
+					</tbody>
+				</table>
+			</div>
+			<!-- end row -->
+		</div>
+	</div>
+</div>
+{/block}
+
+{block name="appendJS"}
+
+<script>
+	function change_status(obj,id)
+	{
+		var status=$(obj).prop('checked');
+		if(status){
+			status=1;
+		}else{
+			status=0;
+		}
+		$.post('/merchant/goods_category/changeStatus',{
+			id:id,
+			status:status
+		},function(res){
+			if(res.code!=0){
+				alert(res.msg);
+			}
+		});
+	}
+
+	function del(obj,id)
+	{
+		swal({
+			title: "确定删除吗？",
+			text: "你将无法恢复该操作！",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "确定删除！",
+			closeOnConfirm: false
+		},
+		function(){
+			$.post('/merchant/goods_category/del',{
+				id:id
+			},function(res){
+				if(res.code!=0){
+					swal('删除失败', res.msg, "error");
+				}else{
+					swal('删除成功', res.msg, "success");
+					setTimeout(function(){
+						location.reload();
+					},200);
+				}
+			});
+		});
+	}
+</script>
+
+{/block}

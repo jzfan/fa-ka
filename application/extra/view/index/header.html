@@ -1,0 +1,33 @@
+<!--导航-->
+<div class="top">
+    <div class="logo"><a href="/"><img src="{:sysconf('site_logo')}" alt="" height="44"></a></div>
+    <div class="nav_btn"><i></i></div>
+    <div class="user_btns">
+        {if session('?merchant.user')}
+        <a href="/merchant" class="login_btn" >商户中心</a><a  href="/logout" class="reg_btn">退出登录</a>
+        {else}
+        <a href="/login" class="login_btn">登录</a><a href="/register" class="reg_btn">注册</a>
+        {/if}
+    </div>
+    <div class="nav">
+        <ul>
+            {volist name="nav" id="vo"}
+            <li><a href="{$vo.url}" {eq name="vo.target" value="1"}target="_blank"{/eq}>{$vo.title}</a></li>
+            {/volist}
+        </ul>
+    </div>
+    <div class="main_shadow">
+        <ul>
+            {volist name="nav" id="vo"}
+            <li><a href="{$vo.url}" {eq name="vo.target" value="1"}target="_blank"{/eq}>{$vo.title}</a></li>
+            {/volist}
+            {if session('?merchant.user')}
+            <li><a href="/merchant">商户中心</a></li>
+            <li><a href="/logout">退出登录</a></li>
+            {else}
+            <li><a href="/login">登录</a></li>
+            <li><a href="/register">快速注册</a></li>
+            {/if}
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,76 @@
+{extend name="base/detail"}
+
+{block name="content"}
+<div class="main">
+    <div class="content">
+
+        <ul class="nav nav-tabs">
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li role="presentation" class="active"><a href="javascript:;">分类编辑</a></li>
+        </ul><br>
+
+        <form name="safe" class="form-horizontal" method="post" action="">
+            <input type="hidden" name="cate_id" value="{$category.id}">
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">分类名称</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="name" maxlength="50" value="{$category.name}" required="">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">分类排序</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="sort" maxlength="5" value="{$category.sort}" data-toggle="tooltip" title="" data-original-title="数字越大越靠前">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">页面风格</label>
+                <div class="col-md-4">
+                    <select name="theme" class="form-control" required>
+                        {foreach :config('pay_themes') as $theme}
+                        <option value="{$theme.alias}" {if isset($category) && $category.theme==$theme.alias}selected{/if}>{$theme.name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <p class="form-control-static">请选择购买时的页面风格</p>
+                </div>
+            </div>
+
+            <br>
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label"></label>
+                <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary btn-block"><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;保存设置</button>
+                </div>
+            </div><br>
+        </form>
+
+    </div>
+</div>
+{/block}
+
+{block name="appendJS"}
+<script>
+    $('[type=submit]').click(function() {
+        var catename = $.trim($('[name=name]').val());
+        if (catename == '') {
+            alert('分类名称不能为空！');
+            $('[name=name]').focus();
+            return false;
+        };
+
+        var sortid = $.trim($('[name=sort]').val());
+        if (sortid == '' || isNaN(sortid)) {
+            alert('分类排序不能为空，格式为整数值！');
+            $('[name=sort]').focus();
+            return false;
+        };
+    });
+</script>
+{/block}

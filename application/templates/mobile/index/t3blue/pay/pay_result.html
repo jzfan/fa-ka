@@ -1,0 +1,51 @@
+<!doctype html>
+<html style="background: #fff;">
+<head>
+	<meta charset="utf-8">
+	<title>支付结果页面</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="__RES__/app/js/jquery-2.2.1.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="__RES__/app/css/payresult.css" />
+</head>
+
+<body>
+<div class="notice_page">
+	<div id="result_icon" {eq name="order.status" value="0"}class="notice_fail"{else}class="notice_success"{/eq}></div>
+	<div class="home_page"><a class="notice_retun" href="javascript:history.go(-1);">关闭页面</a><a class="notice_home" href="/">返回首页</a></div>
+</div>
+    {neq name="order.status" value="1"}
+    <script type="text/javascript">
+    var flag = true;
+    $(function(){
+        if(flag == true) {
+            setInterval(function(){check()} , 3000);  //每隔三秒执行一次 ajax
+        }
+        function check(){
+            if(flag == false) {
+                return false;
+            }
+            var out_trade_no = "{$order.trade_no}";
+            $.ajax({
+                type: "post",
+                url: '{:url("index/pay/check_order_status")}',  //请求函数
+                async: false,
+                data: {'out_trade_no':out_trade_no},
+                dataType: "json",
+                success: function (data) {
+                    if (data.code == 0) {
+                        $("#result_icon").removeClass('notice_fail');
+                        $("#result_icon").addClass('notice_success');
+                        setInterval(function(){window.location.href=data.url} , 3000);
+                        flag = false;
+                    }else{
+                        result = false;
+                    }
+                }
+            });
+        }
+    })
+</script>
+{/neq}
+</body>
+</html>

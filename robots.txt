@@ -1,0 +1,4 @@
+# Robots For ZHIYU FAKA
+User-agent: *
+Disallow: /details/
+Disallow: /liebiao/
