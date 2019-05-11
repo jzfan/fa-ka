@@ -12,7 +12,7 @@
                     <img src="/static/app/510ka/imgs/img_03.png"/>
                 </div>
                 <div class="txt">
-                    <h2 class="counter">1906027</h2>
+                    <h2 class="counter">{$stat.orderCount}</h2>
                     <!-- <h2 class="counter">2******</h2> -->
                     <p>订单成交次数(次)</p>
                 </div>
@@ -22,7 +22,7 @@
                     <img src="/static/app/510ka/imgs/img_04.png"/>
                 </div>
                 <div class="txt">
-                    <h2 class="counter">42132976.44</h2>
+                    <h2 class="counter">{$stat.orderSum}</h2>
                     <!-- <h2 class="counter">3*******</h2> -->
                     <p>订单总额(元)</p>
                 </div>
@@ -32,7 +32,7 @@
                     <img src="/static/app/510ka/imgs/img_05.png"/>
                 </div>
                 <div class="txt">
-                    <h2 class="counter">31733</h2>
+                    <h2 class="counter">{$stat.userCount}</h2>
                     <!-- <h2 class="counter">3****</h2> -->
                     <p>商户数(个)</p>
                 </div>
@@ -48,36 +48,13 @@
         </div>
         <div class="body wow fadeIn" data-wow-delay=".5s">
             <ul>
+                {foreach $withdrawNotice as $notice}
                                 <li>
                     <i></i>
-                    <a href="/article/317.html">2019年5月9日系统自动结算已完毕</a>
-                    <span>2019-05-09 01:40</span>
+                    <a href="/article/{$notice.id}.html">{$notice.title}</a>
+                    <span>{$notice.create_at}</span>
                 </li>
-                                <li>
-                    <i></i>
-                    <a href="/article/316.html">2019年5月8日系统自动结算已完毕</a>
-                    <span>2019-05-08 17:12</span>
-                </li>
-                                <li>
-                    <i></i>
-                    <a href="/article/315.html">2019年5月7日系统自动结算已完毕</a>
-                    <span>2019-05-07 01:20</span>
-                </li>
-                                <li>
-                    <i></i>
-                    <a href="/article/314.html">2019年5月6日系统自动结算已完毕</a>
-                    <span>2019-05-06 01:17</span>
-                </li>
-                                <li>
-                    <i></i>
-                    <a href="/article/313.html">2019年5月5日系统自动结算已完毕</a>
-                    <span>2019-05-05 01:18</span>
-                </li>
-                                <li>
-                    <i></i>
-                    <a href="/article/312.html">2019年5月4日系统自动结算已完毕</a>
-                    <span>2019-05-04 15:41</span>
-                </li>
+                  {/foreach}
                             </ul>
         </div>
     </div>
