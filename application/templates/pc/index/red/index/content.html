@@ -1,0 +1,35 @@
+{extend name="main" /}
+{block name="header"}
+{include file='header' title='$category.name'}
+{/block}
+{block name="content"}
+<div class="wrapper newsd">
+    <div class="newsd-hd">
+        <div class="center">
+            <h3>{$data.title}</h3>
+            <p><span>{$data.create_at|date='Y-m-d H:i:s', ###}</span></p>
+        </div>
+    </div>
+    <div class="newsd-bd" style="min-height: 500px;">
+        <div class="row">
+            <div class="col-md-2 hidden-xs"></div>
+            <div class="col-md-8 col-sm-12">
+                <div class="blog-section-left">
+                    <article class="page-content">
+                        <div class="blog-content">
+                            {$data.content|htmlspecialchars_decode}
+                        </div>
+                    </article>
+                </div>
+            </div>
+            <div class="col-md-2 hidden-xs"></div>
+        </div>
+    </div>
+    <div class="newsd-ft">
+        <a href="javascript:history.go(-1)" class="back">
+            <img src="/static/app/red/imgs/ico_14.png" alt="">
+            <!--  <p>返回</p>-->
+        </a>
+    </div>
+</div>
+{/block}

@@ -53,10 +53,18 @@ class Index extends Base
         if($category) {
             $announceList = Db::name('article')->where('cate_id', $category->id)->limit(0,5)->order('top desc,id desc')->select();
         }
+
+        //常见问题
+        $faq = [];
+        $category = ArticleCategoryModel::get(['alias' => 'faq', 'status' => 1]);
+        if($category) {
+            $faq = Db::name('article')->where('cate_id', $category->id)->limit(0,5)->order('top desc,id desc')->select();
+        }
         $this->assign('stat', $stat);
         $this->assign('withdrawNotice', $withdrawNotice);
         $this->assign('newsList', $newsList);
         $this->assign('announceList', $announceList);
+        $this->assign('faqList', $faq);
         return $this->fetch();
     }
 

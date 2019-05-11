@@ -1,0 +1,32 @@
+{extend name="main" /}
+{block name="header"}
+{include file='header' title='$title'}
+{/block}
+{block name="content"}
+<div class="wrapper newslist">
+    <div class="newslist-bd" style="min-height:300px">
+        <ul id="lists">
+            {foreach $articles as $v}
+            <li>
+                <a href="/article/{$v.id}.html">
+                    <div class="txt">
+                        <div class="txt-hd">
+                            {$v.title} </div>
+                        <div class="txt-bd">
+                        </div>
+                        <div class="txt-ft">
+                            <div class="left">
+                                <span>{$v.create_at|date='Y-m-d', ###}</span><span>{$v.create_at|date='H:i:s', ###}</span>
+                            </div>
+                            <div class="right">
+                                &gt;&gt;
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            {/foreach}
+        </ul>
+    </div>
+</div>
+{/block}

@@ -1,0 +1,21 @@
+<div class="header">
+    <div class="wrapper">
+        <div class="logo">
+            <a href="/"><img src="{:sysconf('site_logo')}" width="144"></a>
+        </div>
+        <div class="nav">
+            <ul>
+                {foreach $nav as $link}
+                    <li><a href="{$link.url}">{$link.title}</a></li>
+                {/foreach}
+            </ul>
+            <div class="btn">
+                <a class="btn-login" href="/login">登录</a>
+                <a class="btn-resg" href="/register">快速注册</a>
+            </div>
+        </div>
+    </div>
+    <div class="gh">
+        <a href="javascript:;"></a>
+    </div>
+</div>
