@@ -1,15 +1,13 @@
 {extend name="main" /}
 {block name="header"}
-    {include file='header' title='用户注册'}
+{include file='header' title='用户注册'}
 {/block}
-
 {block name="content"}
 <div class="loginpage loginpage-bg">
-    <div class="reg-wrap" style="height:auto; margin-top: -145px;">
-        <form action="/register/regsave" id="reg" name="reg" autocomplete="off">
+    <div class="reg-wrap">
+        <form action="/register/regsave" id="reg" name="reg" autocomplete="off" style="flex: 1">
             <input type="hidden" name="spread_userid" value="">
             <div class="head">
-                <h2><img src="/static/app/510fk/imgs/logo_3.png"></h2>
                 <p>买家无需注册账号</p>
             </div>
             <div class="body">
@@ -18,7 +16,7 @@
                         <i class="iconfont icon-yonghu"></i>
                         <input class="res-user" type="text" id="newusername" name="reginfo[username]" value="" placeholder="注册用户名">
                     </li>
-                                        <li class="ver-btn">
+                    <li class="ver-btn">
                         <i class="iconfont icon-icon--"></i>
                         <input type="text" class="txt txt-code" name="reginfo[mobile]" id="newmobile" value="" placeholder="11位手机号码">
                         <a class="btn-code" href="javascript:;" id="click_checkcode">发送验证码</a>
@@ -27,7 +25,7 @@
                         <i class="iconfont icon-anquanbaozhang1"></i>
                         <input class="res-user" type="text" name="reginfo[chkcode]" id="code" value="" placeholder="手机验证码">
                     </li>
-                                        <li>
+                    <li>
                         <i class="iconfont icon-mima"></i>
                         <input class="res-password" type="password" id="password1" name="reginfo[password]" value="" placeholder="密码">
                     </li>
@@ -43,7 +41,7 @@
                         <i class="iconfont icon-youjian"></i>
                         <input class="res-user" type="text" id="newemail" name="reginfo[email]" value="" placeholder="电子邮箱">
                     </li>
-                                    </ul>
+                </ul>
                 <div class="rule">
                     <label>
                         <input type="checkbox" name="" id="rule" value="">
