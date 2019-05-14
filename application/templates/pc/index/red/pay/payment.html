@@ -1,16 +1,6 @@
-{extend name="./main"}
-
-{block name="CSS"}
-<style>
-    .buy_info>p {
-        color: #666;
-        margin-bottom: 20px;
-    }
-
-    .buy_info>p>span {
-        color: orangered;
-    }
-</style>
+{extend name="main" /}
+{block name="header"}
+{include file='header' title='$channel.title'}
 {/block}
 
 {block name="content"}

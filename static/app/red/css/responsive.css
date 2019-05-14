@@ -498,9 +498,6 @@
 	.hcontact{
 		padding: 0; padding-bottom: 40px;
 	}
-	.hcontact-l{
-		float: none; margin: 0;
-	}
 	.hcontact-l .hd h3{
 		font-size: 20px; text-align: center;
 	}

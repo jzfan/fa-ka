@@ -608,7 +608,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 .hnews .body-c .hd h2{
 	position: absolute;
-	top: 40%;
+	top: 15%;
 	left: 50%;
 	font-size: 26px;
 	transform: translateX(-50%);
@@ -767,8 +767,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 	overflow: hidden;
 }
 .hcontact-l{
-	margin-left: 68px;
-  float: left;
+	margin-bottom: 15px;
 }
 .hcontact-l .hd{
 	position: relative;
