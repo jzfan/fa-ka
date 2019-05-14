@@ -51,7 +51,7 @@
                 <li>
                     <i></i>
                     <a href="/article/{$notice.id}.html">{$notice.title}</a>
-                    <span>{$notice.create_at}</span>
+                    <span>{$notice.create_at|date='Y-m-d', ###}</span>
                 </li>
                 {/foreach}
             </ul>
@@ -375,7 +375,7 @@
     </div>
 </div>
 <div class="hcontact">
-    <div class="wrapper">
+    <div class="wrapper" style="display: flex">
         <div class="hcontact-l wow fadeInLeft" style="width: 33%">
             <div class="hd">
                 <h3><i><img src="/static/app/red/imgs/img_28.png" /></i>联系我们</h3>
@@ -395,7 +395,7 @@
             </div>
         </div>
         <div class="hcontact-r wow fadeInRight">
-            <ul>
+            <ul style="display: flex;">
                 <li>
                     <div class="img">
                         <img src="/static/app/red/imgs/img_29.png" />
