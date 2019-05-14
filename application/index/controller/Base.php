@@ -38,11 +38,12 @@ class Base extends BasicWechat
         }
 
         //注册平台
-        if ($this->request->isMobile()) {
-            $this->view->config('view_platform', 'mobile');
-        } else {
-            $this->view->config('view_platform', 'pc');
-        }
+        // if ($this->request->isMobile()) {
+        //     $this->view->config('view_platform', 'mobile');
+        // } else {
+        //     $this->view->config('view_platform', 'pc');
+        // }
+        $this->view->config('view_platform', 'pc');
 
         //注册主题
         $this->view->config('view_theme', sysconf('index_theme') . DS);
