@@ -108,7 +108,7 @@ class Order extends Base {
 
                     break;
             }
-
+// var_dump($order);exit;
             // 如果存在密码
             if ($order && $order->take_card_type != 0) {
                 if (!empty($order->take_card_password)) {

@@ -3,106 +3,114 @@
 {include file='header' title='订单查询'}
 {/block}
 {block name="content"}
-<div class="odsrch-wp">
+<section class="odsrch-wp">
     <div class="wrapper">
-        <div action="" method="">
-            <input type="hidden" id="query-type" value="2">
-            <div class="odsrch-bd">
-                <div class="odsrch-type">
-                    <h3>订单号查询</h3>
-                    <ul style="display: none;">
-                        <li data-type="1"><a href="javascript:;" title="浏览器缓存查询">浏览器缓存查询</a></li>
-                        <li data-type="2"><a href="javascript:;" title="订单号查询">订单号查询</a></li>
-                        <li data-type="3"><a href="javascript:;" title="联系方式查询">联系方式查询</a></li>
-                    </ul>
-                </div>
-                <div class="odsrch-txt">
-                    <input type="text" class="txt" name="orderid" id="orderid_input2" value="" placeholder="请输入订单号查询订单">
-                </div>
-                <div class="odsrch-btn">
-                    <input type="button" value="查 询" onclick="orderid_or_contact()">
-                </div>
+        <input type="hidden" id="query-type" value="{$querytype}">
+        <div class="odsrch-bd">
+            <div class="odsrch-type">
+                <h3>
+                    <?php
+switch($querytype) {
+    case 1:
+        echo '浏览器缓存查询';
+        break;
+    case 3:
+        echo '联系方式查询';
+        break;
+    case 2:
+    default:
+        echo '订单号查询';
+        break;
+}
+                    ?>
+</h3>
+                <ul>
+                    <li data-index="1"><a href="javascript:;" title="浏览器缓存查询">浏览器缓存查询</a></li>
+                    <li data-index="2"><a href="javascript:;" title="订单号查询">订单号查询</a></li>
+                    <li data-index="3"><a href="javascript:;" title="联系方式查询">联系方式查询</a></li>
+                </ul>
+            </div>
+            <div class="odsrch-txt">
+                <input type="text" class="txt" name="orderid" id="orderid_input2" value="" placeholder="请输入订单号查询订单" />
+            </div>
+            <div class="odsrch-btn">
+                <input type="button" value="查 询" onclick="orderid_or_contact()" />
             </div>
         </div>
-    </div>
-</div>
-<div class="wrapper">
-    <div class="odtips">
-        免责声明：平台为次日结算，款项结算给商户后所出现的售后问题请自行与卖家协商。订单投诉：通过订单号查询订单，可在【订单投诉】等待平台处理。<br>
-        <span style="color:red;">防骗提示：平台为24点解冻卖家资金，卡密有问题的请在24点前点击投诉按钮，否则我们将打款给卖家、或避开24点前选择00:01后购买卡密防止被骗！</span>
-    </div>
-</div>
-<div class="wrapper">
-    <div class="odnotice">
-        <h3>{:sysconf('site_name')}防骗提醒：</h3>
-        <p>1、卡密为“联系QQ拿货，加QQ群拿货”2、卡密为“付款成功，等待充值”3、购买的商品有问题，卖家且不售后4、以各种理由推脱到第二天遇到以上或售后问题，请及时联系我们QQ客服：<span>800048852</span></p>
-    </div>
-</div>
-<div class="q-remind"></div>
-<div class="vft-code" id="vft-code">
-    <div class="bd">
-        <input type="text" name="chkcode" id="chkcode" value="" placeholder="请输入验证码">
-        <span id="Vcode"></span>
-    </div>
-    <div class="ft">
-        <input type="button" id="submitChkCode" value="确定">
-    </div>
-</div>
-{if $trade_no!==null}
-{if empty($order)}
-<div style="display:block;width:216px;margin:100px auto;font-size:24px;">{if $is_verify}不存在该订单{/if}</div>
-{else/}
-<div class="main_box">
-    <h3><i class="iconfont icon-dingdan"></i> 订单日期：{$order.create_at|date="Y-m-d H:i:s",###}</h3>
-    <p>订单编号：<b>{$order.trade_no}</b></p>
-    <p>付款方式：<b>{:get_paytype_name($order.paytype)}</b></p>
-    <p>付款信息：<b>
-            <lable style="color: orangered" id="paystatus">{if $order.status==1}付款成功{else/}未付款{/if}</lable>
-        </b></p>
-    <!-- <p>订单状态：<b>正常</b></p> -->
-    <p>订单金额：<b>{$order.total_price}</b></p>
-    <p>实付款：<b>{$order.total_price}</b></p>
-    <p>卖家QQ：<b><a target="_blank" href="//wpa.qq.com/msgrd?v=3&amp;uin={$order.user.qq}&amp;site=qq&amp;menu=yes">{$order.user.qq}</a></b></p>
-    {if condition="isset($canComplaint) && $canComplaint" }
-    <p><a style="padding:5px 8px;background-color:#678cf7;color:white" href="/complaint?trade_no={$order.trade_no}" target="_blank">订单投诉</a></p>
-    {/if}
-    <p style="float:none;clear:both">卡密信息：
-        <b id="tips0" style="color: rgb(251,55,55)">
-        </b>
-        <b id="cardinfo0" style="color: rgb(251,55,55)">
-        </b>
-    </p>
-    <div class="notice">
-        <p>
-            <font color="red">平台提示：</font>有疑问请及时联系客服QQ：{:sysconf('site_info_qq')}
-            ，如遇到虚假交易请在当天22点前联系客服协助处理或者点击上方投诉按钮。
-             
-        </p>
-    </div>
-    <div class="clear"></div>
-</div>
-<script>
-var flag = true;
-var loading = '';
-var stop = false;
-$(function() {
-    getgoods('{$order.trade_no}', '0');
-    /* {eq name = "order.status" value = "0"} */
-    layer.msg('正在获取支付状态 ...', function() {
-        loading = layer.load(1, {
-            shade: [0.1, '#fff'] //0.1透明度的白色背景
+
+        {if $trade_no!==null}
+        {if empty($order)}
+        <div style="display:block;width:216px;margin:100px auto;font-size:24px;">{if $is_verify}不存在该订单{/if}</div>
+        {else/}
+        <div class="wrapper">
+            <h3><i class="iconfont icon-dingdan"></i> 订单日期：{$order.create_at|date="Y-m-d H:i:s",###}</h3>
+            <p>订单编号：<b>{$order.trade_no}</b></p>
+            <p>付款方式：<b>{:get_paytype_name($order.paytype)}</b></p>
+            <p>付款信息：<b>
+                    <lable style="color: orangered" id="paystatus">{if $order.status==1}付款成功{else/}未付款{/if}</lable>
+                </b></p>
+            <!-- <p>订单状态：<b>正常</b></p> -->
+            <p>订单金额：<b>{$order.total_price}</b></p>
+            <p>实付款：<b>{$order.total_price}</b></p>
+            <p>卖家QQ：<b><a target="_blank" href="//wpa.qq.com/msgrd?v=3&amp;uin={$order.user.qq}&amp;site=qq&amp;menu=yes">{$order.user.qq}</a></b></p>
+            {if condition="isset($canComplaint) && $canComplaint" }
+            <br>
+            <p><a style="padding:5px 8px;background-color:#678cf7;color:white" href="/complaint?trade_no={$order.trade_no}" target="_blank">订单投诉</a></p>
+            {/if}
+            <p style="float:none;clear:both">卡密信息：
+                <b id="tips0" style="color: rgb(251,55,55)">
+                </b>
+                <b id="cardinfo0" style="color: rgb(251,55,55)">
+                </b>
+            </p>
+            <div class="notice">
+                <p>
+                    <font color="red">平台提示：</font>有疑问请及时联系客服QQ：{:sysconf('site_info_qq')}
+                    ，如遇到虚假交易请在当天22点前联系客服协助处理或者点击上方投诉按钮。
+                     
+                </p>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <script>
+        var flag = true;
+        var loading = '';
+        var stop = false;
+        $(function() {
+            getgoods('{$order.trade_no}', '0');
+            /* {eq name = "order.status" value = "0"} */
+            layer.msg('正在获取支付状态 ...', function() {
+                loading = layer.load(1, {
+                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                });
+            });
+            setTimeout('oderquery(1)', 3000);
+            window.setTimeout("request_stop()", 30000);
+            /* {/eq} */
         });
-    });
-    setTimeout('oderquery(1)', 3000);
-    window.setTimeout("request_stop()", 30000);
-    /* {/eq} */
-});
-</script>
-{/if}
-{/if}
+        </script>
+        {/if}
+        {/if}
+        <div class="clear"></div>
+    </div>
+</section>
 {/block}
 {block name='js'}
-<script src='/static/app/js/clipboard.js'></script>
+<script src="__RES__/app/js/clipboard.js"></script>
+<script>
+$(function() {
+    $(".odsrch-type ul li").on("click", function() {
+        $('#orderid_input').val('');
+        var text = $(this).text();
+        $(".odsrch-type h3").text(text);
+        $('#query-type').val($(this).data('type'));
+        $(".odsrch-type ul").slideUp();
+        if ($(this).data('type') == 1) {
+            orderid_or_contact();
+        }
+    });
+});
+</script>
 <script>
 function getgoods(orderid, id) {
     setTimeout(function() {
@@ -128,6 +136,7 @@ function orderid_or_contact() {
     var input_val = $('#orderid_input' + queryType).val() || '';
 
     if (queryType != 1 && input_val == '') {
+            console.log(queryType)
         if (queryType == 2) {
             layer.msg('订单号为空！', {
                 icon: 2,
