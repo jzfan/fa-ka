@@ -4,7 +4,7 @@
 {/block}
 
 {block name="content"}
-<div class="wrapper" style="padding: 77px 0">
+<div class="wrapper" style="padding: 77px">
     <div class="">
         <ul>
             <li class="actived" style="width: 100%;margin-bottom: 30px"><a style="cursor: none">{$channel['title']}</a></li>
@@ -17,7 +17,7 @@
     {/eq}
     <p align="center" style="font-size: 14px">
         <div id="qrcode" style="margin: 0 auto;width: 210px;"></div>
-        <!--<img src="{:generate_qrcode_link($order.pay_url)}" width="210px" height="210px">-->
+        <img src="{:generate_qrcode_link($order.pay_url)}" width="210px" height="210px">
     </p>
     <p align="center" style="font-size: 14px"><span>请扫描二维码支付。</span><br></p>
 </div>

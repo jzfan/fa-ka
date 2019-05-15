@@ -951,7 +951,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 .login-wrap,
 .reg-wrap{
 	margin-bottom: 77px;
-	width: 982px;
+	width: 500px;
 	height: 522px;
 	background: #fff;
 	box-shadow: 0px 10px 30px 0px rgba(28, 103, 106, 0.2);
@@ -959,6 +959,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 	display: flex;
 	align-content: center;
 	justify-content: center;
+	text-align: center;
 }
 .login-left{
 	float: left;
@@ -1083,16 +1084,11 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 
 /*注册*/
-.reg-wrap{
-	padding: 35px 70px;
-	height: 675px;
-	text-align: center;
-}
 .reg-wrap .body{
 	margin-top: 30px;
 }
 .reg-wrap .body li.ver-btn .txt-code{
-	width: 55%;
+	width: 100%;
 }
 .reg-wrap .body .rule{
 	margin-top: 20px;
@@ -1847,4 +1843,15 @@ body .dissolve{
     border-left: 50vw solid transparent;
     border-right: 50vw solid transparent;
     border-top: 55px solid #fff;
+}
+.btn {
+	background: #cc003d;
+	cursor: pointer;
+	padding: 10px 15px;
+	text-align: center;
+	border-radius: 5px;
+	color: #ffffff;
+}
+.btn:hover {
+	background: red;
 }
